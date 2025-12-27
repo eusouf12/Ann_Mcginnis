@@ -1,9 +1,11 @@
 
+import 'package:ann_mcginnis/view/components/custom_image/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_colors/app_colors.dart';
+import '../../../../utils/app_images/app_images.dart';
 import '../../../../utils/app_strings/app_strings.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
@@ -29,26 +31,10 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //upper text
-                 Center(
-                  child: Column(
-                    children: [
-                      CustomText(
-                        text: "ICE VERIFY",
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
-                      ),
-                      CustomText(
-                        text: "DIGITAL ID WALLET",
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white_1,
-                        bottom: 30,
-                      ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 20),
+                //img
+                 Center(child: CustomImage(imageSrc: AppImages.logo1)),
+                SizedBox(height: 30),
                 // toggle btn
                  Obx(() =>
                     Container(
@@ -56,7 +42,9 @@ class LoginScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: const Color(0xFFF3F4F6),
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.primary),
                       ),
+
                       child: Row(
                         children: [
                           Expanded(
@@ -66,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                                 margin: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                   color: authController.loginLoading.value ? AppColors.primary : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(8),
                                   boxShadow:authController.loginLoading.value
                                       ? [
                                     BoxShadow(
@@ -125,14 +113,13 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                 ),
-                const SizedBox(height: 32),
+                    ),),
+                SizedBox(height: 30),
                 //  Email &  Password Field
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 25),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.primary,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -140,13 +127,13 @@ class LoginScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //Email
-                      const CustomText(
+                      CustomText(
                         text: AppStrings.email,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey,
+                        color: Colors.white,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       CustomTextField(
                         textEditingController: authController.emailController.value,
                         hintText: AppStrings.enterYourEmail,
@@ -161,15 +148,15 @@ class LoginScreen extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
 
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       // Password Field
-                      const CustomText(
+                      CustomText(
                         text: AppStrings.password,
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+                        color: Colors.white,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       CustomTextField(
                         textEditingController: authController.passwordController.value,
                         hintText: AppStrings.enterYourPassword,
@@ -187,7 +174,7 @@ class LoginScreen extends StatelessWidget {
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -200,7 +187,7 @@ class LoginScreen extends StatelessWidget {
                   borderRadius: 12,
                   textColor: AppColors.white,
                   title: "Continue",
-                  fillColor: AppColors.primary1,
+                  fillColor: AppColors.primary,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -216,25 +203,25 @@ class LoginScreen extends StatelessWidget {
                       text: AppStrings.forgetPassword,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFFFDD835),
+                      color: AppColors.primary1,
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 50),
                 // Social Buttons
                 Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
                  children: [
-                   CustomText(text: "By continuing, you agree to ICEWAIT's"),
+                   CustomText(text: "By continuing, you agree to Global Jump's ",color: Colors.black),
                    GestureDetector(
                      onTap: (){},
-                       child: CustomText(text: " Terms ", color: Color(0xFFFDD835),)
+                       child: CustomText(text: " Terms ", color: AppColors.primary1)
                    ),
-                   CustomText(text: "and "),
+                   CustomText(text: "and ",color: Colors.black),
                    GestureDetector(
                        onTap: (){},
-                       child: CustomText(text: "Privacy Policy",color: Color(0xFFFDD835),)
+                       child: CustomText(text: "Privacy Policy",color: AppColors.primary1,)
                    ),
                  ],
                )

@@ -1,3 +1,4 @@
+import 'package:ann_mcginnis/view/screens/authentication_screen/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,13 +8,14 @@ import '../../../utils/app_images/app_images.dart';
 import '../../components/custom_gradient/custom_gradient.dart';
 
 class AccountReadyScreen extends StatelessWidget {
-  const AccountReadyScreen({super.key});
-
+  AccountReadyScreen({super.key});
+  final AuthController authController = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 3), () {
-        Get.offNamed(AppRoutes.homeScreen);
+        authController.loginLoading.value = true;
+        Get.offNamed(AppRoutes.loginScreen);
       });
     });
     return CustomGradient(

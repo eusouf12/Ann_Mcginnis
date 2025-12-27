@@ -108,7 +108,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onTap: toggle,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.white70,),
+                  child: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: AppColors.grey_1,),
 
                   /*SvgPicture.asset(
                     obscureText ? AppIcons.eyeOff : AppIcons.eye,

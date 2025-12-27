@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../utils/app_colors/app_colors.dart';
+import '../../../../utils/app_images/app_images.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
+import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_pin_code/custom_pin_code.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -28,29 +30,10 @@ class OtpScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
-                //upper text
-                Center(
-                  child: Column(
-                    children: [
-                      CustomText(
-                        text: "ICE VERIFY",
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
-                      ),
-                      CustomText(
-                        text: "DIGITAL ID WALLET",
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white_1,
-                        bottom: 30,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 50),
-
+                SizedBox(height: 20),
+                //img
+                Center(child: CustomImage(imageSrc: AppImages.logo1)),
+                SizedBox(height: 50),
                 // Title
                 Center(
                   child: CustomText(
@@ -58,18 +41,19 @@ class OtpScreen extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     bottom: 10,
+                    color: AppColors.black,
                   ),
                 ),
 
                 // Description
-                const Center(
+                Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 45),
                     child: CustomText(
-                      text: "Enter the 6-digit code sent to your email or phone number.",
+                      text: "Enter the 4-digit code sent to your email or phone number.",
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.grey_2,
+                      color: AppColors.grey_1,
                       textAlign: TextAlign.center,
                       maxLines: 3,
                     ),
@@ -82,7 +66,7 @@ class OtpScreen extends StatelessWidget {
                   controller: authController.otpController.value,
                   // controller: otpController,
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -91,12 +75,12 @@ class OtpScreen extends StatelessWidget {
                       CustomText(
                         text: "Resend code in 00:24",
                         fontWeight: FontWeight.w400,
-                        color: AppColors.grey_2,
+                        color: AppColors.grey_1,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
+                 SizedBox(height: 30),
                 // Verify Button
                 SizedBox(
                   width: double.infinity,
@@ -107,7 +91,7 @@ class OtpScreen extends StatelessWidget {
                     },
                     borderRadius: 12,
                     textColor: AppColors.white,
-                    fillColor: AppColors.primary1,
+                    fillColor: AppColors.primary,
                     title: "Verify",
                     fontSize: 16,
                   ),
@@ -123,14 +107,14 @@ class OtpScreen extends StatelessWidget {
                       CustomText(
                         text: "Didn't receive the code? ",
                         fontWeight: FontWeight.w400,
-                        color: AppColors.grey_2,
+                        color: AppColors.black,
                       ),
                       GestureDetector(
                         onTap: (){},
                         child: CustomText(
                           text: " Resend",
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFFFDD835),
+                          color: AppColors.primary1,
                           bottom: 30,
                         ),
                       ),
@@ -146,7 +130,7 @@ class OtpScreen extends StatelessWidget {
                     child: const CustomText(
                         text: "Back to Login",
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFFFDD835)
+                        color: AppColors.primary1,
                     ),
                   ),
                 ),

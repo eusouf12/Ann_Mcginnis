@@ -41,7 +41,7 @@ class AuthController extends GetxController {
     }
   }
 
-  ///=============== Date Formate Function ================
+  //=============== Date Formate Function ================
   Future<void> pickDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -55,14 +55,14 @@ class AuthController extends GetxController {
     }
   }
 
-  /// toggle btn for 2_step verification
+  // toggle btn for 2_step verification
   RxBool isVerificationEnabled = false.obs;
   void toggleVerification(bool value) {
     isVerificationEnabled.value = value;
     print("Push Verification: $value");
   }
 
-  ///========== SignUp Api Loading ==========
+  //========== SignUp Api Loading ==========
   RxBool signUpLoading = false.obs;
 
   Future<void> signUp() async {
@@ -123,7 +123,7 @@ class AuthController extends GetxController {
     }
   }
 
-  ///========== Clear SignUp Data ==========
+  //========== Clear SignUp Data ==========
   void clearSignUpData() {
     nameController.value.clear();
     emailController.value.clear();
@@ -134,15 +134,13 @@ class AuthController extends GetxController {
     forgetPasswordController.value.clear();
   }
 
-  ///======================LOGIN CONTROLLER=====================
-
-  Rx<TextEditingController> loginEmailController = TextEditingController().obs;
-  Rx<TextEditingController> loginPasswordController = TextEditingController().obs;
-
-  ///=====================LOGIN METHOD=====================
-  RxBool loginLoading = true.obs;
+  //=====================LOGIN METHOD=====================
+  RxBool loginLoading = false.obs;
   void toggleTab(bool isLogin) => loginLoading.value = isLogin;
 
+  //======================LOGIN CONTROLLER=====================
+  Rx<TextEditingController> loginEmailController = TextEditingController().obs;
+  Rx<TextEditingController> loginPasswordController = TextEditingController().obs;
   Future<void> loginUser() async {
     loginLoading.value = true;
 
@@ -221,10 +219,7 @@ class AuthController extends GetxController {
     }
   }
 
-
-
-
-  ///======================Forget password CONTROLLER=====================
+  //======================Forget password CONTROLLER=====================
 
   Rx<TextEditingController> forgetPasswordController = TextEditingController().obs;
   RxBool forgetPasswordLoading = false.obs;

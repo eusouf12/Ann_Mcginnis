@@ -6,9 +6,11 @@ import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_const/app_const.dart';
+import '../../../../utils/app_images/app_images.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_from_card/custom_from_card.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
+import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import '../../../components/custom_text_field/custom_text_field.dart';
@@ -30,28 +32,10 @@ class SetNewPassword extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 30),
-                //upper text
-                Center(
-                  child: Column(
-                    children: [
-                      CustomText(
-                        text: "ICE VERIFY",
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
-                      ),
-                      CustomText(
-                        text: "DIGITAL ID WALLET",
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white_1,
-                        bottom: 30,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
+                SizedBox(height: 40),
+                //img
+                Center(child: CustomImage(imageSrc: AppImages.logo1)),
+                SizedBox(height: 60),
 
                 // Title
                 Center(
@@ -60,6 +44,7 @@ class SetNewPassword extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                     bottom: 10,
+                    color: AppColors.black,
                   ),
                 ),
 
@@ -71,23 +56,23 @@ class SetNewPassword extends StatelessWidget {
                       text: "Password  must have 6-8 characters.",
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.grey_2,
+                      color: AppColors.grey_1,
                       textAlign: TextAlign.center,
                       maxLines: 3,
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
 
                 // New Password
-                const CustomText(
+                CustomText(
                   text: "New Password",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.white,
+                  color: AppColors.black,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 CustomTextField(
                   textEditingController: authController.updatePasswordController.value,
                   hintText: "Enter password",
@@ -99,15 +84,15 @@ class SetNewPassword extends StatelessWidget {
                   fieldBorderRadius: 12,
                 ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 // Confirm New Password
-                const CustomText(
+                CustomText(
                   text:"Confirm New Password",
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.white,
+                  color: AppColors.black,
                 ),
-                const SizedBox(height: 8),
+                 SizedBox(height: 8),
                 CustomTextField(
                   textEditingController: authController.updateConfirmPasswordController.value,
                   hintText: "Enter Confirm password",
@@ -118,7 +103,7 @@ class SetNewPassword extends StatelessWidget {
                   fieldBorderColor: const Color(0xFFE5E7EB),
                   fieldBorderRadius: 12,
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
 
                 // Update Password Button
                 SizedBox(
@@ -131,35 +116,13 @@ class SetNewPassword extends StatelessWidget {
                     borderRadius: 12,
                     textColor: AppColors.white,
                     title: "Update Password",
-                    fillColor: AppColors.primary1,
+                    fillColor: AppColors.primary,
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 24),
-                const SizedBox(height: 15),
-                //Resend
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Didn't receive the code? ",
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey_2,
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: CustomText(
-                          text: " Resend",
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFFFDD835),
-                          bottom: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                SizedBox(height: 24),
+                SizedBox(height: 15),
+
                 // Back to Login
                 Center(
                   child: GestureDetector(
@@ -169,7 +132,7 @@ class SetNewPassword extends StatelessWidget {
                     child: const CustomText(
                         text: "Back to Login",
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFFFDD835)
+                      color: AppColors.primary1,
                     ),
                   ),
                 ),

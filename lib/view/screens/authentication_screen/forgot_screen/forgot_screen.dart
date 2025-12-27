@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../utils/app_colors/app_colors.dart';
+import '../../../../utils/app_images/app_images.dart';
 import '../../../../utils/app_strings/app_strings.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_from_card/custom_from_card.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
+import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_text/custom_text.dart';
@@ -32,27 +34,9 @@ class ForgotScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 30),
-                  //upper text
-                  Center(
-                    child: Column(
-                      children: [
-                        CustomText(
-                          text: "ICE VERIFY",
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.white,
-                        ),
-                        CustomText(
-                          text: "DIGITAL ID WALLET",
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.white_1,
-                          bottom: 30,
-                        ),
-                      ],
-                    ),
-                  ),
+                  SizedBox(height: 20),
+                  //img
+                  Center(child: CustomImage(imageSrc: AppImages.logo1)),
                   const SizedBox(height: 50),
       
                   // Title
@@ -62,40 +46,41 @@ class ForgotScreen extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       bottom: 10,
+                      color: AppColors.black
                     ),
                   ),
       
                   // Description
-                  const Center(
+                  Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 45),
                       child: CustomText(
                         text: "Enter your registered email we'll send you a link to reset your password.",
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.grey_2,
+                        color: AppColors.grey_1,
                         textAlign: TextAlign.center,
                         maxLines: 3,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
       
                   // Email
-                  const CustomText(
+                   CustomText(
                     text: "Email",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.white,
+                    color: AppColors.black,
                   ),
-                  const SizedBox(height: 8),
+                   SizedBox(height: 8),
                   CustomTextField(
                     textEditingController: authController.nameController.value,
                     hintText: AppStrings.enterYourEmail,
                     hintStyle: TextStyle(color: AppColors.grey_1, fontSize: 14),
                     prefixIcon: const Icon(Icons.email, color: Colors.grey, size: 20),
                     fillColor: AppColors.white,
-                    fieldBorderColor: const Color(0xFFE5E7EB),
+                    fieldBorderColor: AppColors.grey_1,
                     fieldBorderRadius: 12,
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -110,7 +95,7 @@ class ForgotScreen extends StatelessWidget {
                       },
                       borderRadius: 12,
                       textColor: AppColors.white,
-                      fillColor: AppColors.primary1,
+                      fillColor: AppColors.primary,
                       title: "Request OTP",
                       fontSize: 16,
                     ),
@@ -127,7 +112,7 @@ class ForgotScreen extends StatelessWidget {
                       child: const CustomText(
                         text: "Back to Login",
                         fontWeight: FontWeight.w500,
-                          color: Color(0xFFFDD835)
+                          color: AppColors.primary1
                       ),
                     ),
                   ),

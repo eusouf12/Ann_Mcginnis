@@ -6,9 +6,10 @@ class AppImages {
   ///====================== SplashScreen =========================
   static const String splashIcon = "$basePath/splashIcon.svg";
   static const String logo1 = "$basePath/logo1.svg";
-  static const String splashScreenImage1 = "$basePath/splashImage1.svg";
-  static const String splashScreenImage2 = "$basePath/splashImage2.svg";
-  static const String splashScreenImage3 = "$basePath/splashImage3.svg";
+  static const String splashScreenImage1 = "$basePath/splashScreenImage1.svg";
+  static const String splashScreenImage2 = "$basePath/splashScreenImage2.svg";
+  static const String splashScreenImage3 = "$basePath/splashScreenImage3.svg";
+  static const String onboarding3rd = "$basePath/3ronboarding.png";
   static const String accountReady = "$basePath/accountReady.svg";
   static const String help = "$basePath/help.svg";
 

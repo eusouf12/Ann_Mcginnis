@@ -15,6 +15,7 @@ import '../../view/screens/otherScreen/profile_screen/account_settings/terms_ser
 import '../../view/screens/otherScreen/profile_screen/edit_screen.dart';
 import '../../view/screens/otherScreen/profile_screen/notification_screen.dart';
 import '../../view/screens/otherScreen/profile_screen/profile_screen.dart';
+import '../../view/screens/role_screen/role_screen.dart';
 import '../../view/screens/splashScreen/account_ready_screen.dart';
 import '../../view/screens/splashScreen/onboarding_screen.dart';
 import '../../view/screens/splashScreen/splashScreen.dart';
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String otpScreen = "/otpScreen";
   static const String forgotScreen = "/ForgotScreen";
   static const String setNewPassword = "/SetNewPassword";
+  static const String chooseRole = "/ChooseRole";
 
   ///===========================Host Part==========================
   static const String homeScreen = "/HomeScreen";
@@ -77,6 +79,7 @@ class AppRoutes {
     ///===========================Authentication==========================
     GetPage(name: splashScreen, page: () => Splashscreen()),
     GetPage(name: onboardingScreen, page: () => OnboardingScreen()),
+    GetPage(name: chooseRole, page: () => ChooseRole()),
     GetPage(name: loginScreen, page: () => LoginScreen()),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
     GetPage(name: accountReadyScreen, page: () => AccountReadyScreen()),
