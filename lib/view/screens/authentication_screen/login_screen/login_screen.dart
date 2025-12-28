@@ -182,7 +182,7 @@ class LoginScreen extends StatelessWidget {
                 //  Login Button
                 CustomButton(
                   onTap: () {
-                    Get.toNamed(AppRoutes.subscribeScreen);
+                    Get.toNamed(AppRoutes.recommendedCountriesScreen);
                   },
                   borderRadius: 12,
                   textColor: AppColors.white,

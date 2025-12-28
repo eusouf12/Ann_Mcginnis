@@ -51,7 +51,8 @@ class ChooseRole extends StatelessWidget {
                          StorageService().write("role", "Immigration Seeker");
                          final role = StorageService().read<String>("role");
                          debugPrint("Chose Role Immigration Seeker========================================${role}");
-                         Get.toNamed(AppRoutes.signUpScreen);
+                         Get.toNamed(AppRoutes.recommendedCountriesScreen);
+                         // Get.toNamed(AppRoutes.signUpScreen);
                       },
                     ),
                     const SizedBox(height: 16),
@@ -63,7 +64,8 @@ class ChooseRole extends StatelessWidget {
                         StorageService().write("role", "Consultant");
                         final role = StorageService().read<String>("role");
                         debugPrint("Chose Role Immigration Seeker========================================${role}");
-                        Get.toNamed(AppRoutes.signUpScreen);
+                        Get.toNamed(AppRoutes.consultantDashboard);
+                        // Get.toNamed(AppRoutes.signUpScreen);
                       },
                     ),
                   ],

@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../core/app_routes/app_routes.dart';
 import '../../../utils/app_colors/app_colors.dart';
-import '../../screens/otherScreen/Home/home_screen.dart';
-import '../../screens/otherScreen/profile_screen/profile_screen.dart';
 
 class HostNavbar extends StatefulWidget {
   final int currentIndex;
@@ -24,7 +22,7 @@ class _HostNavBarState extends State<HostNavbar> {
   ];
 
   final List<String> labels = [
-    'Home',
+    'SetUp_Profile_Screen',
     'Settings',
   ];
 
@@ -68,7 +66,7 @@ class _HostNavBarState extends State<HostNavbar> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoutes.addDocument);
+                  // Get.toNamed(AppRoutes.addDocument);
                 },
                 child: Container(
                   width: 60.w,
@@ -146,10 +144,10 @@ class _HostNavBarState extends State<HostNavbar> {
 
       switch (index) {
         case 0:
-          Get.offAll(() => HomeScreen());
+          // Get.offAll(() => HomeScreen());
           break;
         case 1:
-          Get.to(() => ProfileScreen());
+          // Get.to(() => ProfileScreen());
           break;
       }
     }

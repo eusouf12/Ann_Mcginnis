@@ -9,18 +9,22 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? titleName;
   final String? rightIcon;
   final Color? color;
+  final Color? leftIconColor;
   //final void Function()? leftOnTap;
   final void Function()? rightOnTap;
   final bool? leftIcon;
+  final bool? centerTitleEnable;
 
   const CustomRoyelAppbar({
     super.key,
     this.titleName,
     this.color,
+    this.leftIconColor,
     // this.leftOnTap,
     this.rightIcon,
     this.rightOnTap,
     this.leftIcon = false,
+    this.centerTitleEnable = true,
   });
 
   @override
@@ -29,7 +33,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
         toolbarHeight: 80,
         elevation: 0,
         foregroundColor: Colors.transparent,
-        centerTitle: true,
+        centerTitle: centerTitleEnable,
         scrolledUnderElevation: 0,
         actions: [
           IconButton(
@@ -42,17 +46,25 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
                 imageSrc: rightIcon!,
                 height: 24,
                 width: 24,
-                imageColor: AppColors.white,
+                imageColor: AppColors.black,
               )),
         ],
         backgroundColor: Colors.transparent,
-        leading: leftIcon == false ? BackButton() : null,
-        title: CustomText(
+        leading: leftIcon == true ? BackButton(color: leftIconColor ?? Colors.black,) : SizedBox.shrink(),
+        leadingWidth: leftIcon == true ? kToolbarHeight : 0,
+
+      title: Align(
+        alignment: centerTitleEnable == true
+            ? Alignment.center
+            : Alignment.centerLeft,
+        child: CustomText(
           text: titleName ?? "",
           fontSize: 20.w,
           fontWeight: FontWeight.w600,
-          color:color ?? AppColors.white,
-        ));
+          color: color ?? AppColors.black,
+        ),
+      ),
+    );
   }
 
   @override

@@ -13,6 +13,7 @@ class AppIcons {
   static const String logOut = "$basePath/logout.svg";
   static const String idCard= "$basePath/id_card.svg";
   static const String file= "$basePath/file.svg";
+  static const String filter= "$basePath/filter.svg";
 
 
 

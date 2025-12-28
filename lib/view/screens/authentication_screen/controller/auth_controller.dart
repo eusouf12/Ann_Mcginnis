@@ -185,7 +185,7 @@ class AuthController extends GetxController {
         await SharePrefsHelper.setString(AppConstants.role, userRole);
 
         if (userRole.toLowerCase() == "host") {
-          Get.offAllNamed(AppRoutes.homeScreen);
+          // Get.offAllNamed(AppRoutes.homeScreen);
         }
       }
       else {

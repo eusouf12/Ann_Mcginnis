@@ -1,20 +1,23 @@
 import 'package:get/get.dart';
+import '../../view/screens/Consultant/profile_screen/account_settings/about_screen.dart';
+import '../../view/screens/Consultant/profile_screen/account_settings/account_settings_screen.dart';
+import '../../view/screens/Consultant/profile_screen/account_settings/change_pass_screen.dart';
+import '../../view/screens/Consultant/profile_screen/account_settings/privacy_screen.dart';
+import '../../view/screens/Consultant/profile_screen/account_settings/terms_services_screen.dart';
+import '../../view/screens/Consultant/profile_screen/edit_screen.dart';
+import '../../view/screens/Consultant/profile_screen/help_support.dart';
+import '../../view/screens/Consultant/profile_screen/notification_screen.dart';
+import '../../view/screens/Consultant/profile_screen/profile_screen.dart';
+import '../../view/screens/Consultant/profile_screen/security_screen.dart';
+import '../../view/screens/Consultant/view/consultant_dashboard.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/recommended_countries_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/single_country_view_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/set_up_profile_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication_screen/login_screen/login_screen.dart';
 import '../../view/screens/authentication_screen/otp_screen/otp_screen.dart';
 import '../../view/screens/authentication_screen/set_new_password/set_new_password.dart';
 import '../../view/screens/authentication_screen/sign_up_screen/sign_up_screen.dart';
-import '../../view/screens/otherScreen/Home/home_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/account_settings/about_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/account_settings/account_settings_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/account_settings/change_pass_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/account_settings/privacy_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/help_support.dart';
-import '../../view/screens/otherScreen/profile_screen/security_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/account_settings/terms_services_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/edit_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/notification_screen.dart';
-import '../../view/screens/otherScreen/profile_screen/profile_screen.dart';
 import '../../view/screens/role_screen/role_screen.dart';
 import '../../view/screens/splashScreen/account_ready_screen.dart';
 import '../../view/screens/splashScreen/onboarding_screen.dart';
@@ -35,8 +38,7 @@ class AppRoutes {
   static const String setNewPassword = "/SetNewPassword";
   static const String chooseRole = "/ChooseRole";
 
-  ///===========================Host Part==========================
-  static const String homeScreen = "/HomeScreen";
+  ///===========================other part Part==========================
   static const String createScreen = "/CreateScreen";
   static const String notificationScreen = "/NotificationScreen";
   static const String profileScreen ="/ProfileScreen";
@@ -48,30 +50,15 @@ class AppRoutes {
   static const String privacyScreen = "/PrivacyScreen";
   static const String aboutScreen = "/AboutScreen";
   static const String helpSupport = "/HelpSupport";
-  static const String addDocument = "/AddDocument";
-  static const String addNewDoc = "/AddNewDoc";
-  static const String reviewScreen = "/ReviewScreen";
-  static const String driverLicenseScreen = "/DriverLicenseScreen";
-  static const String saveChange = "/SaveChange";
-  static const String documentSavedScreen = "/DocumentSavedScreen";
-  static const String documentScannerPage = "/DocumentScannerPage";
-  static const String scannerFlutter = "/ScannerFlutter";
-  static const String recentDocument = "/RecentDocument";
-  static const String allDocument = "/AllDocument";
   static const String singleView = "/SingleView";
 
-  ///===========================10 PART==========================
+  ///===========================Immigration Seeker==========================
+  static const String setUpProfileScreen = "/SetUpProfileScreen";
+  static const String recommendedCountriesScreen = "/RecommendedCountriesScreen";
+  static const String countryDetailsScreen = "/CountryDetailsScreen";
 
-  static const String identity = "/Identity";
-  static const String healthcare = "/Healthcare";
-  static const String employment = "/Employment";
-  static const String citizenship = "/Citizenship";
-  static const String education = "/Education";
-  static const String eVerification = "/EVerification";
-  static const String financial = "/Financial";
-  static const String residence = "/residence";
-  static const String legalRights = "/LegalRights";
-  static const String transportation = "/Transportation";
+  ///=============================== Consultant ======================================
+  static const String consultantDashboard = "/ConsultantDashboard";
 
 
   static List<GetPage> routes = [
@@ -87,7 +74,6 @@ class AppRoutes {
     GetPage(name: otpScreen, page: () => OtpScreen()),
     GetPage(name: forgotScreen, page: () => ForgotScreen()),
     GetPage(name: setNewPassword, page: () => SetNewPassword()),
-    GetPage(name: homeScreen, page: () => HomeScreen()),
 
   ///===========================Other Part==========================
   GetPage(name: profileScreen, page: () => ProfileScreen()),
@@ -100,6 +86,15 @@ class AppRoutes {
   GetPage(name: privacyScreen, page: () => PrivacyScreen()),
   GetPage(name: aboutScreen, page: () => AboutScreen()),
   GetPage(name: helpSupport, page: () => HelpSupport()),
+
+    ///============== Immigration Seeker ==================
+    GetPage(name: recommendedCountriesScreen, page: () => RecommendedCountriesScreen()),
+    GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen()),
+    GetPage(name: countryDetailsScreen, page: () => CountryDetailsScreen()),
+
+    ///=============================== Consultant ======================================
+    GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),
+
 
   ];
 }

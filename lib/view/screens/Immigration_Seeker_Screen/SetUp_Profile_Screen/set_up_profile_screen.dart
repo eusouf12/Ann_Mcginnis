@@ -9,8 +9,8 @@ import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
 import '../../../components/custom_text/custom_text.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class SetUpProfileScreen extends StatelessWidget {
+  const SetUpProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Digital ID",
+                          text: "SetUpProfileScreen",
                           fontWeight: FontWeight.w700,
                           fontSize: 20,
                           color: AppColors.black,
@@ -88,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.recentDocument);
+                        // Get.toNamed(AppRoutes.recentDocument);
                       },
                       child: CustomText(
                         text: "View All",
