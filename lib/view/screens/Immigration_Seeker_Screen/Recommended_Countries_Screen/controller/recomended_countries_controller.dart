@@ -17,7 +17,7 @@ class RecommendedCountriesController extends GetxController {
   }.obs;
 
   // Slider State
-  var successRate = 75.0.obs;
+  var successRate = 50.0.obs;
 
   // Toggle Visa Checkbox
   void toggleVisaType(String key) {

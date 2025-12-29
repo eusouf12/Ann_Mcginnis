@@ -12,6 +12,7 @@ import '../../view/screens/Consultant/profile_screen/security_screen.dart';
 import '../../view/screens/Consultant/view/consultant_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/recommended_countries_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/single_country_view_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Recommended_dashboard_Screen/view/user_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/set_up_profile_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication_screen/login_screen/login_screen.dart';
@@ -56,6 +57,7 @@ class AppRoutes {
   static const String setUpProfileScreen = "/SetUpProfileScreen";
   static const String recommendedCountriesScreen = "/RecommendedCountriesScreen";
   static const String countryDetailsScreen = "/CountryDetailsScreen";
+  static const String userDashboard = "/UserDashboard";
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
@@ -91,6 +93,7 @@ class AppRoutes {
     GetPage(name: recommendedCountriesScreen, page: () => RecommendedCountriesScreen()),
     GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen()),
     GetPage(name: countryDetailsScreen, page: () => CountryDetailsScreen()),
+    GetPage(name: userDashboard, page: () => UserDashboard()),
 
     ///=============================== Consultant ======================================
     GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),

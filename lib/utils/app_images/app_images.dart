@@ -6,6 +6,7 @@ class AppImages {
   ///====================== SplashScreen =========================
   static const String splashIcon = "$basePath/splashIcon.svg";
   static const String logo1 = "$basePath/logo1.svg";
+  static const String logoApp = "$basePath/appbarLogo.svg";
   static const String splashScreenImage1 = "$basePath/splashScreenImage1.svg";
   static const String splashScreenImage2 = "$basePath/splashScreenImage2.svg";
   static const String splashScreenImage3 = "$basePath/splashScreenImage3.svg";
