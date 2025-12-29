@@ -6,8 +6,8 @@ import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 
-class ChangePassScreen extends StatelessWidget {
-  const ChangePassScreen({super.key});
+class ImmigrationChangePassScreen extends StatelessWidget {
+  const ImmigrationChangePassScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ChangePassScreen extends StatelessWidget {
         appBar: CustomRoyelAppbar(
           leftIcon: true,
           titleName: 'Change Password'.tr,
-          color: AppColors.white,
+          color: AppColors.black,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
@@ -25,6 +25,8 @@ class ChangePassScreen extends StatelessWidget {
               CustomFormCard(
                 title: 'Current Password',
                 hintText: '******',
+                curserColor: AppColors.black,
+                titleColor: AppColors.black,
                 isPassword: true,
                 fillBorderRadius: 12,
                 controller: TextEditingController(),
@@ -33,12 +35,16 @@ class ChangePassScreen extends StatelessWidget {
                 title: 'New Password',
                 hintText: '******',
                 isPassword: true,
+                curserColor: AppColors.black,
+                titleColor: AppColors.black,
                 fillBorderRadius: 12,
                 controller: TextEditingController(),
               ),
               CustomFormCard(
                 title: 'Confirm Password',
                 hintText: '******',
+                curserColor: AppColors.black,
+                titleColor: AppColors.black,
                 isPassword: true,
                 fillBorderRadius: 12,
                 controller: TextEditingController(),

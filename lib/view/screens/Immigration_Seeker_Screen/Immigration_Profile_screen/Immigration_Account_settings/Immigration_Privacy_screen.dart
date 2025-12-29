@@ -5,8 +5,8 @@ import '../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
-class PrivacyScreen extends StatelessWidget {
-  const PrivacyScreen({super.key});
+class ImmigrationPrivacyScreen extends StatelessWidget {
+  const ImmigrationPrivacyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,17 @@ class PrivacyScreen extends StatelessWidget {
         appBar: CustomRoyelAppbar(
           leftIcon: true,
           titleName: 'Privacy Policy',
-          color: AppColors.white,
+          color: AppColors.black,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
           child: CustomText(
-            text: 'Terms Text',
+            text: 'Privacy Text',
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             maxLines: 10,
             textAlign: TextAlign.justify,
-            color: AppColors.white,
+            color: AppColors.black,
           ),
         ),
       ),

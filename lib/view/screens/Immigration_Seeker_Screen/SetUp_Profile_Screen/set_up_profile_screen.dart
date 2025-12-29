@@ -58,7 +58,8 @@ class SetUpProfileScreen extends StatelessWidget {
               ),
               //notification
               GestureDetector(
-                onTap: () => Get.toNamed(AppRoutes.notificationScreen),
+                onTap: () =>{},
+                // onTap: () => Get.toNamed(AppRoutes.notificationScreen),
                 child: Icon(
                   Icons.notifications,
                   color: AppColors.primary,

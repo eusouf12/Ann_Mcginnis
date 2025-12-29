@@ -1,19 +1,18 @@
+import 'package:ann_mcginnis/view/screens/Consultant/profile_screen/consult_profile_screen.dart';
+import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Profile_screen.dart';
 import 'package:get/get.dart';
-import '../../view/screens/Consultant/profile_screen/account_settings/about_screen.dart';
-import '../../view/screens/Consultant/profile_screen/account_settings/account_settings_screen.dart';
-import '../../view/screens/Consultant/profile_screen/account_settings/change_pass_screen.dart';
-import '../../view/screens/Consultant/profile_screen/account_settings/privacy_screen.dart';
-import '../../view/screens/Consultant/profile_screen/account_settings/terms_services_screen.dart';
-import '../../view/screens/Consultant/profile_screen/edit_screen.dart';
-import '../../view/screens/Consultant/profile_screen/help_support.dart';
-import '../../view/screens/Consultant/profile_screen/notification_screen.dart';
-import '../../view/screens/Consultant/profile_screen/profile_screen.dart';
-import '../../view/screens/Consultant/profile_screen/security_screen.dart';
 import '../../view/screens/Consultant/view/consultant_dashboard.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_About_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Change_pass_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Privacy_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Terms_services_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Edit_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_help_support.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/recommended_countries_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/single_country_view_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_dashboard_Screen/view/user_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/set_up_profile_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/message_screen/view/chat_list_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication_screen/login_screen/login_screen.dart';
 import '../../view/screens/authentication_screen/otp_screen/otp_screen.dart';
@@ -40,17 +39,6 @@ class AppRoutes {
   static const String chooseRole = "/ChooseRole";
 
   ///===========================other part Part==========================
-  static const String createScreen = "/CreateScreen";
-  static const String notificationScreen = "/NotificationScreen";
-  static const String profileScreen ="/ProfileScreen";
-  static const String editScreen = "/EditScreen";
-  static const String securityScreen = "/SecurityScreen";
-  static const String accountSettingsScreen = "/AccountSettingsScreen";
-  static const String changePassScreen = "/ChangePassScreen";
-  static const String termsServicesScreen = "/TermsServicesScreen";
-  static const String privacyScreen = "/PrivacyScreen";
-  static const String aboutScreen = "/AboutScreen";
-  static const String helpSupport = "/HelpSupport";
   static const String singleView = "/SingleView";
 
   ///===========================Immigration Seeker==========================
@@ -58,6 +46,16 @@ class AppRoutes {
   static const String recommendedCountriesScreen = "/RecommendedCountriesScreen";
   static const String countryDetailsScreen = "/CountryDetailsScreen";
   static const String userDashboard = "/UserDashboard";
+  static const String userProfileScreen ="/UserProfileScreen";
+  static const String userEditScreen = "/UserEditScreen";
+  static const String userSecurityScreen = "/UserSecurityScreen";
+  static const String userAccountSettingsScreen = "/UserAccountSettingsScreen";
+  static const String userChangePassScreen = "/UserChangePassScreen";
+  static const String userTermsServicesScreen = "/UserTermsServicesScreen";
+  static const String userPrivacyScreen = "/UserPrivacyScreen";
+  static const String userAboutScreen = "/UserAboutScreen";
+  static const String userHelpSupport = "/UserHelpSupport";
+  static const String chatListScreen = "/ChatListScreen";
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
@@ -77,23 +75,19 @@ class AppRoutes {
     GetPage(name: forgotScreen, page: () => ForgotScreen()),
     GetPage(name: setNewPassword, page: () => SetNewPassword()),
 
-  ///===========================Other Part==========================
-  GetPage(name: profileScreen, page: () => ProfileScreen()),
-  GetPage(name: editScreen, page: () => EditScreen()),
-  GetPage(name: notificationScreen, page: () => NotificationScreen()),
-  GetPage(name: securityScreen, page: () => SecurityScreen()),
-  GetPage(name: accountSettingsScreen, page: () => AccountSettingsScreen()),
-  GetPage(name: changePassScreen, page: () => ChangePassScreen()),
-  GetPage(name: termsServicesScreen, page: () => TermsServicesScreen()),
-  GetPage(name: privacyScreen, page: () => PrivacyScreen()),
-  GetPage(name: aboutScreen, page: () => AboutScreen()),
-  GetPage(name: helpSupport, page: () => HelpSupport()),
-
     ///============== Immigration Seeker ==================
     GetPage(name: recommendedCountriesScreen, page: () => RecommendedCountriesScreen()),
     GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen()),
     GetPage(name: countryDetailsScreen, page: () => CountryDetailsScreen()),
     GetPage(name: userDashboard, page: () => UserDashboard()),
+    GetPage(name: userProfileScreen, page: () => UserProfileScreen()),
+    GetPage(name: userEditScreen, page: () => UserEditScreen()),
+    GetPage(name: userChangePassScreen, page: () => ImmigrationChangePassScreen()),
+    GetPage(name: userTermsServicesScreen, page: () => ImmigrationTermsServicesScreen()),
+    GetPage(name: userPrivacyScreen, page: () => ImmigrationPrivacyScreen()),
+    GetPage(name: userAboutScreen, page: () => ImmigrationAboutScreen()),
+    GetPage(name: userHelpSupport, page: () => ImmigrationHelpSupport()),
+    GetPage(name: chatListScreen, page: () => ChatListScreen()),
 
     ///=============================== Consultant ======================================
     GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),

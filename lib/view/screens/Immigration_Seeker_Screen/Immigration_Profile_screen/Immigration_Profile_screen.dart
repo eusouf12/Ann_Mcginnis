@@ -9,27 +9,15 @@ import '../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../components/custom_show_popup/custom_show_popup.dart';
 import '../../../components/custom_text/custom_text.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class UserProfileScreen extends StatelessWidget {
+  const UserProfileScreen({super.key});
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0C7A43),
-              Color(0xFF2DBE60),
-            ],
-          ),
-        ),
-        child: Padding(
+      body:
+       Padding(
           padding: const EdgeInsets.only(left: 24,right: 24, top: 30),
           child: SingleChildScrollView(
             child: SafeArea(
@@ -48,37 +36,47 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 15),
                       CustomText(
-                        text: 'Debbendu Paul',
+                        text: 'Eusouf',
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.white,
+                        color: AppColors.black,
                       ),
                     ],
                   ),
                   SizedBox(height: 24),
                   _buildOption(
+                    titleKey: 'Chat',
+                    onTap: () => Get.toNamed(AppRoutes.chatListScreen),
+                  ),
+                  SizedBox(height: 15),
+                  _buildOption(
                     titleKey: 'Edit Profile',
-                    onTap: () => Get.toNamed(AppRoutes.editScreen),
+                    onTap: () => Get.toNamed(AppRoutes.userEditScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
-                    titleKey: 'Notification',
-                    onTap: () => Get.toNamed(AppRoutes.notificationScreen),
+                    titleKey: 'Change Password',
+                    onTap: () => Get.toNamed(AppRoutes.userChangePassScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
-                    titleKey: 'Security',
-                    onTap: () => Get.toNamed(AppRoutes.securityScreen),
+                    titleKey: 'Terms of Services',
+                    onTap: () => Get.toNamed(AppRoutes.userTermsServicesScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
-                    titleKey: 'Account Settings',
-                    onTap: () => Get.toNamed(AppRoutes.accountSettingsScreen),
+                    titleKey: 'Privacy Policy',
+                    onTap: () => Get.toNamed(AppRoutes.userPrivacyScreen),
+                  ),
+                  SizedBox(height: 15),
+                  _buildOption(
+                    titleKey: 'About us',
+                    onTap: () => Get.toNamed(AppRoutes.userAboutScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
                     titleKey: 'Help & Support',
-                     onTap: () => Get.toNamed(AppRoutes.helpSupport),
+                     onTap: () => Get.toNamed(AppRoutes.userHelpSupport),
                   ),
                   SizedBox(height: 15),
                   GestureDetector(
@@ -115,8 +113,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: HostNavbar(currentIndex: 1),
     );
   }
 
@@ -133,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.primary1.withOpacity(1),
+          color: AppColors.primary.withOpacity(1),
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -152,11 +148,11 @@ class ProfileScreen extends StatelessWidget {
                   width: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary,
+                    color: AppColors.white,
                   ),
                   child: Icon(
                     Icons.keyboard_arrow_right,
-                    color: AppColors.white,
+                    color: AppColors.primary,
                   ),
                 ),
             ],

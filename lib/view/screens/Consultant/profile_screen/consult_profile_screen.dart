@@ -58,27 +58,27 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(height: 24),
                   _buildOption(
                     titleKey: 'Edit Profile',
-                    onTap: () => Get.toNamed(AppRoutes.editScreen),
+                    // onTap: () => Get.toNamed(AppRoutes.ceditScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
                     titleKey: 'Notification',
-                    onTap: () => Get.toNamed(AppRoutes.notificationScreen),
+                    // onTap: () => Get.toNamed(AppRoutes.notificationScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
                     titleKey: 'Security',
-                    onTap: () => Get.toNamed(AppRoutes.securityScreen),
+                    // onTap: () => Get.toNamed(AppRoutes.securityScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
                     titleKey: 'Account Settings',
-                    onTap: () => Get.toNamed(AppRoutes.accountSettingsScreen),
+                    // onTap: () => Get.toNamed(AppRoutes.accountSettingsScreen),
                   ),
                   SizedBox(height: 15),
                   _buildOption(
                     titleKey: 'Help & Support',
-                     onTap: () => Get.toNamed(AppRoutes.helpSupport),
+                     // onTap: () => Get.toNamed(AppRoutes.helpSupport),
                   ),
                   SizedBox(height: 15),
                   GestureDetector(

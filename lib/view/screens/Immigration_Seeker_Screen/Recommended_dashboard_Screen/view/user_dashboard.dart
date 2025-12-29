@@ -1,4 +1,5 @@
 
+import 'package:ann_mcginnis/core/app_routes/app_routes.dart';
 import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
 import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
@@ -87,7 +88,7 @@ class UserDashboard extends StatelessWidget {
             // 4. Profile Image
             GestureDetector(
               onTap: () {
-                // Profile Action
+                Get.toNamed(AppRoutes.userProfileScreen);
               },
               child:   ClipOval(
                 child: CustomNetworkImage(

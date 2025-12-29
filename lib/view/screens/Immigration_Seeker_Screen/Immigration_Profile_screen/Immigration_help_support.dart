@@ -8,8 +8,8 @@ import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_text/custom_text.dart';
 
-class HelpSupport extends StatelessWidget {
-  const HelpSupport({super.key});
+class ImmigrationHelpSupport extends StatelessWidget {
+  const ImmigrationHelpSupport({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class HelpSupport extends StatelessWidget {
         appBar: CustomRoyelAppbar(
           leftIcon: true,
           titleName: 'Help & Support',
-          color: AppColors.white,
+          color: AppColors.black,
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -32,7 +32,7 @@ class HelpSupport extends StatelessWidget {
                      children: [
                        CustomImage( imageSrc: AppImages.help,),
                        SizedBox(height: 20,),
-                       CustomText(text: "Hello, how can we assist you?", fontSize: 16, fontWeight: FontWeight.w500,)
+                       CustomText(text: "Hello, how can we assist you?", fontSize: 16,color: AppColors.black, fontWeight: FontWeight.w500,)
                      ],
                    ),
                  ),
@@ -40,7 +40,9 @@ class HelpSupport extends StatelessWidget {
                   CustomFormCard(
                     title: 'Title',
                     hintText: 'Enter the title of your issue',
+                    titleColor: AppColors.black,
                     fillBorderRadius: 12,
+                    curserColor: AppColors.black,
                     controller: TextEditingController(),
                   ),
                   CustomFormCard(
@@ -48,6 +50,7 @@ class HelpSupport extends StatelessWidget {
                     hintText: 'Write here.....',
                     maxLine: 5,
                     fillBorderRadius: 12,
+                    curserColor: AppColors.black,
                     controller: TextEditingController(),
                   ),
                   SizedBox(height: 40,),
@@ -58,7 +61,7 @@ class HelpSupport extends StatelessWidget {
                     title: 'Send',
                     textColor: AppColors.white,
                     borderRadius: 50,
-                    fillColor: AppColors.primary1,
+                    fillColor: AppColors.primary,
                     fontSize: 14,
                   ),
                  

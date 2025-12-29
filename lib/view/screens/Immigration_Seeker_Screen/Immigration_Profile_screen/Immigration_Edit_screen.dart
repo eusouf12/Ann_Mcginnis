@@ -9,16 +9,15 @@ import '../../../components/custom_gradient/custom_gradient.dart';
 import '../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 
-class EditScreen extends StatelessWidget {
-  const EditScreen({super.key});
+class UserEditScreen extends StatelessWidget {
+  const UserEditScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomGradient(
-      color1: Color(0xFF0C7A43),
 
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color: AppColors.white,),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color : AppColors.black),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -51,7 +50,7 @@ class EditScreen extends StatelessWidget {
                         height: 35,
                         width: 35,
                         decoration: BoxDecoration(
-                          color: AppColors.green,
+                          color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(Icons.edit, size: 15, color: AppColors.white,),
@@ -63,6 +62,8 @@ class EditScreen extends StatelessWidget {
                 // Form Fields
                 CustomFormCard(
                   title: 'Name',
+                  curserColor: AppColors.black,
+                  titleColor: AppColors.black,
                   hintText: 'Debbendu Paul',
                   controller: TextEditingController(),
                 ),
@@ -70,21 +71,29 @@ class EditScreen extends StatelessWidget {
                   title: 'Email',
                   hintText: 'Enter your email',
                   controller: TextEditingController(),
+                  curserColor: AppColors.black,
+                  titleColor: AppColors.black,
                 ),
                 CustomFormCard(
                   title: 'Date Of Birth',
                   hintText: '28-11-1997',
                   controller: TextEditingController(),
+                  curserColor: AppColors.black,
+                  titleColor: AppColors.black,
                 ),
                 CustomFormCard(
                   title: 'Country',
                   hintText: 'United State',
                   controller: TextEditingController(),
+                  curserColor: AppColors.black,
+                  titleColor: AppColors.black,
                 ),
                 CustomFormCard(
                   title: 'Phone Number',
                   hintText: '+123456789',
                   controller: TextEditingController(),
+                  curserColor: AppColors.black,
+                  titleColor: AppColors.black,
                 ),
       
                 SizedBox(height: 20),
@@ -95,7 +104,7 @@ class EditScreen extends StatelessWidget {
                   title: 'Save',
                   textColor: AppColors.white,
                   borderRadius: 50,
-                 fillColor: AppColors.primary1,
+                 fillColor: AppColors.primary,
                 ),
               ],
             ),

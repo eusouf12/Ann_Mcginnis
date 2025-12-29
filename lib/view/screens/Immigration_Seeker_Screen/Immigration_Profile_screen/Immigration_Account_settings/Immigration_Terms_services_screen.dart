@@ -6,8 +6,8 @@ import '../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
-class TermsServicesScreen extends StatelessWidget {
-  const TermsServicesScreen({super.key});
+class ImmigrationTermsServicesScreen extends StatelessWidget {
+  const ImmigrationTermsServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +15,18 @@ class TermsServicesScreen extends StatelessWidget {
       child: Scaffold(
         appBar: CustomRoyelAppbar(
           leftIcon: true,
-          titleName: 'Terms Of Services'.tr,
-          color: AppColors.white,
+          titleName: 'Terms Of Services',
+          color: AppColors.black,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
           child: CustomText(
-            text: 'Terms Text'.tr,
+            text: 'Terms Text',
             fontSize: 16.w,
             fontWeight: FontWeight.w400,
             maxLines: 10,
             textAlign: TextAlign.justify,
-            color: AppColors.white,
+            color: AppColors.black,
           ),
         ),
       ),
