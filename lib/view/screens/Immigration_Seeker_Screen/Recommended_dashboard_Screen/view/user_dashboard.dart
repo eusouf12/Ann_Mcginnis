@@ -317,6 +317,9 @@ class UserDashboard extends StatelessWidget {
                                   subTitle: "Visa Consultant - Australia",
                                   img: AppConstants.profileImage2,
                                   isBooked:index==1? true:false,
+                                  onTapViewDetails: (){
+                                    Get.toNamed(AppRoutes.consultProfileViewDetails);
+                                  },
                                 ),
                               );
                             },

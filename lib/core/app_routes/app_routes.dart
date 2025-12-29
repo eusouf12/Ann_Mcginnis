@@ -2,6 +2,7 @@ import 'package:ann_mcginnis/view/screens/Consultant/profile_screen/consult_prof
 import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Profile_screen.dart';
 import 'package:get/get.dart';
 import '../../view/screens/Consultant/view/consultant_dashboard.dart';
+import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/consult_profile_view_details.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_About_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Change_pass_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Privacy_screen.dart';
@@ -56,6 +57,7 @@ class AppRoutes {
   static const String userAboutScreen = "/UserAboutScreen";
   static const String userHelpSupport = "/UserHelpSupport";
   static const String chatListScreen = "/ChatListScreen";
+  static const String consultProfileViewDetails = "/ConsultProfileViewDetails";
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
@@ -88,6 +90,7 @@ class AppRoutes {
     GetPage(name: userAboutScreen, page: () => ImmigrationAboutScreen()),
     GetPage(name: userHelpSupport, page: () => ImmigrationHelpSupport()),
     GetPage(name: chatListScreen, page: () => ChatListScreen()),
+    GetPage(name: consultProfileViewDetails, page: () => ConsultProfileViewDetails()),
 
     ///=============================== Consultant ======================================
     GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),
