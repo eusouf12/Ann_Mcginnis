@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
@@ -100,7 +101,7 @@ class UserDashboard extends StatelessWidget {
               ),
             ),
 
-            SizedBox(width: 20.w), // ডান পাশে একটু গ্যাপ
+            SizedBox(width: 20.w),
           ],
         ),
 
@@ -319,6 +320,9 @@ class UserDashboard extends StatelessWidget {
                                   isBooked:index==1? true:false,
                                   onTapViewDetails: (){
                                     Get.toNamed(AppRoutes.consultProfileViewDetails);
+                                  },
+                                  onTapBookNow: (){
+                                    Get.to(ConsultBookScreen());
                                   },
                                 ),
                               );

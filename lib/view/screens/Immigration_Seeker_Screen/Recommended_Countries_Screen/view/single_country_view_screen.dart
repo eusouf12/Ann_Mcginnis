@@ -712,8 +712,7 @@ class CountryDetailsScreen extends StatelessWidget {
         ),
         bottomNavigationBar:  Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Expanded(
-                child: CustomButton(
+          child: CustomButton(
                   onTap: () {
                     Get.toNamed(AppRoutes.userDashboard);
                   },
@@ -723,7 +722,6 @@ class CountryDetailsScreen extends StatelessWidget {
                   textColor: Colors.white,
                   fillColor: AppColors.yellow1,
                 ),
-              ),
         ),
       ),
     );

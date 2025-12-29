@@ -3,6 +3,7 @@ import 'package:ann_mcginnis/view/components/custom_netwrok_image/custom_network
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
 class CustomDetailsProfileCard extends StatelessWidget {
@@ -32,7 +33,26 @@ class CustomDetailsProfileCard extends StatelessWidget {
         SizedBox(height: 20.h),
 
         /// Profile Image
-        Center(child: CustomNetworkImage(imageUrl:imageUrl ??  AppConstants.profileImage2, height: 150, width: 150,boxShape: BoxShape.circle,)),
+        Center(
+            child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.white,
+                    width: 4,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: CustomNetworkImage(imageUrl:imageUrl ??  AppConstants.profileImage2, height: 150, width: 150,boxShape: BoxShape.circle,)
+            )
+        ),
 
         /// Name
         CustomText(
