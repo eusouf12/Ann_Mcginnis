@@ -11,7 +11,6 @@ import '../controller/booking_flow_controller.dart';
 import '../widget/custom_consult_payment_card.dart';
 import '../widget/custom_time_card.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import 'booking_sucess_screen.dart';
 
 

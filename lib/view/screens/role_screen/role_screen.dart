@@ -51,7 +51,7 @@ class ChooseRole extends StatelessWidget {
                          StorageService().write("role", "Immigration Seeker");
                          final role = StorageService().read<String>("role");
                          debugPrint("Chose Role Immigration Seeker========================================${role}");
-                         Get.toNamed(AppRoutes.recommendedCountriesScreen);
+                         Get.toNamed(AppRoutes.setUpProfileScreen);
                          // Get.toNamed(AppRoutes.signUpScreen);
                       },
                     ),

@@ -16,7 +16,7 @@ import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
-import '../../SetUp_Profile_Screen/custom_save_countries.dart';
+import '../../SetUp_Profile_Screen/model/custom_save_countries.dart';
 
 class UserDashboard extends StatelessWidget {
   UserDashboard({super.key});

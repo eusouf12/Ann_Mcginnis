@@ -12,7 +12,7 @@ import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/recommended_countries_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/single_country_view_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_dashboard_Screen/view/user_dashboard.dart';
-import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/set_up_profile_screen.dart';
+import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/set_up_profile_screen_1.dart';
 import '../../view/screens/Immigration_Seeker_Screen/message_screen/view/chat_list_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication_screen/login_screen/login_screen.dart';
@@ -79,7 +79,7 @@ class AppRoutes {
 
     ///============== Immigration Seeker ==================
     GetPage(name: recommendedCountriesScreen, page: () => RecommendedCountriesScreen()),
-    GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen()),
+    GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen1()),
     GetPage(name: countryDetailsScreen, page: () => CountryDetailsScreen()),
     GetPage(name: userDashboard, page: () => UserDashboard()),
     GetPage(name: userProfileScreen, page: () => UserProfileScreen()),

@@ -3,6 +3,7 @@ import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
 import 'package:ann_mcginnis/view/components/custom_gradient/custom_gradient.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/booking_sucess_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
