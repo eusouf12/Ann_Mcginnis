@@ -1,5 +1,4 @@
 import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
-import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
 import 'package:ann_mcginnis/view/components/custom_gradient/custom_gradient.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -9,8 +8,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/booking_flow_controller.dart';
+import '../widget/custom_consult_payment_card.dart';
 import '../widget/custom_time_card.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'booking_sucess_screen.dart';
 
 
 class ConsultBookScreen extends StatelessWidget {
@@ -26,7 +28,7 @@ class ConsultBookScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Divider(thickness: 2,color: Colors.grey.shade200,),
+              Divider(thickness: 2,color: Colors.grey.shade100,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -70,7 +72,7 @@ class ConsultBookScreen extends StatelessWidget {
                       onDaySelected: (selectedDay, focusedDay) {
                         bookingFlowController.changeDate(selectedDay);
                       },
-                      focusedDay: bookingFlowController.selectedDate.value,
+                      focusedDay: bookingFlowController.selectedDate.value ?? DateTime.now(),
                       firstDay: DateTime.now(),
                       lastDay: DateTime(DateTime.now().year + 5),
                     )),
@@ -95,8 +97,9 @@ class ConsultBookScreen extends StatelessWidget {
                             ),
 
                              Obx(() {
-                              final formattedDate = DateFormat('MMMM dd, yyyy').format(bookingFlowController.selectedDate.value);
-                              return Center(
+                               final formattedDate = DateFormat('MMMM dd, yyyy').format(bookingFlowController.selectedDate.value ?? DateTime.now(),);
+
+                               return Center(
                                 child: CustomText(
                                   text: formattedDate,
                                   fontSize: 16,
@@ -121,15 +124,54 @@ class ConsultBookScreen extends StatelessWidget {
                           ),
                           itemCount: 4,
                           itemBuilder: (context, index) {
-                            return CustomTimeCard(
-                              onTap: () {
+                            String time = index == 0 ? '9:00 AM' : index == 1 ? '10:30 AM' : index == 2 ? '12:00 PM' : '2:30 PM';
+                            bool isAvailable = index== 1?false: true;
+                            print("isAvailable===== ${isAvailable}");
+                            return Obx(() {
+                              final isSelected = bookingFlowController.selectedTimes.contains(time);
+                              return CustomTimeCard(
+                                time: time,
+                                isAvailable: isAvailable,
+                                isSelected: isAvailable && isSelected,
+                                onTap: () {
+                                  if (isAvailable) {
+                                    bookingFlowController.toggleTime(time);
+                                  }
+                                },
+                              );
+                            });
 
-                              },
-                              time: index==1 ?'10.50':'2.30',
-                              isSelected: index==1 ? true:false,
-                            );
                           },
                         ),
+                        SizedBox(height: 20.h),
+                        // video or audio card
+                        CustomText(text: "Consultation Type" , fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black, ),
+                        SizedBox(height: 10.h),
+                        Obx(() => Column(
+                          children: [
+                            ConsultationTypeCard(
+                              title: "Video Call",
+                              subTitle: "45 minutes session",
+                              price: "\$89",
+                              isSelected: bookingFlowController.selectedConsultationType.value == "Video Call",
+                              onTap: () {
+                                bookingFlowController.selectConsultation("Video Call", "\$89");
+                              },
+                            ),
+
+                            SizedBox(height: 12.h),
+
+                            ConsultationTypeCard(
+                              title: "Phone Call",
+                              subTitle: "45 minutes session",
+                              price: "\$69",
+                              isSelected: bookingFlowController.selectedConsultationType.value == "Phone Call",
+                              onTap: () {
+                                bookingFlowController.selectConsultation("Phone Call", "\$69");
+                              },
+                            ),
+                          ],
+                        ),)
                       ],
                     ),
                     SizedBox(height: 20.h),
@@ -143,30 +185,50 @@ class ConsultBookScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
+              //cancel
               Expanded(
-                flex: 1,
                 child: CustomButton(
-                  onTap: (){
-
+                  onTap: () {
+                    bookingFlowController.clearSelection();
                   },
                   title: "Cancel",
                   textColor: Colors.white,
                   fillColor: Color(0xFF6B7280),
                 ),
               ),
-              SizedBox(width: 10,),
+              SizedBox(width: 10),
               Expanded(
-                flex: 1,
                 child: CustomButton(
-                  onTap: (){
-
+                  onTap: () {
+                    final date = bookingFlowController.formattedSelectedDate;
+                    final times = bookingFlowController.selectedTimes;
+                    final double rating = 4.9;
+                    final int totalReviews = 127;
+                    if ( times.isNotEmpty) {
+                      debugPrint("Booking Date: $date");
+                      debugPrint("Booking Times: $times");
+                       Get.to(() => BookingConfirmedScreen(),
+                           arguments: {
+                              'name':"Dr Sarah",
+                              'title':"Clinical Psychologist",
+                             'id':"12345678",
+                             "rating": rating, //'rating': rating.toString(),
+                             "reviews":totalReviews,
+                             'date': date,
+                             'times': times
+                          }
+                       );
+                    } else {
+                      Get.snackbar("Error", "Please select date and time");
+                    }
                   },
                   title: "Book Now",
                   textColor: AppColors.white,
                 ),
               ),
             ],
-          ),
+          )
+
         ),
       ),
     );

@@ -85,7 +85,7 @@ class ConsultProfileViewDetails extends StatelessWidget {
                     SizedBox(height: 10.h),
                     //Show Date
                     Obx(() {
-                      final formattedDate = DateFormat('MMMM dd, yyyy').format(bookingFlowController.selectedDate.value);
+                      final formattedDate = DateFormat('MMMM dd, yyyy').format(bookingFlowController.selectedDate.value ?? DateTime.now());
                       return Center(
                         child: CustomText(
                           text: formattedDate,
@@ -114,7 +114,8 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                           },
                           time: index==1 ?'10.50':'2.30',
-                          isSelected: index==1 ? true:false,
+                          isSelected: false,
+                          isAvailable: index== 1 ? false:true,
                         );
                       },
                     ),
