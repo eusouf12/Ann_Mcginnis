@@ -1,7 +1,6 @@
-import 'package:ann_mcginnis/view/screens/Consultant/profile_screen/consult_profile_screen.dart';
 import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Profile_screen.dart';
 import 'package:get/get.dart';
-import '../../view/screens/Consultant/view/consultant_dashboard.dart';
+import '../../view/screens/Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/consult_profile_view_details.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_About_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_Change_pass_screen.dart';

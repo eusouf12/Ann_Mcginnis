@@ -8,7 +8,7 @@ class SetupProfileController extends GetxController {
   final Rx<File?> selectedImage = Rx<File?>(null);
   final ImagePicker _picker = ImagePicker();
 
-  /// Pick image from gallery
+  // Pick image from gallery
   Future<void> pickImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -17,7 +17,7 @@ class SetupProfileController extends GetxController {
     }
   }
 
-  /// Pick image from camera
+  //Pick image from camera
   Future<void> pickImageFromCamera() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
     if (image != null) {
@@ -43,4 +43,126 @@ class SetupProfileController extends GetxController {
   final fieldOfStudyController = TextEditingController().obs;
   final graduationYearController = TextEditingController().obs;
   final achievementsController = TextEditingController().obs;
+  var selectedCertificate = "".obs;
+
+  final RxList<String> certificates = <String>[
+    "Aws Certified Solutions Architect",
+    "Google Analytics Certified",
+    "Magna Cum Laude",
+    "Project Management Professional",
+  ].obs;
+
+  final TextEditingController certificateController = TextEditingController();
+
+  void addCertificate(String value) {
+    if (value.isNotEmpty && !certificates.contains(value)) {
+      certificates.add(value);
+      selectedCertificate.value = value;
+    }
+  }
+
+  // ================= Step 3: Career Information Variables =================
+  var currentOccupation = Rxn<String>();
+  var remoteWorkStatus = "No".obs;
+  var selectedCareerFields = <String>[].obs;
+  var hasManagementExperience = false.obs;
+  final workHistoryController = TextEditingController();
+
+  final List<String> occupationList = [
+    "Student",
+    "Employed",
+    "Self-Employed",
+    "Unemployed",
+    "Retired",
+    "Other"
+  ];
+
+  // CareerList
+  final List<String> careerFieldsList = [
+    "Agriculture, Food & Natural Resources",
+    "Arts, A/V Tech & Communications",
+    "Business Management & Admin",
+    "Education & Training",
+    "Finance",
+    "Health Science",
+    "Information Technology",
+    "Law, Public Safety, & Corrections",
+    "Manufacturing",
+    "Science, Technology, Engineering & Math (STEM)",
+    "Transportation, Distribution & Logistics",
+    "Other"
+  ];
+
+  void toggleCareerField(String field) {
+    if (selectedCareerFields.contains(field)) {
+      selectedCareerFields.remove(field);
+    } else {
+      selectedCareerFields.add(field);
+    }
+  }
+
+  // ================= Step 4: Criminal History Variables =================
+  var hasCriminalHistory = "".obs;
+
+  // ================= Step 5: Financial Information Variables =================
+  final netWorthController = TextEditingController();
+  var selectedDuration = Rxn<String>();
+  var isRetired = false.obs;
+  var hasBusinessExperience = false.obs;
+  var selectedAchievements = <String>[].obs;
+
+  // Duration List
+  final List<String> durationList = [
+    "Less than 1 year",
+    "1-3 years",
+    "3-5 years",
+    "More than 5 years",
+    "Permanent"
+  ];
+
+  // Achievements List
+  final List<String> achievementList = [
+    "International Sports Competition",
+    "Internationally Acclaimed Research",
+    "International Awards",
+    "Published Author"
+  ];
+
+  // Achievement Toggle Function
+  void toggleAchievement(String achievement) {
+    if (selectedAchievements.contains(achievement)) {
+      selectedAchievements.remove(achievement);
+    } else {
+      selectedAchievements.add(achievement);
+    }
+  }
+
+// ================= Step 6: Pet Information Variables =================
+  var isTravelingWithPets = false.obs; // Switch value
+  var selectedPetType = Rxn<String>(); // Dropdown value
+  var numberOfPets = 1.obs; // Counter value
+  final petDetailsController = TextEditingController(); // Text area
+
+  // Pet Types List
+  final List<String> petTypes = [
+    "Dog",
+    "Cat",
+    "Bird",
+    "Rabbit",
+    "Other"
+  ];
+
+  // Counter Methods
+  void incrementPets() {
+    if (numberOfPets.value < 10) {
+      numberOfPets.value++;
+    }
+  }
+
+  void decrementPets() {
+    if (numberOfPets.value > 1) {
+      numberOfPets.value--;
+    }
+  }
+
 }

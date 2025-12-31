@@ -30,11 +30,11 @@ class SetUpProfileScreen1 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10.h),
+                SizedBox(height: 20.h),
                 const CustomText(text: "Step 1 of 6", fontSize: 14, color: Color(0xFF1E3A8A), fontWeight: FontWeight.w600),
                 SizedBox(height: 8.h),
                 _buildProgressBar(),
-
+                SizedBox(height: 40.h),
                 // white card
                 Container(
                   padding: EdgeInsets.all(20.w),

@@ -57,7 +57,7 @@ class ImmigrationChangePassScreen extends StatelessWidget {
           child: CustomButton(
             onTap: () {},
             title: 'Update Password',
-            fillColor: AppColors.primary1,
+            fillColor: AppColors.primary,
             textColor: AppColors.white,
             fontSize: 16,
             borderRadius: 10,

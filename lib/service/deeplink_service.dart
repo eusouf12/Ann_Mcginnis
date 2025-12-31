@@ -5,7 +5,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 //
-// import '../view/screens/host_part/social/social_screen/deep_link_post_screen.dart';
+// import '../consultant_dashboard_screen/screens/host_part/social/social_screen/deep_link_post_screen.dart';
 //
 // /// Handles only link detection and navigation
 // class DeepLinkService {

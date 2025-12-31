@@ -5,6 +5,7 @@ import '../../../core/app_routes/app_routes.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/local_storage/local_storage.dart';
 import '../../components/custom_text/custom_text.dart';
+import '../Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
 import '../authentication_screen/controller/auth_controller.dart';
 import 'custom_card_role.dart';
 

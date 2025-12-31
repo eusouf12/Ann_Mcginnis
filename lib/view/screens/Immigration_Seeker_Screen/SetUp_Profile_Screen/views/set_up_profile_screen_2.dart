@@ -1,12 +1,15 @@
+import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/setup_profile_controller.dart';
+import 'career_info_screen_3.dart';
 
 class SetUpProfileScreen2 extends StatelessWidget {
   SetUpProfileScreen2({super.key});
@@ -63,75 +66,98 @@ class SetUpProfileScreen2 extends StatelessWidget {
                       // validator: (v) => controller.validateRequired(v),
                     ),
                     // Field of Study
-                    CustomFormCard(
-                      title: "Field of Study *",
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "Field of Study ",
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          bottom: 10,
+                        ),
+                        CustomText(
+                          text: '*',
+                          color: Colors.red,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          bottom: 10,
+                        ),
+                      ],
+                    ),
+                    CustomTextField(
                       hintText: "e.g., Computer Science",
-                      controller: controller.fieldOfStudyController.value,
-                      titleColor: Colors.black,
+                      textEditingController : controller.fieldOfStudyController.value,
                       fieldBorderColor: Colors.grey.shade300,
-                      fillBorderRadius: 12,
-                      // validator: (v) => controller.validateRequired(v),
+                      fillColor: Colors.white,
+                      hintStyle: TextStyle(color: Colors.grey),
+                      fieldBorderRadius: 12,
                     ),
                     // Year of Graduation
-                    CustomFormCard(
-                      title: "Year of Graduation *",
+                    SizedBox(height: 10,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "Year of Graduation ",
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          bottom: 10,
+                        ),
+                        CustomText(
+                          text: '*',
+                          color: Colors.red,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          bottom: 10,
+                        ),
+                      ],
+                    ),
+                    CustomTextField(
                       hintText: "2024",
-                      controller: controller.graduationYearController.value,
+                      textEditingController: controller.graduationYearController.value,
                       keyboardType: TextInputType.number,
-                      titleColor: Colors.black,
                       fieldBorderColor: Colors.grey.shade300,
-                      fillBorderRadius: 12,
+                      fillColor: Colors.white,
+                      hintStyle: TextStyle(color: Colors.grey),
+                      fieldBorderRadius: 12,
                       // validator: (v) => controller.validateRequired(v),
                     ),
                     // Additional Certifications (Multiline)
-                    CustomText(text: "Additional Certifications (Optional)", color: Colors.black, fontWeight: FontWeight.w500, bottom: 8),
+                    SizedBox(height: 10,),
+                    CustomText(text: "Additional Certifications (Optional)", color: Colors.black,fontSize: 16, fontWeight: FontWeight.w500, bottom: 8),
                     SizedBox(height: 15.h),
-                    GestureDetector(
-                      onTap: () => controller.pickImageFromGallery(),
-                      child: Obx(() => Container(
-                        height: 150.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(12.r),
-                          border: Border.all(color: Colors.grey.shade300, width: 1),
-                          image: controller.selectedImage.value != null
-                              ? DecorationImage(
-                            image: FileImage(controller.selectedImage.value!),
-                            fit: BoxFit.cover,
-                          )
-                              : null,
-                        ),
-                        child: controller.selectedImage.value == null
-                            ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add_photo_alternate_outlined,
-                                size: 40.sp,
-                                color: Colors.grey),
-                            SizedBox(height: 8.h),
-                            const CustomText(
-                              text: "Tap to select an image",
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ],
-                        )
-                            : const SizedBox.shrink(),
-                      )),
-                    ),
+                    Obx(() => _buildDropdown(
+                      hint: "Select certificate",
+                      value: controller.selectedCertificate.value.isEmpty
+                          ? null
+                          : controller.selectedCertificate.value,
+                      items: [
+                        ...controller.certificates,
+                        "Add new certificate",
+                      ],
+                      onChanged: (val) {
+                        if (val == "Add new certificate") {
+                          _showAddCertificateDialog(context);
+                        } else {
+                          controller.selectedCertificate.value = val!;
+                        }
+                      },
+                    )),
+
                     SizedBox(height: 15.h),
                     // Info Box (Blue background)
                     Container(
-                      padding: EdgeInsets.all(16.w), // একটু বেশি প্যাডিং দেওয়া হয়েছে স্পেসিং এর জন্য
+                      padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8F0FE), // স্ক্রিনশট অনুযায়ী হালকা নীল ব্যাকগ্রাউন্ড
+                        color: const Color(0xFFE8F0FE),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.info, color: Color(0xFF0D47A1), size: 20), // গাঢ় নীল আইকন
+                          const Icon(Icons.info, color: Color(0xFF0D47A1), size: 20),
                           SizedBox(width: 12.w),
                           Expanded(
                             child: Column(
@@ -145,7 +171,6 @@ class SetUpProfileScreen2 extends StatelessWidget {
                                   bottom: 8,
                                   textAlign: TextAlign.start,
                                 ),
-                                // প্রতিটি সার্টিফিকেশন আইটেম বুলেট পয়েন্ট সহ
                                 _buildBulletPoint("AWS Certified Solutions Architect"),
                                 _buildBulletPoint("Google Analytics Certified"),
                                 _buildBulletPoint("Dean's List (2022-2024)"),
@@ -161,11 +186,11 @@ class SetUpProfileScreen2 extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40.h),
-
               CustomButton(
                 onTap: () {
-                  if (_formKey.currentState!.validate()) {
+                     if (_formKey.currentState!.validate()) {
                   }
+                     Get.to(() => CareerInfoScreen3());
                 },
                 title: "Continue",
                 fillColor: const Color(0xFFFBB03B),
@@ -214,4 +239,81 @@ class SetUpProfileScreen2 extends StatelessWidget {
       ),
     );
   }
+  Widget _buildDropdown({required String hint, required String? value, required List<String> items, required Function(String?) onChanged,}) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      isExpanded: true,
+      decoration: InputDecoration(
+        hintText: hint,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      items: items.map((item) {
+        final bool isAddNew = item == "Add new certificate";
+
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Container(
+            padding: isAddNew? EdgeInsets.only(right: 40,left: 10): EdgeInsets.zero,
+            decoration: isAddNew
+                ? BoxDecoration(
+              color: AppColors.primary1,
+              borderRadius: BorderRadius.circular(6),
+            )
+                : null,
+            child: Text(
+              item,
+              style: TextStyle(
+                color: isAddNew ? Colors.white : Colors.black,
+                fontWeight:
+                isAddNew ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+
+}
+
+void _showAddCertificateDialog(BuildContext context) {
+  final controller = Get.find<SetupProfileController>();
+
+  showDialog(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text("Add Certificate"),
+      content: TextField(
+        controller: controller.certificateController,
+        decoration: const InputDecoration(
+          hintText: "Enter certificate name",
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            controller.certificateController.clear();
+            Get.back();
+          },
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            controller.addCertificate(
+              controller.certificateController.text.trim(),
+            );
+            controller.certificateController.clear();
+            Get.back();
+          },
+          style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(AppColors.primary1),
+          ),
+          child: CustomText(text: "Add"),
+        ),
+      ],
+    ),
+  );
 }
