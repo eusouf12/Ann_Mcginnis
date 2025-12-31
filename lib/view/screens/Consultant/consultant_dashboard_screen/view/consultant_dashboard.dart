@@ -467,7 +467,6 @@ class ConsultantDashboard extends StatelessWidget {
 
                           SizedBox(height: 24.h),
 
-                          // বাটন গ্রুপ (স্ক্রিনশট অনুযায়ী)
                           Row(
                             children: [
                               Expanded(
