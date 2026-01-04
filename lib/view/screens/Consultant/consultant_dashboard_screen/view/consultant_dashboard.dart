@@ -11,10 +11,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
-import '../../../Immigration_Seeker_Screen/Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
-import '../../../Immigration_Seeker_Screen/Recommended_dashboard_Screen/widget/book_consultation_card.dart';
-import '../../../Immigration_Seeker_Screen/Recommended_dashboard_Screen/widget/custom_payment_card.dart';
-import '../../../Immigration_Seeker_Screen/SetUp_Profile_Screen/model/custom_save_countries.dart';
 import '../../profile_screen/consult_profile_screen.dart';
 import '../../profile_screen/widget/custom_appoinment_card.dart';
 import '../../profile_screen/widget/upcoming_appointments_card.dart';
@@ -361,7 +357,7 @@ class ConsultantDashboard extends StatelessWidget {
                                   img: AppConstants.profileImage2,
                                   isConfirm:index==1? true:false,
                                   onTapViewDetails: (){
-                                    Get.toNamed(AppRoutes.consultProfileViewDetails);
+                                    Get.toNamed(AppRoutes.bookingDetailsScreen);
                                   },
                                   onTapConfirm: (){
                                     // Get.to(ConsultBookScreen());
@@ -425,7 +421,6 @@ class ConsultantDashboard extends StatelessWidget {
                             color: AppColors.primary1,
                           ),
                           SizedBox(height: 20.h),
-
                           // Calendar Box
                           Container(
                             padding: EdgeInsets.all(12),
@@ -464,7 +459,6 @@ class ConsultantDashboard extends StatelessWidget {
                             }
                                ),
                           ),
-
                           SizedBox(height: 24.h),
 
                           Row(
@@ -477,28 +471,20 @@ class ConsultantDashboard extends StatelessWidget {
                                   fillColor: Colors.orange, // Yellowish-Orange color
                                 ),
                               ),
-                              SizedBox(width: 12.w),
-                              Expanded(
-                                child: CustomButton(
-                                  onTap: bookingController.blockOutSelectedDates,
-                                  title: "Block Out",
-                                  icon: Icon(Icons.block, color: Colors.white),
-                                  fillColor: AppColors.primary1, // Deep Blue
-                                ),
-                              ),
+                              // SizedBox(width: 12.w),
+                              // Expanded(
+                              //   child: CustomButton(
+                              //     onTap: bookingController.blockOutSelectedDates,
+                              //     title: "Block Out",
+                              //     icon: Icon(Icons.block, color: Colors.white),
+                              //     fillColor: AppColors.primary1, // Deep Blue
+                              //   ),
+                              // ),
                             ],
                           ),
 
                           SizedBox(height: 12.h),
 
-                          // নিচের বড় বাটন
-                          CustomButton(
-                            onTap: () { /* Set Working Hours logic */ },
-                            title: "Set Working Hours",
-                            icon: Icon(Icons.access_time, color: Colors.black54),
-                            fillColor: Colors.grey[200], // Light grey color
-                            textColor: Colors.black87,
-                          ),
                         ],
                       );
                     }

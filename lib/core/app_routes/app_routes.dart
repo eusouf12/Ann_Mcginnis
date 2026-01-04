@@ -1,5 +1,6 @@
 import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Profile_screen.dart';
 import 'package:get/get.dart';
+import '../../view/screens/Consultant/consultant_dashboard_screen/view/booking_details.dart';
 import '../../view/screens/Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/consult_profile_view_details.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Account_settings/Immigration_About_screen.dart';
@@ -60,6 +61,7 @@ class AppRoutes {
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
+  static const String bookingDetailsScreen = "/BookingDetailsScreen";
 
 
   static List<GetPage> routes = [
@@ -93,6 +95,7 @@ class AppRoutes {
 
     ///=============================== Consultant ======================================
     GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),
+    GetPage(name: bookingDetailsScreen, page: () => BookingDetailsScreen()),
 
 
   ];

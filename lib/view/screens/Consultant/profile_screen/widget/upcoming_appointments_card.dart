@@ -150,7 +150,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                     icon: Icon( Icons.videocam , color: AppColors.primary1, size: 18.sp,),
                   )
                       :CustomButton(
-                    onTap: onTapViewDetails,
+                    onTap:onTapConfirm ,
                     title:  "Confirm",
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                   height: 40.h,
                   child: isConfirm
                       ? CustomButton(
-                    onTap: onTapConfirm,
+                    onTap: onTapViewDetails,
                     title: "View Details",
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                     icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
                   )
                       : CustomButton(
-                    onTap: onTapConfirm,
+                    onTap: onTapReschedule,
                     title: "Reschedule",
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

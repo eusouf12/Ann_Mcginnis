@@ -352,30 +352,7 @@ class BookingDetailsScreen extends StatelessWidget {
                 );
               }).toList(),
             )),
-
             const SizedBox(height: 30),
-
-            // --- BACK BUTTON ---
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBlue,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                ),
-                onPressed: () => Get.back(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.arrow_back, color: Colors.white, size: 18),
-                    SizedBox(width: 8),
-                    Text("Back to Bookings", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
