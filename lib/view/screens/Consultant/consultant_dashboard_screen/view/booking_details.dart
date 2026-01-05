@@ -1,46 +1,13 @@
+import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
+import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../components/custom_text/custom_text.dart';
+
 class BookingDetailsController extends GetxController {
-  // Header Data
-  final clientName = "Sarah Mitchell".obs;
-  final bookingTime = "March 15, 2024 • 2:00 PM - 3:00 PM".obs;
-  final bookingStatus = "Confirmed".obs;
-
-  // Client Info Data
-  final clientInfo = {
-    "Full Name": "Sarah Mitchell",
-    "Phone": "+1 (555) 123-4567",
-    "Email": "sarah.m@email.com",
-    "Nationality": "Canadian",
-    "Immigration Interest": "Work Visa",
-  }.obs;
-
-  // Consultation Details Data
-  final consultationDetails = {
-    "Type": "General Consultation",
-    "Duration": "1 hour",
-    "Location": "Virtual",
-  }.obs;
-
-  // Booking History Timeline
-  final bookingHistory = [
-    {
-      "title": "Consultation Confirmed",
-      "date": "March 10, 2024 • 10:00 AM",
-      "status": "confirmed"
-    },
-    {
-      "title": "Booking Accepted",
-      "date": "March 9, 2024 • 3:15 PM",
-      "status": "accepted"
-    },
-    {
-      "title": "Consultation Requested",
-      "date": "March 8, 2024 • 2:45 PM",
-      "status": "requested"
-    },
-  ].obs;
 
   // Documents List
   final clientDocuments = [
@@ -64,16 +31,6 @@ class BookingDetailsController extends GetxController {
 
 
 
-class AppColors {
-  static const Color primaryBlue = Color(0xFF0D3B66); // Dark Navy
-  static const Color primaryYellow = Color(0xFFFFC107); // Amber/Yellow
-  static const Color lightBlueBg = Color(0xFFE3F2FD);
-  static const Color textBlack = Color(0xFF333333);
-  static const Color textGrey = Color(0xFF757575);
-  static const Color cardBg = Colors.white;
-  static const Color scaffoldBg = Colors.white;
-}
-
 class BookingDetailsScreen extends StatelessWidget {
   BookingDetailsScreen({super.key});
 
@@ -82,17 +39,8 @@ class BookingDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.scaffoldBg,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: Colors.black),
-        title: const Text(
-          "Booking Details",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: AppColors.white,
+      appBar:CustomRoyelAppbar(leftIcon: true,titleName: "Booking Details",),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -102,181 +50,366 @@ class BookingDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => Text(
-                  controller.clientName.value,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
-                )),
+                CustomText(
+                  text: "Sarah Mitchell",
+                  fontSize: 16.sp, fontWeight: FontWeight.bold,
+                  color: AppColors.primary,
+                ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.blue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Obx(() => Text(
-                    controller.bookingStatus.value,
-                    style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 12),
-                  )),
+                  child:CustomText(
+                      text: "Confirmed",
+                      fontSize: 12.sp, fontWeight: FontWeight.bold,
+                      color: Colors.blue
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 5),
-            Obx(() => Text(
-              controller.bookingTime.value,
-              style: const TextStyle(fontSize: 12, color: AppColors.textGrey, fontWeight: FontWeight.w500),
-            )),
-
-            const SizedBox(height: 15),
+            SizedBox(height: 5),
+            CustomText(
+                text: "March 15, 2024 • 2:00 PM - 3:00 PM",
+                fontSize: 10.sp, fontWeight: FontWeight.w500,
+                color: AppColors.grey_1
+            ),
+            SizedBox(height: 15),
 
             // --- CONTACT BUTTON ---
-            SizedBox(
-              width: double.infinity,
-              height: 45,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryYellow,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  elevation: 0,
-                ),
-                onPressed: controller.contactClient,
-                icon: const Icon(Icons.call, color: Colors.black, size: 20),
-                label: const Text("Contact Client", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-              ),
+            CustomButton(
+              onTap:(){
+              debugPrint("Contacting Client...");
+            },
+              title: "Contact Client",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              textColor: Colors.black,
+              icon:  Icon(Icons.call, color: Colors.black, size: 20),
             ),
-
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // --- CLIENT INFORMATION CARD ---
-            _buildSectionHeader("Client Information"),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: _cardDecoration(),
-              child: Obx(() => Column(
-                children: controller.clientInfo.entries.map((e) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(e.key, style: const TextStyle(color: AppColors.textGrey, fontSize: 14)),
-                        Text(e.value, style: const TextStyle(color: AppColors.textBlack, fontWeight: FontWeight.w600, fontSize: 14)),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              )),
+            CustomText(
+              text: "Client Information",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
             ),
-
             const SizedBox(height: 20),
-
-            // --- CONSULTATION DETAILS CARD ---
-            _buildSectionHeader("Consultation Details"),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: _cardDecoration(),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade200),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...controller.consultationDetails.entries.map((e) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e.key, style: const TextStyle(color: AppColors.textGrey, fontSize: 14)),
-                          Text(e.value, style: const TextStyle(color: AppColors.textBlack, fontWeight: FontWeight.w600, fontSize: 14)),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  // Link Row Specifically
+                  //name
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Meeting Link :", style: TextStyle(color: AppColors.textGrey, fontSize: 14)),
-                      InkWell(
-                        onTap: controller.joinMeeting,
-                        child: Row(
-                          children: const [
-                            Icon(Icons.link, color: Colors.blue, size: 16),
-                            SizedBox(width: 4),
-                            Text("Join Meeting", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600, fontSize: 14)),
-                          ],
-                        ),
+                      CustomText(
+                          text: "Full Name",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                         text: "Sara Rahman",
+                          color: AppColors.grey, fontSize: 14.sp
                       ),
                     ],
-                  )
+                  ),
+                  SizedBox(height: 5),
+                  //Phone
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Phone",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                         text: "+1 (555) 123-4567",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  //"Email",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Email",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                         text:   "sarah.m@email.com",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  //"Nationality"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Nationality",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                         text: "Canadian",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  //"Immigration Interest"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Immigration Interest",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                         text: "Work Visa",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
+            const SizedBox(height: 20),
 
+            // --- CONSULTATION DETAILS CARD ---
+            CustomText(
+              text: "Consultation Details",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade200),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.05),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // "Type"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Type",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                          text: "General Consultation",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  // Duration
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Duration",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                          text: "1 hour",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  //  "Location
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Location",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      CustomText(
+                          text:   "Virtual",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  //join Meeting"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Meeting Link",
+                          color: AppColors.grey, fontSize: 14.sp
+                      ),
+                      TextButton(
+                          onPressed: (){
+                            debugPrint("Joining Meeting...");
+                          },
+                          child: CustomText(
+                              text: "Join Meeting",
+                              color: AppColors.primary1, fontSize: 14.sp
+                          ),
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
+            ),
             const SizedBox(height: 15),
 
             // --- ACTION BUTTONS ROW ---
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryYellow,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    onPressed: controller.rescheduleBooking,
-                    icon: const Icon(Icons.calendar_today, size: 16),
-                    label: const Text("Reschedule", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  child: CustomButton(
+                    onTap:(){
+                      debugPrint("Contacting Client...");
+                    },
+                    title: "Reschedule",
+                    fontSize: 12.sp, fontWeight: FontWeight.bold,
+                    height: 48,
+                    textColor: Colors.black,
+                    icon:   Icon(Icons.calendar_today, size: 16),
                   ),
                 ),
                 const SizedBox(width: 15),
                 Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryBlue,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    ),
-                    onPressed: controller.addNotes,
-                    icon: const Icon(Icons.note_add, size: 16),
-                    label: const Text("Add Notes", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  child: CustomButton(
+                    onTap:(){
+                      debugPrint("Contacting Client...");
+                    },
+                    title: "Add Notes",
+                    fontSize: 12.sp, fontWeight: FontWeight.bold,
+                    height: 48,
+                    textColor: Colors.white,
+                    fillColor: AppColors.primary,
+                    icon: Icon(Icons.note_add, size: 16,color:Colors.white,),
                   ),
                 ),
               ],
             ),
-
             const SizedBox(height: 25),
 
             // --- BOOKING HISTORY ---
-            _buildSectionHeader("Booking History"),
-            Obx(() => Column(
-              children: controller.bookingHistory.map((item) {
-                Color dotColor = item['status'] == 'confirmed' ? Colors.green
-                    : item['status'] == 'accepted' ? Colors.blue
-                    : Colors.grey;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4),
-                        child: Icon(Icons.circle, size: 12, color: dotColor),
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item['title']!, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                          Text(item['date']!, style: const TextStyle(color: AppColors.textGrey, fontSize: 12)),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              }).toList(),
-            )),
-
-            const SizedBox(height: 10),
+            CustomText(
+              text: "Booking History",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
+            const SizedBox(height: 20),
+            //Consultation Confirmed
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Icon(Icons.circle, size: 12, color: Colors.green),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "Consultation Confirmed",
+                      fontSize: 12.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                    ),
+                    CustomText(
+                      text: "March 10, 2024 • 10:00 AM",
+                      fontSize: 10.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(height: 16),
+            //"Booking Accepted"
+            Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(Icons.circle, size: 12, color: Colors.blue),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: "Booking Accepted",
+                  fontSize: 12.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                ),
+                CustomText(
+                  text: "March 10, 2024 • 10:00 AM",
+                  fontSize: 10.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                ),
+              ],
+            )
+          ],
+        ),
+            SizedBox(height: 16),
+            //"Consultation Requested",
+            Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(Icons.circle, size: 12, color: Colors.grey),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: "Consultation Requested",
+                  fontSize: 12.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                ),
+                CustomText(
+                  text: "March 9, 2024 • 3:15 PM",
+                  fontSize: 10.sp, fontWeight: FontWeight.bold,color: AppColors.grey,
+                ),
+              ],
+            )
+          ],
+        ),
+            const SizedBox(height: 20),
 
             // --- NOTES ---
-            _buildSectionHeader("Notes"),
+            CustomText(
+              text: "Notes",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
@@ -286,19 +419,22 @@ class BookingDetailsScreen extends StatelessWidget {
               ),
               child: const Text(
                 "Client is interested in work visa options for tech professionals. Has 5+ years experience in software development.\n\nAdded on March 10, 2024",
-                style: TextStyle(fontSize: 13, color: AppColors.textBlack, height: 1.4),
+                style: TextStyle(fontSize: 13, color: AppColors.grey, height: 1.4),
               ),
             ),
 
             const SizedBox(height: 20),
 
             // --- CLIENT DOCUMENTS ---
-            _buildSectionHeader("Client Documents"),
+            CustomText(
+              text: "Client Documents",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
             Obx(() => Column(
               children: controller.clientDocuments.map((doc) => Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(12),
-                decoration: _cardDecoration(bgColor: const Color(0xFFF8F9FA)),
                 child: Row(
                   children: [
                     Icon(
@@ -316,7 +452,7 @@ class BookingDetailsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Icon(Icons.download, color: AppColors.primaryBlue, size: 22),
+                    const Icon(Icons.download, color: AppColors.primary, size: 22),
                   ],
                 ),
               )).toList(),
@@ -325,7 +461,11 @@ class BookingDetailsScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // --- ACTIONS LOG ---
-            _buildSectionHeader("Actions Log"),
+            CustomText(
+              text: "Actions Log",
+              fontSize: 14.sp, fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
             Obx(() => Column(
               children: controller.actionLogs.map((log) {
                 Color bgColor = log['color'] == 'green' ? const Color(0xFFE8F5E9)
@@ -359,35 +499,6 @@ class BookingDetailsScreen extends StatelessWidget {
     );
   }
 
-  // --- HELPER WIDGETS ---
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: AppColors.primaryBlue,
-        ),
-      ),
-    );
-  }
 
-  BoxDecoration _cardDecoration({Color bgColor = Colors.white}) {
-    return BoxDecoration(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.grey.shade200),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.05),
-          spreadRadius: 1,
-          blurRadius: 5,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    );
-  }
 }

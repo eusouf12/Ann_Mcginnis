@@ -16,6 +16,8 @@ import '../../profile_screen/widget/custom_appoinment_card.dart';
 import '../../profile_screen/widget/upcoming_appointments_card.dart';
 import '../controller/booki_controller_consult.dart';
 import '../controller/consult_dashboard_controller.dart';
+import '../widget/custom_bar_card.dart';
+import '../widget/custom_earning_card.dart';
 
 
 class ConsultantDashboard extends StatelessWidget {
@@ -369,44 +371,64 @@ class ConsultantDashboard extends StatelessWidget {
                         ],
                       );
                     }
+                    // tab 02
                     else if (controller.selectedConsultantDashboardTab.value == 2) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(text: "Upcoming Appointments", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
-                              GestureDetector(
-                                  onTap: () {},
-                                  child: CustomText(text: "View All", fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.yellow1,)
-                              )
-                            ],
+                          CustomText(
+                            text: "Earnings Information",
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary1,
                           ),
                           SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: UpcomingAppointmentsCard(
-                                  title:index==1 ? "John Robertson" : null,
-                                  subTitle: "Visa Consultant - Australia",
-                                  img: AppConstants.profileImage2,
-                                  isConfirm:index==1? true:false,
-                                  onTapViewDetails: (){
-                                    Get.toNamed(AppRoutes.consultProfileViewDetails);
-                                  },
-                                  onTapConfirm: (){
-                                    // Get.to(ConsultBookScreen());
-                                  },
+                         //Earnings card
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomSummaryCard(
+                                  title: "Total Earnings",
+                                  value: "1200",
+                                  subtitle: "This month",
+                                  backgroundColor: AppColors.primary1,
                                 ),
-                              );
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: CustomSummaryCard(
+                                  title: "Total Bookings",
+                                  value: "3/5",
+                                  subtitle: "This month",
+                                  backgroundColor: AppColors.primary1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 24.h),
+
+                         // 2. Earnings Trend Section
+                          _buildTrendHeader("EARNINGS TREND"),
+
+                          CustomBarChartCard(
+                            title: "Earnings",
+                            data: {
+                              ChartFilter.week: [20, 40, 55, 70, 90, 60, 100],
+                              ChartFilter.month: [20, 500, 90, 200], // Week 1,2,3,4
+                              ChartFilter.year: [500, 600, 700, 800, 650, 700, 750, 800, 900, 850, 950, 1000], // 12 months
                             },
-                          )
+                          ),
+
+
+                          SizedBox(height: 24.h),
+
+                          // 3. Bookings Trend Section
+                          _buildTrendHeader("BOOKINGS TREND"),
+                          _buildChartContainer(
+                            title: "Bookings Trend",
+                            isBarChart: false, // Line Chart er jonno
+                          ),
                         ],
                       );
                     }
@@ -498,7 +520,6 @@ class ConsultantDashboard extends StatelessWidget {
     );
   }
 
-
   Widget _buildCalendarBox(DateTime day, Color color, {Color textColor = Colors.black}) {
     return Container(
       margin: const EdgeInsets.all(4.0),
@@ -514,4 +535,90 @@ class ConsultantDashboard extends StatelessWidget {
     );
   }
 
+}
+
+Widget _cardItem(String title, String value, String subtitle) {
+  return Container(
+    padding: EdgeInsets.all(16.w),
+    decoration: BoxDecoration(
+      color: const Color(0xFF003057), // Deep Dark Blue
+      borderRadius: BorderRadius.circular(12.r),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
+        SizedBox(height: 8.h),
+        Text(value, style: TextStyle(color: Colors.white, fontSize: 22.sp, fontWeight: FontWeight.bold)),
+        Text(subtitle, style: TextStyle(color: Colors.white54, fontSize: 10.sp)),
+      ],
+    ),
+  );
+}
+//header btn
+Widget _buildTrendHeader(String label) {
+  return Column(
+    children: [
+      Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30.r),
+          border: Border.all(color: Colors.grey.withOpacity(0.2),),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 16,
+              spreadRadius: 2,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary1)),
+        ),
+      ),
+      Icon(Icons.arrow_drop_up, color: const Color(0xFF0A47A1), size: 30.sp),
+    ],
+  );
+}
+
+Widget _buildChartContainer({required String title, required bool isBarChart}) {
+  return Container(
+    width: double.infinity,
+    padding: EdgeInsets.all(16.w),
+    decoration: BoxDecoration(
+      color: const Color(0xFF0A47A1), // Royal Blue color from image
+      borderRadius: BorderRadius.circular(16.r),
+    ),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
+              child: Row(
+                children: [
+                  Text("This Week", style: TextStyle(fontSize: 10.sp, color: Colors.black)),
+                  Icon(Icons.keyboard_arrow_down, size: 14.sp),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        // Ekhane apni apnar Chart library (fl_chart) add korben
+        Container(
+          height: 150.h,
+          width: double.infinity,
+          color: Colors.white10, // Placeholder for chart
+          child: Center(child: Text(isBarChart ? "Bar Chart Space" : "Line Chart Space", style: TextStyle(color: Colors.white38))),
+        ),
+      ],
+    ),
+  );
 }
