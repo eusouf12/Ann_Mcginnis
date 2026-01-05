@@ -48,7 +48,7 @@ class SetUpProfileScreen1 extends StatelessWidget {
                     children: [
                       SizedBox(height: 30.h),
                       CustomFormCard(
-                        title: "First Name",
+                        title: "Full Name",
                         titleColor: Colors.black,
                         hintText: "Enter your Full name",
                         controller: setupProfileController.fullNameController.value,

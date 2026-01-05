@@ -5,8 +5,9 @@ import '../../../core/app_routes/app_routes.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/local_storage/local_storage.dart';
 import '../../components/custom_text/custom_text.dart';
-import '../Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
+import '../Consultant/consult_SetUp_profile/view/consult_setup_screen_1.dart';
 import '../authentication_screen/controller/auth_controller.dart';
+import '../authentication_screen/login_screen/login_only_screen.dart';
 import 'custom_card_role.dart';
 
 class ChooseRole extends StatelessWidget {
@@ -65,8 +66,7 @@ class ChooseRole extends StatelessWidget {
                         StorageService().write("role", "Consultant");
                         final role = StorageService().read<String>("role");
                         debugPrint("Chose Role Immigration Seeker========================================${role}");
-                        Get.toNamed(AppRoutes.consultantDashboard);
-                        // Get.toNamed(AppRoutes.signUpScreen);
+                        Get.to(SetUpProfileScreen1());
                       },
                     ),
                   ],
@@ -85,7 +85,7 @@ class ChooseRole extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       authController.loginLoading.value = true;
-                      Get.toNamed(AppRoutes.loginScreen);
+                      Get.to(LoginOnlyScreen());
                     },
                     child: CustomText(
                       text: 'Log in',
@@ -95,6 +95,7 @@ class ChooseRole extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 30,)
             ],
           ),
         ),

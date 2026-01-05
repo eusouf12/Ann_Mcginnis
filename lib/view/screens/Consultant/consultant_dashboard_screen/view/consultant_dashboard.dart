@@ -18,6 +18,7 @@ import '../controller/booki_controller_consult.dart';
 import '../controller/consult_dashboard_controller.dart';
 import '../widget/custom_bar_card.dart';
 import '../widget/custom_earning_card.dart';
+import '../widget/custom_line_chart.dart';
 
 
 class ConsultantDashboard extends StatelessWidget {
@@ -419,15 +420,20 @@ class ConsultantDashboard extends StatelessWidget {
                               ChartFilter.year: [500, 600, 700, 800, 650, 700, 750, 800, 900, 850, 950, 1000], // 12 months
                             },
                           ),
-
-
                           SizedBox(height: 24.h),
 
                           // 3. Bookings Trend Section
                           _buildTrendHeader("BOOKINGS TREND"),
-                          _buildChartContainer(
-                            title: "Bookings Trend",
-                            isBarChart: false, // Line Chart er jonno
+                          CustomLineChartCard(
+                            title: "Earnings",
+                            data: {
+                              ChartFilter.week: [20, 30, 90, 70, 90, 60, 100],
+                              ChartFilter.month: [20, 500, 90, 200],
+                              ChartFilter.year: [
+                                500, 600, 700, 800, 650, 700,
+                                750, 800, 900, 850, 950, 1000
+                              ], // 12 months
+                            },
                           ),
                         ],
                       );
@@ -519,7 +525,6 @@ class ConsultantDashboard extends StatelessWidget {
       ),
     );
   }
-
   Widget _buildCalendarBox(DateTime day, Color color, {Color textColor = Colors.black}) {
     return Container(
       margin: const EdgeInsets.all(4.0),
@@ -534,27 +539,8 @@ class ConsultantDashboard extends StatelessWidget {
       ),
     );
   }
-
 }
 
-Widget _cardItem(String title, String value, String subtitle) {
-  return Container(
-    padding: EdgeInsets.all(16.w),
-    decoration: BoxDecoration(
-      color: const Color(0xFF003057), // Deep Dark Blue
-      borderRadius: BorderRadius.circular(12.r),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
-        SizedBox(height: 8.h),
-        Text(value, style: TextStyle(color: Colors.white, fontSize: 22.sp, fontWeight: FontWeight.bold)),
-        Text(subtitle, style: TextStyle(color: Colors.white54, fontSize: 10.sp)),
-      ],
-    ),
-  );
-}
 //header btn
 Widget _buildTrendHeader(String label) {
   return Column(
@@ -581,44 +567,5 @@ Widget _buildTrendHeader(String label) {
       ),
       Icon(Icons.arrow_drop_up, color: const Color(0xFF0A47A1), size: 30.sp),
     ],
-  );
-}
-
-Widget _buildChartContainer({required String title, required bool isBarChart}) {
-  return Container(
-    width: double.infinity,
-    padding: EdgeInsets.all(16.w),
-    decoration: BoxDecoration(
-      color: const Color(0xFF0A47A1), // Royal Blue color from image
-      borderRadius: BorderRadius.circular(16.r),
-    ),
-    child: Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20.r)),
-              child: Row(
-                children: [
-                  Text("This Week", style: TextStyle(fontSize: 10.sp, color: Colors.black)),
-                  Icon(Icons.keyboard_arrow_down, size: 14.sp),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 20.h),
-        // Ekhane apni apnar Chart library (fl_chart) add korben
-        Container(
-          height: 150.h,
-          width: double.infinity,
-          color: Colors.white10, // Placeholder for chart
-          child: Center(child: Text(isBarChart ? "Bar Chart Space" : "Line Chart Space", style: TextStyle(color: Colors.white38))),
-        ),
-      ],
-    ),
   );
 }
