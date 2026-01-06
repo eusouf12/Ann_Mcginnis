@@ -1,5 +1,6 @@
 import 'package:ann_mcginnis/view/components/custom_from_card/custom_from_card.dart';
 import 'package:ann_mcginnis/view/components/custom_text_field/custom_text_field.dart';
+import 'package:ann_mcginnis/view/screens/Consultant/consult_SetUp_profile/view/review_profile_screen_consult.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -80,7 +81,7 @@ class ConsultSetupScreen4 extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 16.h),
-                        const CustomText(text: "Hourly Rate", fontWeight: FontWeight.bold),
+                        const CustomText(text: "Hourly Rate", fontWeight: FontWeight.bold,color: Colors.black,),
                         SizedBox(height: 8.h),
                         Row(
                           children: [
@@ -241,21 +242,23 @@ class ConsultSetupScreen4 extends StatelessWidget {
 
                 // Bottom Buttons
                 CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(ConsultReviewProfileScreen());
+                  },
                   title: "Save Settings",
                   textColor: Colors.white,
                   icon: const Icon(Icons.check, color: Colors.white, size: 18),
                   fillColor: AppColors.yellow1,
                   fontSize: 16,
                 ),
-                SizedBox(height: 12.h),
-                CustomButton(
-                  onTap: () {},
-                  title: "Update Profile",
-                  fillColor: Colors.grey.shade200,
-                  textColor: Colors.black87,
-                  fontSize: 16,
-                ),
+                // SizedBox(height: 12.h),
+                // CustomButton(
+                //   onTap: () {},
+                //   title: "Update Profile",
+                //   fillColor: Colors.grey.shade200,
+                //   textColor: Colors.black87,
+                //   fontSize: 16,
+                // ),
                 SizedBox(height: 20.h),
               ],
             ),
@@ -266,37 +269,6 @@ class ConsultSetupScreen4 extends StatelessWidget {
   }
 
   // --- UI Components ---
-
-  Widget _buildSectionCard({required IconData icon, required Color iconBgColor, required Color iconColor, required String title, required Widget child}) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15.r),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(color: iconBgColor, borderRadius: BorderRadius.circular(8.r)),
-                child: Icon(icon, color: iconColor, size: 20),
-              ),
-              SizedBox(width: 12.w),
-              CustomText(text: title, fontSize: 16, fontWeight: FontWeight.bold),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          child,
-        ],
-      ),
-    );
-  }
-
   Widget _buildTextField({required String hint, IconData? prefixIcon, int maxLines = 1}) {
     return TextField(
       maxLines: maxLines,
