@@ -37,7 +37,13 @@ class CareerInfoScreen3 extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
               // Progress Bar (Approx 50%)
-              _buildProgressBar(0.50),
+              LinearProgressIndicator(
+                value: 0.50,
+                minHeight: 8,
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.primary,
+                backgroundColor: Colors.grey.shade300,
+              ),
               SizedBox(height: 30.h),
 
               Container(

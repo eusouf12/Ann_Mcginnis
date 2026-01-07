@@ -33,7 +33,13 @@ class SetUpProfileScreen2 extends StatelessWidget {
               SizedBox(height: 10.h),
               const CustomText(text: "Step 2 of 6", fontSize: 14, color: Color(0xFF1E3A8A), fontWeight: FontWeight.w600),
               SizedBox(height: 8.h),
-              _buildProgressBar(0.33),
+              LinearProgressIndicator(
+                value: 0.33,
+                minHeight: 8,
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.primary,
+                backgroundColor: Colors.grey.shade300,
+              ),
               SizedBox(height: 30.h),
 
               Container(
@@ -204,17 +210,6 @@ class SetUpProfileScreen2 extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressBar(double factor) {
-    return Container(
-      height: 6.h, width: double.infinity,
-      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
-      child: FractionallySizedBox(
-        alignment: Alignment.centerLeft,
-        widthFactor: factor,
-        child: Container(decoration: BoxDecoration(color: const Color(0xFF1E3A8A), borderRadius: BorderRadius.circular(10))),
-      ),
-    );
-  }
   Widget _buildBulletPoint(String text) {
     return Padding(
       padding: EdgeInsets.only(bottom: 4.h),

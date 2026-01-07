@@ -37,7 +37,13 @@ class SetUpProfileScreen6 extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
             // Progress Bar (Full 100%)
-            _buildProgressBar(1.0),
+            LinearProgressIndicator(
+              value: 1.0,
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.primary,
+              backgroundColor: Colors.grey.shade300,
+            ),
             SizedBox(height: 30.h),
 
             // Main Card

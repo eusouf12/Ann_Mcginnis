@@ -35,7 +35,13 @@ class SetUpProfileScreen4 extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
             SizedBox(height: 8.h),
-            _buildProgressBar(0.66),
+            LinearProgressIndicator(
+              value: 0.66,
+              minHeight: 8,
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.primary,
+              backgroundColor: Colors.grey.shade300,
+            ),
             SizedBox(height: 30.h),
 
             Container(
@@ -183,30 +189,6 @@ class SetUpProfileScreen4 extends StatelessWidget {
   }
 
   // ================= Helper Widgets =================
-
-  // Progress Bar
-  Widget _buildProgressBar(double factor) {
-    return Container(
-      height: 6.h,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: FractionallySizedBox(
-        alignment: Alignment.centerLeft,
-        widthFactor: factor,
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E3A8A),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Custom Radio Selection Card
   Widget _buildSelectionCard({
     required String title,
     required String value,
