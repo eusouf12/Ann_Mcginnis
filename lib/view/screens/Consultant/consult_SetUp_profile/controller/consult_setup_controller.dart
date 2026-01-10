@@ -57,8 +57,7 @@ class ConsultSetupController extends GetxController {
   // Step 2 Controllers
   RxList<Map<String, dynamic>> documents = <Map<String, dynamic>>[
     {'title': "Professional License", 'file': Rx<File?>(null)},
-    {'title': "Certifications", 'file': Rx<File?>(null)},
-    {'title': "Resume/CV (Optional)", 'file': Rx<File?>(null)},
+    {'title': "Certifications(Optional)", 'file': Rx<File?>(null)},
   ].obs;
 
   /// Pick file

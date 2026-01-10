@@ -98,70 +98,70 @@ class SetUpProfileScreen1 extends StatelessWidget {
                       ),
                       SizedBox(height: 24.h),
 
-                      Container(
-                        padding: EdgeInsets.all(16.w),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16.r),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const CustomText(
-                              text: "International Achievements",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                            SizedBox(height: 4.h),
-                            CustomText(
-                              text: "Select any applicable achievements",
-                              fontSize: 13,
-                              color: Colors.grey.shade600,
-                            ),
-                            SizedBox(height: 12.h),
-
-                            Obx(() => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: setupProfileController.achievements.map((item) {
-                                final isChecked =
-                                setupProfileController.selectedAchievements.contains(item);
-
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 6.h),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: Checkbox(
-                                          value: isChecked,
-                                          activeColor: AppColors.primary,
-                                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                          visualDensity: VisualDensity.compact,
-                                          onChanged: (_) {
-                                            setupProfileController.toggleAchievement(item);
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10,),
-                                      CustomText(
-                                        text: item,
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            )),
-
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   padding: EdgeInsets.all(16.w),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.white,
+                      //     borderRadius: BorderRadius.circular(16.r),
+                      //     border: Border.all(color: Colors.grey.shade300),
+                      //   ),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       const CustomText(
+                      //         text: "International Achievements",
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.w600,
+                      //         color: Colors.black,
+                      //       ),
+                      //       SizedBox(height: 4.h),
+                      //       CustomText(
+                      //         text: "Select any applicable achievements",
+                      //         fontSize: 13,
+                      //         color: Colors.grey.shade600,
+                      //       ),
+                      //       SizedBox(height: 12.h),
+                      //
+                      //       Obx(() => Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: setupProfileController.achievements.map((item) {
+                      //           final isChecked =
+                      //           setupProfileController.selectedAchievements.contains(item);
+                      //
+                      //           return Padding(
+                      //             padding: EdgeInsets.symmetric(vertical: 6.h),
+                      //             child: Row(
+                      //               crossAxisAlignment: CrossAxisAlignment.start,
+                      //               mainAxisAlignment: MainAxisAlignment.start,
+                      //               children: [
+                      //                 SizedBox(
+                      //                   height: 20,
+                      //                   width: 20,
+                      //                   child: Checkbox(
+                      //                     value: isChecked,
+                      //                     activeColor: AppColors.primary,
+                      //                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      //                     visualDensity: VisualDensity.compact,
+                      //                     onChanged: (_) {
+                      //                       setupProfileController.toggleAchievement(item);
+                      //                     },
+                      //                   ),
+                      //                 ),
+                      //                 const SizedBox(width: 10,),
+                      //                 CustomText(
+                      //                   text: item,
+                      //                   fontSize: 14,
+                      //                   color: Colors.black,
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }).toList(),
+                      //       )),
+                      //
+                      //     ],
+                      //   ),
+                      // ),
 
                     ],
                   ),

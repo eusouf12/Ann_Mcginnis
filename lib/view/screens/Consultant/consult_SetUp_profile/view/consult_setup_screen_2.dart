@@ -92,6 +92,7 @@ class ConsultSetupScreen2 extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20.h),
+                //Continue btn
                 CustomButton(
                   onTap: () {
                       Get.to(ConsultSetupScreen3());
