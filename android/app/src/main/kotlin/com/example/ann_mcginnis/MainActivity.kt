@@ -1,4 +1,4 @@
-package com.example.ann_mcginnis
+package com.global.jump
 
 import io.flutter.embedding.android.FlutterActivity
 
