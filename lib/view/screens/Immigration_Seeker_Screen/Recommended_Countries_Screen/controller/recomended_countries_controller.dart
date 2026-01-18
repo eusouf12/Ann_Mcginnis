@@ -7,6 +7,10 @@ class RecommendedCountriesController extends GetxController {
     "Student Visa": false,
     "Family Visa": false,
     "Tourist Visa": false,
+    "Entrepreneur Visa": false,
+    "Retirement Visa": false,
+    "Citizenship with descent": false,
+    "Extraordinary talent.": false,
   }.obs;
 
   // Additional Options

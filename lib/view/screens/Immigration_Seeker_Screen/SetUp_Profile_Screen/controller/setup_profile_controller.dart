@@ -145,11 +145,14 @@ class SetupProfileController extends GetxController {
 
   // Pet Types List
   final List<String> petTypes = [
-    "Dog",
-    "Cat",
-    "Bird",
-    "Rabbit",
-    "Other"
+    "Dogs",
+    "Cats",
+    "Birds",
+    "Rabbits",
+    "Small Animals",
+    "Fish",
+    "Invertebrates",
+    "Livestock"
   ];
 
   // Counter Methods
