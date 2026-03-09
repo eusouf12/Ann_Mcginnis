@@ -136,8 +136,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
       super.onInit();
-      loginEmailController.value.text = "az0001@atomicmail.io";
-      loginPasswordController.value.text = "123123";
+      loginEmailController.value.text = "mefile5102@feriwor.com" ; //"az0001@atomicmail.io" . p :   123123
+      loginPasswordController.value.text = "1234567";
     }
   Rx<TextEditingController> loginEmailController = TextEditingController().obs;
   Rx<TextEditingController> loginPasswordController = TextEditingController().obs;
@@ -358,9 +358,6 @@ class AuthController extends GetxController {
       debugPrint("UpdatePassword Error: $e");
     }
   }
-
-
-
 
 
   ///========== OTP Controller ForgetPass POST METHOD==========

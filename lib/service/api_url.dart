@@ -13,12 +13,14 @@ class ApiUrl {
   static const String verificationOtpForgetPass = "/auth/verify-reset-otp";
   static const String newPassword = "/auth/reset-password";
 
+// =================== my profile =====================================
+  static const String  privacyPolicy = "/legal-docs/privacy-policy";
+  static const String termsCondition = "/legal-docs/terms-conditions";
+  static const String aboutUs = "/legal-docs/about-us";
 
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static const String updateProfile = "/api/v1/auth/update_my_profile";
   static const String myProfile = "/api/v1/auth/myprofile";
-  static const String termsCondition = "/api/v1/setting/find_by_terms_conditions";
-  static const String privacyPolicy = "/api/v1/setting/find_by_privacy_policys";
   static const String changePassword = "/api/v1/user/change_password";
   static const String googleAuth = "/api/v1/user/google_auth";
 
