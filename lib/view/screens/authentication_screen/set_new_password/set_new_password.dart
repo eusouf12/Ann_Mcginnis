@@ -111,7 +111,7 @@ class SetNewPassword extends StatelessWidget {
                   height: 56,
                   child: CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.loginScreen);
+                      authController.updatePassword();
                     },
                     borderRadius: 12,
                     textColor: AppColors.white,
@@ -120,22 +120,22 @@ class SetNewPassword extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 24),
-                SizedBox(height: 15),
+                // SizedBox(height: 24),
+                // SizedBox(height: 15),
 
                 // Back to Login
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.loginScreen);
-                    },
-                    child: const CustomText(
-                        text: "Back to Login",
-                        fontWeight: FontWeight.w500,
-                      color: AppColors.primary1,
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       Get.toNamed(AppRoutes.loginOnlyScreen);
+                //     },
+                //     child: const CustomText(
+                //         text: "Back to Login",
+                //         fontWeight: FontWeight.w500,
+                //       color: AppColors.primary1,
+                //     ),
+                //   ),
+                // ),
 
               ],
             ),

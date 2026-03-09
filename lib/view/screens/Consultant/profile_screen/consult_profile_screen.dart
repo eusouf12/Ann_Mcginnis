@@ -102,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
                             showColumnButton: true,
                             showCloseButton: true,
                             rightOnTap: () => Get.back(),
-                            leftOnTap: () => Get.offAllNamed(AppRoutes.loginScreen),
+                            leftOnTap: () => Get.offAllNamed(AppRoutes.loginOnlyScreen),
                           ),
                         ),
                       ),

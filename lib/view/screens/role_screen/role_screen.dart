@@ -50,11 +50,9 @@ class ChooseRole extends StatelessWidget {
                       title: "Join as Immigration Seeker",
                       description: "Icon of a person with a suitcase or globe.",
                       onTap: () {
-                         StorageService().write("role", "Immigration Seeker");
-                         final role = StorageService().read<String>("role");
-                         debugPrint("Chose Role Immigration Seeker========================================${role}");
-                         Get.toNamed(AppRoutes.setUpProfileScreen);
-                         // Get.toNamed(AppRoutes.signUpScreen);
+                         debugPrint("Chose Role Immigration Seeker========================================${"user"}");
+                         //Get.toNamed(AppRoutes.setUpProfileScreen);
+                         Get.toNamed(AppRoutes.signUpScreen,arguments: "user");
                       },
                     ),
                     const SizedBox(height: 16),
@@ -63,10 +61,9 @@ class ChooseRole extends StatelessWidget {
                       title: "Join as Consultant",
                       description: "Icon of a briefcase or business attire.",
                       onTap: () {
-                        StorageService().write("role", "Consultant");
-                        final role = StorageService().read<String>("role");
-                        debugPrint("Chose Role Immigration Seeker========================================${role}");
-                        Get.to(SetUpProfileScreen1());
+                        Get.toNamed(AppRoutes.signUpScreen,arguments: "consultant");
+                        debugPrint("Chose Role Immigration Seeker========================================${"consultant"}");
+                        //Get.to(SetUpProfileScreen1());
                       },
                     ),
                   ],
@@ -84,7 +81,6 @@ class ChooseRole extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      authController.loginLoading.value = true;
                       Get.to(LoginOnlyScreen());
                     },
                     child: CustomText(

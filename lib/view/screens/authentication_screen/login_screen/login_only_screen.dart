@@ -8,6 +8,7 @@ import '../../../../utils/app_images/app_images.dart';
 import '../../../../utils/app_strings/app_strings.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import '../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/auth_controller.dart';
@@ -39,10 +40,10 @@ class LoginOnlyScreen extends StatelessWidget {
                     title: "Sing In",
                     fillColor: AppColors.primary,
                     textColor: Colors.white,
-                    fontSize: 14,
+                    fontSize: 18,
                   ),
                   SizedBox(height: 30),
-                  //  Email &  Password Field
+                  // ============ Email &  Password Field
                   Container(
                     padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 25),
                     decoration: BoxDecoration(
@@ -62,7 +63,7 @@ class LoginOnlyScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         CustomTextField(
-                          textEditingController: authController.emailController.value,
+                          textEditingController: authController.loginEmailController.value,
                           hintText: AppStrings.enterYourEmail,
                           hintStyle: TextStyle(color: AppColors.grey_1, fontSize: 14),
                           prefixIcon: const Icon(
@@ -85,7 +86,7 @@ class LoginOnlyScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         CustomTextField(
-                          textEditingController: authController.passwordController.value,
+                          textEditingController: authController.loginPasswordController.value,
                           hintText: AppStrings.enterYourPassword,
                           hintStyle: TextStyle(
                               color: AppColors.grey_1,
@@ -107,17 +108,22 @@ class LoginOnlyScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 32),
                   //  Login Button
-                  CustomButton(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.recommendedCountriesScreen);
-                    },
-                    borderRadius: 12,
-                    textColor: AppColors.white,
-                    title: "Continue",
-                    fillColor: AppColors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  Obx((){
+                    return authController.loginLoading.value
+                        ? CustomLoader()
+                        : CustomButton(
+                      onTap: () {
+                        authController.loginUser();
+                      },
+                      borderRadius: 12,
+                      textColor: AppColors.white,
+                      title: "Continue",
+                      fillColor: AppColors.primary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    );
+
+                  }),
                   SizedBox(height: 50),
                   // Forgot Password
                   Align(
@@ -135,7 +141,7 @@ class LoginOnlyScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 50),
-                  // Social Buttons
+                  // register Buttons
                   Center(
                     child: Wrap(
                       alignment: WrapAlignment.center,

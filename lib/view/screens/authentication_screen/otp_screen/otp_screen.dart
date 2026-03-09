@@ -16,8 +16,8 @@ import '../controller/auth_controller.dart';
 
 class OtpScreen extends StatelessWidget {
   OtpScreen({super.key});
-  final AuthController authController = Get.find<AuthController>();
-  // final SignUpAuthModel userModel = Get.arguments as SignUpAuthModel;
+  final AuthController authController = Get.put(AuthController());
+   final SignUpAuthModel userModel = Get.arguments as SignUpAuthModel;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class OtpScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 45),
                     child: CustomText(
-                      text: "Enter the 4-digit code sent to your email or phone number.",
+                      text: "Enter the 6-digit code sent to your email or phone number.",
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
                       color: AppColors.grey_1,
@@ -62,78 +62,79 @@ class OtpScreen extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 // Custom OTP
-                CustomPinCode(
-                  controller: authController.otpController.value,
-                  // controller: otpController,
-                ),
+                CustomPinCode(controller: authController.otpController),
                  SizedBox(height: 15),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Resend code in 00:24",
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey_1,
-                      ),
-                    ],
-                  ),
-                ),
-                 SizedBox(height: 30),
+                // Center(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       CustomText(
+                //         text: "Resend code in 00:24",
+                //         fontWeight: FontWeight.w400,
+                //         color: AppColors.grey_1,
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                //  SizedBox(height: 30),
                 // Verify Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: CustomButton(
+                Obx((){
+                  return authController.otpLoading.value ?
+                  CustomLoader() :
+                  CustomButton(
                     onTap: () {
-                      Get.toNamed(AppRoutes.setNewPassword);
+                      // Get.toNamed(AppRoutes.otpScreen, arguments: SignUpAuthModel("vakopi1016@daerdy.com", AppStrings.signUp));
+                      userModel.screenName == "Sign up"
+                          ? authController.verifyOtp(screenName: userModel.screenName,signUpEmail:userModel.email)
+                          :authController.verifyOtpForgetPass();
                     },
                     borderRadius: 12,
                     textColor: AppColors.white,
-                    fillColor: AppColors.primary,
                     title: "Verify",
+                    fillColor: AppColors.primary,
                     fontSize: 16,
-                  ),
-                ),
+                    fontWeight: FontWeight.w500,
+                  );
+
+                }),
                 const SizedBox(height: 24),
-                const SizedBox(height: 15),
                 //Resend
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Didn't receive the code? ",
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.black,
-                      ),
-                      GestureDetector(
-                        onTap: (){},
-                        child: CustomText(
-                          text: " Resend",
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primary1,
-                          bottom: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Center(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       CustomText(
+                //         text: "Didn't receive the code? ",
+                //         fontWeight: FontWeight.w400,
+                //         color: AppColors.black,
+                //       ),
+                //       GestureDetector(
+                //         onTap: (){},
+                //         child: CustomText(
+                //           text: " Resend",
+                //           fontWeight: FontWeight.w400,
+                //           color: AppColors.primary1,
+                //           bottom: 30,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 // Back to Login
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.loginScreen);
-                    },
-                    child: const CustomText(
-                        text: "Back to Login",
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primary1,
-                    ),
-                  ),
-                ),
+                // Center(
+                //   child: GestureDetector(
+                //     onTap: () {
+                //       Get.toNamed(AppRoutes.loginOnlyScreen);
+                //     },
+                //     child: const CustomText(
+                //         text: "Back to Login",
+                //         fontWeight: FontWeight.w500,
+                //         color: AppColors.primary1,
+                //     ),
+                //   ),
+                // ),
 
               ],
             ),

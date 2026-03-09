@@ -15,7 +15,7 @@ import '../../view/screens/Immigration_Seeker_Screen/Recommended_dashboard_Scree
 import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/set_up_profile_screen_1.dart';
 import '../../view/screens/Immigration_Seeker_Screen/message_screen/view/chat_list_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
-import '../../view/screens/authentication_screen/login_screen/login_screen.dart';
+import '../../view/screens/authentication_screen/login_screen/login_only_screen.dart';
 import '../../view/screens/authentication_screen/otp_screen/otp_screen.dart';
 import '../../view/screens/authentication_screen/set_new_password/set_new_password.dart';
 import '../../view/screens/authentication_screen/sign_up_screen/sign_up_screen.dart';
@@ -30,7 +30,7 @@ class AppRoutes {
   ///===========================Authentication==========================
   static const String splashScreen = "/SplashScreen";
   static const String onboardingScreen = "/OnboardingScreen";
-  static const String loginScreen = "/LoginScreen";
+  static const String loginOnlyScreen = "/LoginOnlyScreen";
   static const String signUpScreen = "/SignUpScreen";
   static const String subscribeScreen = "/SubscribeScreen";
   static const String accountReadyScreen = "/AccountReadyScreen";
@@ -70,7 +70,7 @@ class AppRoutes {
     GetPage(name: splashScreen, page: () => Splashscreen()),
     GetPage(name: onboardingScreen, page: () => OnboardingScreen()),
     GetPage(name: chooseRole, page: () => ChooseRole()),
-    GetPage(name: loginScreen, page: () => LoginScreen()),
+    GetPage(name: loginOnlyScreen, page: () => LoginOnlyScreen()),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
     GetPage(name: accountReadyScreen, page: () => AccountReadyScreen()),
     GetPage(name: subscribeScreen, page: () => SubscribeScreen()),

@@ -15,7 +15,7 @@ class AccountReadyScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 3), () {
         authController.loginLoading.value = true;
-        Get.offNamed(AppRoutes.loginScreen);
+        Get.offNamed(AppRoutes.loginOnlyScreen);
       });
     });
     return CustomGradient(

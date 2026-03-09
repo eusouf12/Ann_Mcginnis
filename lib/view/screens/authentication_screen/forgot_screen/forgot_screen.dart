@@ -75,7 +75,7 @@ class ForgotScreen extends StatelessWidget {
                   ),
                    SizedBox(height: 8),
                   CustomTextField(
-                    textEditingController: authController.nameController.value,
+                    textEditingController: authController.forgetPasswordController.value,
                     hintText: AppStrings.enterYourEmail,
                     hintStyle: TextStyle(color: AppColors.grey_1, fontSize: 14),
                     prefixIcon: const Icon(Icons.email, color: Colors.grey, size: 20),
@@ -91,7 +91,7 @@ class ForgotScreen extends StatelessWidget {
                     height: 56,
                     child: CustomButton(
                       onTap: () {
-                        Get.toNamed(AppRoutes.otpScreen);
+                        authController.forgetPassword(screenName: 'forgetPassword');
                       },
                       borderRadius: 12,
                       textColor: AppColors.white,
@@ -100,24 +100,6 @@ class ForgotScreen extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-      
-                  const SizedBox(height: 30),
-      
-                  // Back to Login
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: const CustomText(
-                        text: "Back to Login",
-                        fontWeight: FontWeight.w500,
-                          color: AppColors.primary1
-                      ),
-                    ),
-                  ),
-      
-                  const SizedBox(height: 40),
                 ],
               ),
             ),
