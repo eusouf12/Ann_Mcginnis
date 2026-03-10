@@ -1,4 +1,3 @@
-
 import 'package:ann_mcginnis/view/components/custom_image/custom_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ import '../../../components/custom_text/custom_text.dart';
 import '../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/auth_controller.dart';
 
+// ignore: must_be_immutable
 class LoginOnlyScreen extends StatelessWidget {
   LoginOnlyScreen({super.key});
   final AuthController authController = Get.put(AuthController());
@@ -23,155 +23,163 @@ class LoginOnlyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return CustomGradient(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24,top:50,  bottom: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20),
-                  //img
-                  Center(child: CustomImage(imageSrc: AppImages.logo1)),
-                  SizedBox(height: 30),
-                  // toggle btn
-                  CustomButton(onTap: (){},
-                    title: "Sing In",
-                    fillColor: AppColors.primary,
-                    textColor: Colors.white,
-                    fontSize: 18,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 50,
+              bottom: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                //img
+                Center(child: CustomImage(imageSrc: AppImages.logo1)),
+                SizedBox(height: 30),
+                // toggle btn
+                CustomButton(
+                  onTap: () {},
+                  title: "Sing In",
+                  fillColor: AppColors.primary,
+                  textColor: Colors.white,
+                  fontSize: 18,
+                ),
+                SizedBox(height: 30),
+                // ============ Email &  Password Field
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                  SizedBox(height: 30),
-                  // ============ Email &  Password Field
-                  Container(
-                    padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 25),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //Email
-                        CustomText(
-                          text: AppStrings.email,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 10),
-                        CustomTextField(
-                          textEditingController: authController.loginEmailController.value,
-                          hintText: AppStrings.enterYourEmail,
-                          hintStyle: TextStyle(color: AppColors.grey_1, fontSize: 14),
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                            color: Color(0xFF9CA3AF),
-                            size: 20,),
-                          fillColor: AppColors.white,
-                          fieldBorderColor: const Color(0xFFE5E7EB),
-                          fieldBorderRadius: 12,
-                          keyboardType: TextInputType.emailAddress,
-
-                        ),
-                        SizedBox(height: 20),
-                        // Password Field
-                        CustomText(
-                          text: AppStrings.password,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                        SizedBox(height: 10),
-                        CustomTextField(
-                          textEditingController: authController.loginPasswordController.value,
-                          hintText: AppStrings.enterYourPassword,
-                          hintStyle: TextStyle(
-                              color: AppColors.grey_1,
-                              fontSize: 14
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                            color: Color(0xFF9CA3AF),
-                            size: 22,
-                          ),
-                          isPassword: true,
-                          fillColor: AppColors.white,
-                          fieldBorderColor: const Color(0xFFE5E7EB),
-                          fieldBorderRadius: 12,
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 32),
-                  //  Login Button
-                  Obx((){
-                    return authController.loginLoading.value
-                        ? CustomLoader()
-                        : CustomButton(
-                      onTap: () {
-                        authController.loginUser();
-                      },
-                      borderRadius: 12,
-                      textColor: AppColors.white,
-                      title: "Continue",
-                      fillColor: AppColors.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    );
-
-                  }),
-                  SizedBox(height: 50),
-                  // Forgot Password
-                  Align(
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.forgotScreen);
-                      },
-                      child:  CustomText(
-                        text: AppStrings.forgetPassword,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primary1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //Email
+                      CustomText(
+                        text: AppStrings.email,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
+                      SizedBox(height: 10),
+                      CustomTextField(
+                        textEditingController:
+                            authController.loginEmailController.value,
+                        hintText: AppStrings.enterYourEmail,
+                        hintStyle: TextStyle(
+                          color: AppColors.grey_1,
+                          fontSize: 14,
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.email_outlined,
+                          color: Color(0xFF9CA3AF),
+                          size: 20,
+                        ),
+                        fillColor: AppColors.white,
+                        fieldBorderColor: const Color(0xFFE5E7EB),
+                        fieldBorderRadius: 12,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(height: 20),
+                      // Password Field
+                      CustomText(
+                        text: AppStrings.password,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                      SizedBox(height: 10),
+                      CustomTextField(
+                        textEditingController:
+                            authController.loginPasswordController.value,
+                        hintText: AppStrings.enterYourPassword,
+                        hintStyle: TextStyle(
+                          color: AppColors.grey_1,
+                          fontSize: 14,
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.lock_outline,
+                          color: Color(0xFF9CA3AF),
+                          size: 22,
+                        ),
+                        isPassword: true,
+                        fillColor: AppColors.white,
+                        fieldBorderColor: const Color(0xFFE5E7EB),
+                        fieldBorderRadius: 12,
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 32),
+                //  Login Button
+                Obx(() {
+                  return authController.loginLoading.value
+                      ? CustomLoader()
+                      : CustomButton(
+                          onTap: () {
+                            authController.loginUser();
+                          },
+                          borderRadius: 12,
+                          textColor: AppColors.white,
+                          title: "Continue",
+                          fillColor: AppColors.primary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        );
+                }),
+                SizedBox(height: 50),
+                // Forgot Password
+                Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.forgotScreen);
+                    },
+                    child: CustomText(
+                      text: AppStrings.forgetPassword,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primary1,
                     ),
                   ),
-                  SizedBox(height: 50),
-                  // register Buttons
-                  Center(
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        CustomText(
-                          text: "Don’t have an account? ",
-                          color: Colors.black,
+                ),
+                SizedBox(height: 50),
+                // register Buttons
+                Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      CustomText(
+                        text: "Don’t have an account? ",
+                        color: Colors.black,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.chooseRole);
+                        },
+                        child: CustomText(
+                          text: " Sign Up",
+                          color: AppColors.primary1,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.chooseRole);
-                          },
-                          child: CustomText(
-                            text: " Sign Up",
-                            color: AppColors.primary1,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        )
-
+        ),
+      ),
     );
   }
 }

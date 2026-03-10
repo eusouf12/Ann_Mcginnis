@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import '../../../core/app_routes/app_routes.dart';
 import '../../../utils/app_colors/app_colors.dart';
 
 class HostNavbar extends StatefulWidget {
@@ -16,15 +14,9 @@ class HostNavbar extends StatefulWidget {
 class _HostNavBarState extends State<HostNavbar> {
   late int bottomNavIndex;
 
-  final List<IconData> icons = [
-    Icons.home,
-    Icons.settings,
-  ];
+  final List<IconData> icons = [Icons.home, Icons.settings];
 
-  final List<String> labels = [
-    'SetUp_Profile_Screen',
-    'Settings',
-  ];
+  final List<String> labels = ['SetUp_Profile_Screen', 'Settings'];
 
   @override
   void initState() {
@@ -82,15 +74,10 @@ class _HostNavBarState extends State<HostNavbar> {
                       ),
                     ],
                   ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 26.sp,
-                  ),
+                  child: Icon(Icons.add, color: Colors.white, size: 26.sp),
                 ),
-
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: 10),
               Text(
                 "Add",
                 style: TextStyle(
@@ -100,8 +87,7 @@ class _HostNavBarState extends State<HostNavbar> {
                 ),
               ),
             ],
-          )
-
+          ),
         ),
       ],
     );
@@ -127,7 +113,7 @@ class _HostNavBarState extends State<HostNavbar> {
             labels[index],
             style: TextStyle(
               fontSize: 12.sp,
-              fontWeight:  FontWeight.w500,
+              fontWeight: FontWeight.w500,
               color: isSelected ? AppColors.primary : Colors.grey,
             ),
           ),
