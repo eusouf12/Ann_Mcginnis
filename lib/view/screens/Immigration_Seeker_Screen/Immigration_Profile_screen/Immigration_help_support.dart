@@ -24,48 +24,51 @@ class ImmigrationHelpSupport extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //img
-                 Center(
-                   child: Column(
-                     children: [
-                       CustomImage( imageSrc: AppImages.help,),
-                       SizedBox(height: 20,),
-                       CustomText(text: "Hello, how can we assist you?", fontSize: 16,color: AppColors.black, fontWeight: FontWeight.w500,)
-                     ],
-                   ),
-                 ),
-                  SizedBox(height: 20,),
-                  CustomFormCard(
-                    title: 'Title',
-                    hintText: 'Enter the title of your issue',
-                    titleColor: AppColors.black,
-                    fillBorderRadius: 12,
-                    curserColor: AppColors.black,
-                    controller: TextEditingController(),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //img
+                Center(
+                  child: Column(
+                    children: [
+                      CustomImage(imageSrc: AppImages.help),
+                      SizedBox(height: 20),
+                      CustomText(
+                        text: "Hello, how can we assist you?",
+                        fontSize: 16,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ],
                   ),
-                  CustomFormCard(
-                    title: 'Write in bellow box',
-                    hintText: 'Write here.....',
-                    maxLine: 5,
-                    fillBorderRadius: 12,
-                    curserColor: AppColors.black,
-                    controller: TextEditingController(),
-                  ),
-                  SizedBox(height: 40,),
-          
-                  CustomButton(
-                    onTap: (){
-                    },
-                    title: 'Send',
-                    textColor: AppColors.white,
-                    borderRadius: 50,
-                    fillColor: AppColors.primary,
-                    fontSize: 14,
-                  ),
-                 
-                ]
+                ),
+                SizedBox(height: 20),
+                CustomFormCard(
+                  title: 'Title',
+                  hintText: 'Enter the title of your issue',
+                  titleColor: AppColors.black,
+                  fillBorderRadius: 12,
+                  curserColor: AppColors.black,
+                  controller: TextEditingController(),
+                ),
+                CustomFormCard(
+                  title: 'Write in bellow box',
+                  hintText: 'Write here.....',
+                  maxLine: 5,
+                  fillBorderRadius: 12,
+                  curserColor: AppColors.black,
+                  controller: TextEditingController(),
+                ),
+                SizedBox(height: 40),
+
+                CustomButton(
+                  onTap: () {},
+                  title: 'Send',
+                  textColor: AppColors.white,
+                  borderRadius: 50,
+                  fillColor: AppColors.primary,
+                  fontSize: 14,
+                ),
+              ],
             ),
           ),
         ),

@@ -11,7 +11,9 @@ import '../controller/user_profile_controller.dart';
 
 class ImmigrationAboutScreen extends StatelessWidget {
   ImmigrationAboutScreen({super.key});
-  final UserProfileController profileController = Get.put(UserProfileController());
+  final UserProfileController profileController = Get.put(
+    UserProfileController(),
+  );
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -19,19 +21,16 @@ class ImmigrationAboutScreen extends StatelessWidget {
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'About Us',),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'About Us'),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Obx(() {
             switch (profileController.rxAboutStatus.value) {
-
               case Status.loading:
                 return const Center(child: CustomLoader());
 
               case Status.internetError:
-                return const Center(
-                  child: Text("No Internet Connection"),
-                );
+                return const Center(child: Text("No Internet Connection"));
 
               case Status.error:
                 return Center(
@@ -43,8 +42,8 @@ class ImmigrationAboutScreen extends StatelessWidget {
                 );
 
               case Status.completed:
-
-                final htmlContent = profileController.aboutUsModel.value?.content ?? "";
+                final htmlContent =
+                    profileController.aboutUsModel.value?.content ?? "";
 
                 return SingleChildScrollView(
                   child: HtmlWidget(

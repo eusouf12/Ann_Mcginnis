@@ -15,9 +15,12 @@ class UserEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomGradient(
-
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color : AppColors.black),
+        appBar: CustomRoyelAppbar(
+          leftIcon: true,
+          titleName: 'Edit Profile',
+          color: AppColors.black,
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -29,9 +32,7 @@ class UserEditScreen extends StatelessWidget {
                       child: Container(
                         height: 120.h,
                         width: 120.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: BoxDecoration(shape: BoxShape.circle),
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: CustomNetworkImage(
@@ -53,7 +54,11 @@ class UserEditScreen extends StatelessWidget {
                           color: AppColors.primary,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.edit, size: 15, color: AppColors.white,),
+                        child: Icon(
+                          Icons.edit,
+                          size: 15,
+                          color: AppColors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -95,16 +100,16 @@ class UserEditScreen extends StatelessWidget {
                   curserColor: AppColors.black,
                   titleColor: AppColors.black,
                 ),
-      
+
                 SizedBox(height: 20),
                 CustomButton(
-                  onTap: (){
+                  onTap: () {
                     Get.back();
                   },
                   title: 'Save',
                   textColor: AppColors.white,
                   borderRadius: 50,
-                 fillColor: AppColors.primary,
+                  fillColor: AppColors.primary,
                 ),
               ],
             ),

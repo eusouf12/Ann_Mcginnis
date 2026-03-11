@@ -11,7 +11,9 @@ import '../controller/user_profile_controller.dart';
 
 class ImmigrationPrivacyScreen extends StatelessWidget {
   ImmigrationPrivacyScreen({super.key});
-  final UserProfileController profileController = Get.put(UserProfileController());
+  final UserProfileController profileController = Get.put(
+    UserProfileController(),
+  );
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -19,20 +21,16 @@ class ImmigrationPrivacyScreen extends StatelessWidget {
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Privacy Policy',),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Privacy Policy'),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Obx(() {
-
             switch (profileController.rxPrivacyStatus.value) {
-
               case Status.loading:
                 return const Center(child: CustomLoader());
 
               case Status.internetError:
-                return const Center(
-                  child: Text("No Internet Connection"),
-                );
+                return const Center(child: Text("No Internet Connection"));
 
               case Status.error:
                 return Center(
@@ -44,7 +42,6 @@ class ImmigrationPrivacyScreen extends StatelessWidget {
                 );
 
               case Status.completed:
-
                 final htmlContent =
                     profileController.privacyModel.value?.content ?? "";
 

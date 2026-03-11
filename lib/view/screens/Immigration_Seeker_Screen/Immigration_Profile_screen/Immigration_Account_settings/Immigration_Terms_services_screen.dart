@@ -11,7 +11,9 @@ import '../controller/user_profile_controller.dart';
 
 class ImmigrationTermsServicesScreen extends StatelessWidget {
   ImmigrationTermsServicesScreen({super.key});
-  final UserProfileController profileController = Get.put(UserProfileController());
+  final UserProfileController profileController = Get.put(
+    UserProfileController(),
+  );
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -19,20 +21,19 @@ class ImmigrationTermsServicesScreen extends StatelessWidget {
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Terms Of Services',),
+        appBar: CustomRoyelAppbar(
+          leftIcon: true,
+          titleName: 'Terms Of Services',
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Obx(() {
-
             switch (profileController.rxStatus.value) {
-
               case Status.loading:
                 return const Center(child: CustomLoader());
 
               case Status.internetError:
-                return const Center(
-                  child: Text("No Internet Connection"),
-                );
+                return const Center(child: Text("No Internet Connection"));
 
               case Status.error:
                 return Center(
@@ -44,7 +45,6 @@ class ImmigrationTermsServicesScreen extends StatelessWidget {
                 );
 
               case Status.completed:
-
                 final htmlContent =
                     profileController.termsModel.value?.content ?? "";
 

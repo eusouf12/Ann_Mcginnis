@@ -1,8 +1,8 @@
 class ApiUrl {
   static const String baseUrl = "http://10.0.2.2:8080/api/v1";
   //static const String baseUrl = "https://womens-jennifer-procedure-cars.trycloudflare.com";
-  static const String imageUrl = baseUrl;
-  static String socketUrl = baseUrl;
+  static const String imageUrl = "http://10.0.2.2:8080";
+  static String socketUrl = "http://10.0.2.2:8080";
   static String mapKey = "AIzaSyD96BSj2VcHpAfuy2LE1p7NTO7becR44RE";
 
   ///========================= Authentication =========================
@@ -18,10 +18,10 @@ class ApiUrl {
   static const String termsCondition = "/legal-docs/terms-conditions";
   static const String aboutUs = "/legal-docs/about-us";
   static const String changePassword = "/auth/change-password";
+  static const String myProfile = "/auth/me";
 
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static const String updateProfile = "/api/v1/auth/update_my_profile";
-  static const String myProfile = "/api/v1/auth/myprofile";
   static const String googleAuth = "/api/v1/user/google_auth";
 
   ///========================= Host =========================

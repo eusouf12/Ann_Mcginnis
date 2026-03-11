@@ -44,5 +44,4 @@ class SecurityController extends GetxController {
     sendToBackend("biometric_unlock", false);
     sendToBackend("pin_enabled", false);
   }
-
 }

@@ -5,9 +5,12 @@ import '../../../components/custom_gradient/custom_gradient.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_text/custom_text.dart';
 import 'controller/notification_controller.dart';
+
 class NotificationScreen extends StatelessWidget {
-   NotificationScreen({super.key});
-  final NotificationController notificationController = Get.put(NotificationController());
+  NotificationScreen({super.key});
+  final NotificationController notificationController = Get.put(
+    NotificationController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class NotificationScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Padding(
+              Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Container(
                   height: 60,
@@ -42,19 +45,26 @@ class NotificationScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                         Spacer(),
-                        Obx(() => Switch(
-                          activeColor: Colors.white,
-                          activeTrackColor: Color(0xFFFFCC00),
-                          inactiveThumbColor: Colors.white,
-                          inactiveTrackColor: Color(0xFF4B5563),
-                          trackOutlineColor: MaterialStateProperty.resolveWith<Color>((states) {
-                            return Colors.white;
-                          }),
-                          value: notificationController.generalNotification.value,
-                          onChanged: (value) {
-                            notificationController.toggleGeneral(value);
-                          },
-                        )),
+                        Obx(
+                          () => Switch(
+                            activeColor: Colors.white,
+                            activeTrackColor: Color(0xFFFFCC00),
+                            inactiveThumbColor: Colors.white,
+                            inactiveTrackColor: Color(0xFF4B5563),
+                            trackOutlineColor:
+                                MaterialStateProperty.resolveWith<Color>((
+                                  states,
+                                ) {
+                                  return Colors.white;
+                                }),
+                            value: notificationController
+                                .generalNotification
+                                .value,
+                            onChanged: (value) {
+                              notificationController.toggleGeneral(value);
+                            },
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -134,7 +144,7 @@ class NotificationScreen extends StatelessWidget {
               //     ),
               //   ),
               // ),
-        ]
+            ],
           ),
         ),
       ),
