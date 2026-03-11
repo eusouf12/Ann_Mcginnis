@@ -1,3 +1,4 @@
+import 'package:ann_mcginnis/view/components/custom_loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../../utils/app_colors/app_colors.dart';
@@ -5,9 +6,13 @@ import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../controller/user_profile_controller.dart';
 
 class ImmigrationChangePassScreen extends StatelessWidget {
-  const ImmigrationChangePassScreen({super.key});
+  ImmigrationChangePassScreen({super.key});
+  final UserProfileController profileController = Get.put(
+    UserProfileController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +20,11 @@ class ImmigrationChangePassScreen extends StatelessWidget {
       child: Scaffold(
         appBar: CustomRoyelAppbar(
           leftIcon: true,
-          titleName: 'Change Password'.tr,
+          titleName: 'Change Password',
           color: AppColors.black,
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
               CustomFormCard(
@@ -29,7 +34,7 @@ class ImmigrationChangePassScreen extends StatelessWidget {
                 titleColor: AppColors.black,
                 isPassword: true,
                 fillBorderRadius: 12,
-                controller: TextEditingController(),
+                controller: profileController.oldPasswordController.value,
               ),
               CustomFormCard(
                 title: 'New Password',
@@ -38,7 +43,7 @@ class ImmigrationChangePassScreen extends StatelessWidget {
                 curserColor: AppColors.black,
                 titleColor: AppColors.black,
                 fillBorderRadius: 12,
-                controller: TextEditingController(),
+                controller: profileController.newPasswordController.value,
               ),
               CustomFormCard(
                 title: 'Confirm Password',
@@ -47,20 +52,23 @@ class ImmigrationChangePassScreen extends StatelessWidget {
                 titleColor: AppColors.black,
                 isPassword: true,
                 fillBorderRadius: 12,
-                controller: TextEditingController(),
+                controller: profileController.confirmPasswordController.value,
               ),
+              Spacer(),
+              Obx(() {
+                if (profileController.changePassLoading.value) {
+                  return CustomLoader();
+                }
+                return CustomButton(
+                  onTap: () {
+                    profileController.changePassword();
+                  },
+                  title: "UPDATE PASSWORD",
+                  textColor: AppColors.white,
+                  fillColor: AppColors.primary,
+                );
+              }),
             ],
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 24,vertical: 30),
-          child: CustomButton(
-            onTap: () {},
-            title: 'Update Password',
-            fillColor: AppColors.primary,
-            textColor: AppColors.white,
-            fontSize: 16,
-            borderRadius: 10,
           ),
         ),
       ),

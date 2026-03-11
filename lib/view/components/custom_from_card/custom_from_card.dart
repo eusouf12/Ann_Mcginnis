@@ -7,7 +7,6 @@ import '../custom_text/custom_text.dart';
 import '../custom_text_field/custom_text_field.dart';
 
 class CustomFormCard extends StatelessWidget {
-
   final String title;
   final String? hintText;
   final Color? inputTextColor;
@@ -44,7 +43,7 @@ class CustomFormCard extends StatelessWidget {
     this.validator,
     this.hintText,
     this.suffixIcon,
-    this.maxLine=1,
+    this.maxLine = 1,
     this.fontSize,
     this.titleColor,
     this.prefixIcon,
@@ -52,7 +51,9 @@ class CustomFormCard extends StatelessWidget {
     this.onChanged,
     this.enabled,
     this.fillBorderRadius,
-    this.fieldBorderColor, this.inputTextColor, this.curserColor
+    this.fieldBorderColor,
+    this.inputTextColor,
+    this.curserColor,
   });
 
   @override
@@ -77,14 +78,25 @@ class CustomFormCard extends StatelessWidget {
           readOnly: readOnly,
           hintText: hintText,
           cursorColor: curserColor ?? AppColors.white,
-          hintStyle: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.grey_1),
+          hintStyle: GoogleFonts.roboto(
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            color: AppColors.grey_1,
+          ),
           suffixIcon: suffixIcon,
           isPassword: isPassword,
           textEditingController: controller,
-          inputTextStyle: GoogleFonts.poppins(color: inputTextColor ?? AppColors.white, fontSize: 18.sp),
-          fillColor: hasBackgroundColor ? Colors.transparent : Colors.transparent,
-          fieldBorderColor:fieldBorderColor ?? AppColors.grey_1,
-          keyboardType: keyboardType ?? (isPassword ? TextInputType.visiblePassword : TextInputType.text),
+          inputTextStyle: GoogleFonts.poppins(
+            color: inputTextColor ?? AppColors.black,
+            fontSize: 18.sp,
+          ),
+          fillColor: hasBackgroundColor
+              ? Colors.transparent
+              : Colors.transparent,
+          fieldBorderColor: fieldBorderColor ?? AppColors.grey_1,
+          keyboardType:
+              keyboardType ??
+              (isPassword ? TextInputType.visiblePassword : TextInputType.text),
           onTap: onTap,
           maxLines: isPassword ? 1 : maxLine,
           fieldBorderRadius: fillBorderRadius ?? 50,
