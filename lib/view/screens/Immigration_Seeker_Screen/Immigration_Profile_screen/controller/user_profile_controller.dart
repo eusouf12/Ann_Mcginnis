@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
@@ -61,9 +62,10 @@ class UserProfileController extends GetxController {
         }
         emailController.value.text = userData.value?.email ?? "";
 
-        if (dateOfBirthController.value.text.isEmpty) {
-          dateOfBirthController.value.text = userData.value?.dateOfBirth ?? "";
-        }
+        dateOfBirthController.value.text = formatDob(
+          userData.value?.dateOfBirth,
+        );
+
         if (phoneNumberController.value.text.isEmpty) {
           phoneNumberController.value.text = userData.value?.mobile ?? "";
         }
@@ -81,6 +83,17 @@ class UserProfileController extends GetxController {
       showCustomSnackBar("Error , ${e.toString()}", isError: true);
     } finally {
       isUserLoading.value = false;
+    }
+  }
+
+  String formatDob(String? date) {
+    if (date == null || date.isEmpty) return "";
+
+    try {
+      final parsedDate = DateTime.parse(date).toLocal();
+      return DateFormat('MM/dd/yyyy').format(parsedDate);
+    } catch (e) {
+      return "";
     }
   }
 
@@ -102,7 +115,7 @@ class UserProfileController extends GetxController {
     refresh();
 
     try {
-      Map<String, dynamic> body = {
+      Map<String, String> body = {
         "fullname": nameController.value.text,
         "userName": userNameController.value.text,
         "mobile": phoneNumberController.value.text,
@@ -117,7 +130,7 @@ class UserProfileController extends GetxController {
         response = await ApiClient.patchMultipartData(
           ApiUrl.updateProfile,
           body,
-          multipartBody: [MultipartBody("image", selectedImage.value!)],
+          multipartBody: [MultipartBody("avatar", selectedImage.value!)],
         );
       } else {
         response = await ApiClient.patchData(

@@ -19,9 +19,8 @@ class ApiUrl {
   static const String aboutUs = "/legal-docs/about-us";
   static const String changePassword = "/auth/change-password";
   static const String myProfile = "/auth/me";
+  static const String updateProfile = "/users/update-user";
 
-  static const String refreshToken = "/api/v1/auth/refresh-token";
-  static const String updateProfile = "/api/v1/auth/update_my_profile";
   static const String googleAuth = "/api/v1/user/google_auth";
 
   ///========================= Host =========================
