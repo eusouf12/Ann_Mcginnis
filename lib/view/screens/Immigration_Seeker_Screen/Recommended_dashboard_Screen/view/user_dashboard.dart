@@ -1,4 +1,3 @@
-
 import 'package:ann_mcginnis/core/app_routes/app_routes.dart';
 import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
 import 'package:ann_mcginnis/utils/app_const/app_const.dart';
@@ -9,10 +8,12 @@ import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Recommended_
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../../service/api_url.dart';
 import '../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
+import '../../Immigration_Profile_screen/controller/user_profile_controller.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
@@ -21,9 +22,15 @@ import '../../SetUp_Profile_Screen/model/custom_save_countries.dart';
 class UserDashboard extends StatelessWidget {
   UserDashboard({super.key});
   final UserDashboardController controller = Get.put(UserDashboardController());
+  final UserProfileController userProfileController = Get.put(
+    UserProfileController(),
+  );
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userProfileController.getUserProfile();
+    });
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -33,9 +40,19 @@ class UserDashboard extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-             CustomImage(imageSrc: AppImages.logoApp, height: 28.h, width: 28.w, ),
+              CustomImage(
+                imageSrc: AppImages.logoApp,
+                height: 28.h,
+                width: 28.w,
+              ),
               SizedBox(width: 8.w),
-              CustomText(text: "Global Jump", fontSize: 18.sp, fontWeight: FontWeight.bold, color: AppColors.primary, textAlign: TextAlign.start,),
+              CustomText(
+                text: "Global Jump",
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+                textAlign: TextAlign.start,
+              ),
             ],
           ),
           actions: [
@@ -45,8 +62,7 @@ class UserDashboard extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   IconButton(
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       Icons.notifications_none,
                       color: const Color(0xFF0D1B2A),
@@ -87,20 +103,28 @@ class UserDashboard extends StatelessWidget {
 
             SizedBox(width: 15.w),
             // 4. Profile Image
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoutes.userProfileScreen);
-              },
-              child:   ClipOval(
-                child: CustomNetworkImage(
-                  imageUrl: AppConstants.profileImage2,
-                  height: 50.h,
-                  width: 50.h,
-                  boxShape: BoxShape.circle,
-                ),
-              ),
-            ),
+            Obx(() {
+              final user = userProfileController.userData.value;
 
+              String imageUrl =
+                  (user?.avatar != null && user!.avatar!.isNotEmpty)
+                  ? ApiUrl.imageUrl + user.avatar!
+                  : AppConstants.profileImage2;
+
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.userProfileScreen);
+                },
+                child: ClipOval(
+                  child: CustomNetworkImage(
+                    imageUrl: imageUrl,
+                    height: 50.h,
+                    width: 50.h,
+                    boxShape: BoxShape.circle,
+                  ),
+                ),
+              );
+            }),
             SizedBox(width: 20.w),
           ],
         ),
@@ -122,43 +146,55 @@ class UserDashboard extends StatelessWidget {
             // toggle tab
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Obx(() => Container(
-                padding: EdgeInsets.only(top: 20.h,left: 10.h,right: 10.h,),
-                decoration: BoxDecoration(
-                  color: AppColors.primary1,
-                ),
-                child: Row(
-                  children: List.generate(controller.tabs.length, (index) {
-                    bool isSelected = controller.selectedDashboardTab.value == index;
-                    return GestureDetector(
-                      onTap: () => controller.changeTab(index),
-                      child: Container(
-                        padding: EdgeInsets.only(bottom: 20.h, right: 10.w, left: 10.w),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: isSelected ? AppColors.yellow1 : Colors.transparent,
-                              width: 4.h,
+              child: Obx(
+                () => Container(
+                  padding: EdgeInsets.only(top: 20.h, left: 10.h, right: 10.h),
+                  decoration: BoxDecoration(color: AppColors.primary1),
+                  child: Row(
+                    children: List.generate(controller.tabs.length, (index) {
+                      bool isSelected =
+                          controller.selectedDashboardTab.value == index;
+                      return GestureDetector(
+                        onTap: () => controller.changeTab(index),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            bottom: 20.h,
+                            right: 10.w,
+                            left: 10.w,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: isSelected
+                                    ? AppColors.yellow1
+                                    : Colors.transparent,
+                                width: 4.h,
+                              ),
                             ),
                           ),
+                          child: CustomText(
+                            text: controller.tabs[index],
+                            fontSize: 14,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                            color: Colors.white,
+                          ),
                         ),
-                        child: CustomText(
-                          text: controller.tabs[index],
-                          fontSize: 14,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                          color:  Colors.white,
-                        ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+                  ),
                 ),
-              )),
+              ),
             ),
             SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
                   child: Obx(() {
                     // TAB - 00
                     if (controller.selectedDashboardTab.value == 0) {
@@ -176,94 +212,116 @@ class UserDashboard extends StatelessWidget {
                           ),
                           SizedBox(height: 20.h),
                           Container(
-                                padding: EdgeInsets.symmetric(vertical: 10.h),
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: AppColors.primary1,width: 2),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color(0xFFDBEAFE),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15),
-                                  child: Column(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary1,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFFDBEAFE),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(children: [
-                                        CustomNetworkImage(imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png", height: 20, width: 40),
-                                        SizedBox(width: 20,),
-                                        Column(children: [
-                                          CustomText(
-                                              text: "Canada",
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.primary1
-                                          ),
-                                          CustomText(
-                                              text: "Top Match",fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.black
-                                          ),
-                                        ]),
-                                        Spacer(),
-                                        Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(50),
-                                              color: AppColors.yellow1,
-                                            ),
-                                            child: Center(
-                                              child: CustomText(
-                                                  text: "92%",
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: AppColors.primary1
-                                              ),
-                                            )
-                                        )
-                                      ]),
-                                      SizedBox(height: 20,),
+                                      CustomNetworkImage(
+                                        imageUrl:
+                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png",
+                                        height: 20,
+                                        width: 40,
+                                      ),
+                                      SizedBox(width: 20),
                                       Column(
                                         children: [
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                               CustomText(
-                                                text: "Eligibility Score",
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14,
-                                                 color: AppColors.primary1,
-                                              ),
-                                              CustomText(
-                                                text: "${controller.successScoreRate.value.toInt()}/100",
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14,
-                                                color: AppColors.primary1,
-                                              ),
-
-                                            ],
+                                          CustomText(
+                                            text: "Canada",
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primary1,
                                           ),
-                                          const SizedBox(height: 10),
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: LinearProgressIndicator(
-                                              value: controller.successScoreRate.value/100,
-                                              minHeight: 12,
-                                              backgroundColor: AppColors.grey_1,
-                                              color: AppColors.primary1,
-                                            ),
+                                          CustomText(
+                                            text: "Top Match",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.black,
                                           ),
-
                                         ],
                                       ),
-                                      SizedBox(height: 20,),
-                                      CustomButton(
-                                          onTap: (){},
-                                          title: "View Details",
-                                          textColor: AppColors.primary1,
-                                      )
+                                      Spacer(),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 15,
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            50,
+                                          ),
+                                          color: AppColors.yellow1,
+                                        ),
+                                        child: Center(
+                                          child: CustomText(
+                                            text: "92%",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: AppColors.primary1,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
+                                  SizedBox(height: 20),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          CustomText(
+                                            text: "Eligibility Score",
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            color: AppColors.primary1,
+                                          ),
+                                          CustomText(
+                                            text:
+                                                "${controller.successScoreRate.value.toInt()}/100",
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                            color: AppColors.primary1,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: LinearProgressIndicator(
+                                          value:
+                                              controller
+                                                  .successScoreRate
+                                                  .value /
+                                              100,
+                                          minHeight: 12,
+                                          backgroundColor: AppColors.grey_1,
+                                          color: AppColors.primary1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
+                                  CustomButton(
+                                    onTap: () {},
+                                    title: "View Details",
+                                    textColor: AppColors.primary1,
+                                  ),
+                                ],
                               ),
+                            ),
+                          ),
                           SizedBox(height: 20.h),
                           CustomText(
                             text: "Other Recommendations",
@@ -282,14 +340,16 @@ class UserDashboard extends StatelessWidget {
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: CustomCountryProgressCar(
                                   valueScore: " 85",
-                                  title:index==1 ? "Australia" : "Canada",
+                                  title: index == 1 ? "Australia" : "Canada",
                                   subTitle: "Top Match",
-                                  img: index ==0 ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png" : null,
+                                  img: index == 0
+                                      ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png"
+                                      : null,
                                 ),
                               );
                             },
-                          )
-                    ],
+                          ),
+                        ],
                       );
                     }
                     // TAB - 01
@@ -314,24 +374,25 @@ class UserDashboard extends StatelessWidget {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: BookConsultationCard(
-                                  title:index==1 ? "John Robertson" : null,
+                                  title: index == 1 ? "John Robertson" : null,
                                   subTitle: "Visa Consultant - Australia",
                                   img: AppConstants.profileImage2,
-                                  isBooked:index==1? true:false,
-                                  onTapViewDetails: (){
-                                    Get.toNamed(AppRoutes.consultProfileViewDetails);
+                                  isBooked: index == 1 ? true : false,
+                                  onTapViewDetails: () {
+                                    Get.toNamed(
+                                      AppRoutes.consultProfileViewDetails,
+                                    );
                                   },
-                                  onTapBookNow: (){
+                                  onTapBookNow: () {
                                     Get.to(ConsultBookScreen());
                                   },
                                 ),
                               );
                             },
-                          )
+                          ),
                         ],
                       );
-                    }
-                    else if (controller.selectedDashboardTab.value == 2) {
+                    } else if (controller.selectedDashboardTab.value == 2) {
                       return Column(
                         children: [
                           Column(
@@ -353,29 +414,33 @@ class UserDashboard extends StatelessWidget {
                                   return Padding(
                                     padding: const EdgeInsets.only(bottom: 10),
                                     child: CountryVisaCard(
-                                      title: index==1 ? "Australia" : "Canada",
+                                      title: index == 1
+                                          ? "Australia"
+                                          : "Canada",
                                       img: null,
                                       subTitle: 'Independent',
-                                      description: 'Points-based system. Great lifestyle and career opportunities.',
+                                      description:
+                                          'Points-based system. Great lifestyle and career opportunities.',
                                       matchPercent: '72',
-                                      tagText: index==1 ? 'Fast Track' : "High Demand",
+                                      tagText: index == 1
+                                          ? 'Fast Track'
+                                          : "High Demand",
                                     ),
                                   );
                                 },
-                              )
+                              ),
                             ],
                           ),
                         ],
                       );
-                    }
-                    else {
+                    } else {
                       return Column(
                         children: [
                           CustomText(
-                            text: "Payments",//PaymentCard
+                            text: "Payments", //PaymentCard
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color:  AppColors.primary1,
+                            color: AppColors.primary1,
                             textAlign: TextAlign.start,
                           ),
                           SizedBox(height: 20.h),
@@ -391,8 +456,8 @@ class UserDashboard extends StatelessWidget {
                                   title: 'Document Review',
                                   date: 'Dec 24, 2025',
                                   price: '150',
-                                  isPaid: index == 1 ? true:false,
-                                  onTap: () {  },
+                                  isPaid: index == 1 ? true : false,
+                                  onTap: () {},
                                 ),
                               );
                             },
@@ -404,7 +469,10 @@ class UserDashboard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Color(0xFFF0FDF4),
                               borderRadius: BorderRadius.circular(12.r),
-                              border:  Border.all(color: const Color(0xFFC8E6C9), width: 1.w),
+                              border: Border.all(
+                                color: const Color(0xFFC8E6C9),
+                                width: 1.w,
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.03),
@@ -414,25 +482,24 @@ class UserDashboard extends StatelessWidget {
                               ],
                             ),
                             child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    CustomText(
-                                      text: "Total Paid",
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.black,
-                                    ),
-                                    CustomText(
-                                      text: "\$150",
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.black,
-                                    ),
-                                  ],
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Total Paid",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
                                 ),
-
-                          )
+                                CustomText(
+                                  text: "\$150",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       );
                     }
@@ -445,5 +512,4 @@ class UserDashboard extends StatelessWidget {
       ),
     );
   }
-
 }
