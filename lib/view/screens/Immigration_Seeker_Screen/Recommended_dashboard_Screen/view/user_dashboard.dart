@@ -40,19 +40,9 @@ class UserDashboard extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              CustomImage(
-                imageSrc: AppImages.logoApp,
-                height: 28.h,
-                width: 28.w,
-              ),
+              CustomImage(imageSrc: AppImages.logoApp, height: 28.h, width: 28.w,),
               SizedBox(width: 8.w),
-              CustomText(
-                text: "Global Jump",
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-                textAlign: TextAlign.start,
-              ),
+              CustomText(text: "Global Jump", fontSize: 18.sp, fontWeight: FontWeight.bold, color: AppColors.primary, textAlign: TextAlign.start,),
             ],
           ),
           actions: [
@@ -72,31 +62,31 @@ class UserDashboard extends StatelessWidget {
                     constraints: const BoxConstraints(),
                   ),
                   // Red Badge
-                  Positioned(
-                    right: -2,
-                    top: -2,
-                    child: Container(
-                      padding: EdgeInsets.all(3.w),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 16.w,
-                        minHeight: 16.w,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "2",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   right: -2,
+                  //   top: -2,
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(3.w),
+                  //     decoration: const BoxDecoration(
+                  //       color: Colors.red,
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     constraints: BoxConstraints(
+                  //       minWidth: 16.w,
+                  //       minHeight: 16.w,
+                  //     ),
+                  //     child: Center(
+                  //       child: Text(
+                  //         "2",
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 10.sp,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -106,10 +96,7 @@ class UserDashboard extends StatelessWidget {
             Obx(() {
               final user = userProfileController.userData.value;
 
-              String imageUrl =
-                  (user?.avatar != null && user!.avatar!.isNotEmpty)
-                  ? ApiUrl.imageUrl + user.avatar!
-                  : AppConstants.profileImage2;
+              String imageUrl = (user?.avatar != null && user!.avatar!.isNotEmpty)? ApiUrl.imageUrl + user.avatar! : AppConstants.profileImage2;
 
               return GestureDetector(
                 onTap: () {
@@ -129,387 +116,382 @@ class UserDashboard extends StatelessWidget {
           ],
         ),
 
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: CustomText(
-                text: "Welcome, Sarah!",
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary1,
-                textAlign: TextAlign.start,
+        body: Obx(() {
+          final user = userProfileController.userData.value;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: CustomText(
+                  text: "Welcome, ${user?.fullname}",
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primary1,
+                  textAlign: TextAlign.start,
+                ),
               ),
-            ),
-            SizedBox(height: 20.h),
-            // toggle tab
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Obx(
-                () => Container(
-                  padding: EdgeInsets.only(top: 20.h, left: 10.h, right: 10.h),
-                  decoration: BoxDecoration(color: AppColors.primary1),
-                  child: Row(
-                    children: List.generate(controller.tabs.length, (index) {
-                      bool isSelected =
-                          controller.selectedDashboardTab.value == index;
-                      return GestureDetector(
-                        onTap: () => controller.changeTab(index),
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            bottom: 20.h,
-                            right: 10.w,
-                            left: 10.w,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: isSelected
-                                    ? AppColors.yellow1
-                                    : Colors.transparent,
-                                width: 4.h,
+              SizedBox(height: 20.h),
+              // toggle tab
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Obx(
+                      () => Container(
+                    padding: EdgeInsets.only(top: 20.h, left: 10.h, right: 10.h),
+                    decoration: BoxDecoration(color: AppColors.primary1),
+                    child: Row(
+                      children: List.generate(controller.tabs.length, (index) {
+                        bool isSelected = controller.selectedDashboardTab.value == index;
+                        return GestureDetector(
+                          onTap: () => controller.changeTab(index),
+                          child: Container(
+                            padding: EdgeInsets.only(bottom: 20.h, right: 10.w, left: 10.w,),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: isSelected
+                                      ? AppColors.yellow1
+                                      : Colors.transparent,
+                                  width: 4.h,
+                                ),
                               ),
                             ),
+                            child: CustomText(
+                              text: controller.tabs[index],
+                              fontSize: 14,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                              color: Colors.white,
+                            ),
                           ),
-                          child: CustomText(
-                            text: controller.tabs[index],
-                            fontSize: 14,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 20.h),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Obx(() {
-                    // TAB - 00
-                    if (controller.selectedDashboardTab.value == 0) {
-                      //Eligibility Results
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: "Eligibility Results",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 20.h),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10.h),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.primary1,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color(0xFFDBEAFE),
+              SizedBox(height: 20.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
+                    child: Obx(() {
+                      // TAB - 00
+                      if (controller.selectedDashboardTab.value == 0) {
+                        //Eligibility Results
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Eligibility Results",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                              textAlign: TextAlign.start,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      CustomNetworkImage(
-                                        imageUrl:
-                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png",
-                                        height: 20,
-                                        width: 40,
-                                      ),
-                                      SizedBox(width: 20),
-                                      Column(
-                                        children: [
-                                          CustomText(
-                                            text: "Canada",
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
+                            SizedBox(height: 20.h),
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 10.h),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.primary1,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xFFDBEAFE),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CustomNetworkImage(
+                                          imageUrl:
+                                          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png",
+                                          height: 20,
+                                          width: 40,
+                                        ),
+                                        SizedBox(width: 20),
+                                        Column(
+                                          children: [
+                                            CustomText(
+                                              text: "Canada",
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.primary1,
+                                            ),
+                                            CustomText(
+                                              text: "Top Match",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.black,
+                                            ),
+                                          ],
+                                        ),
+                                        Spacer(),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 15,
+                                            vertical: 8,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              50,
+                                            ),
+                                            color: AppColors.yellow1,
+                                          ),
+                                          child: Center(
+                                            child: CustomText(
+                                              text: "92%",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.primary1,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CustomText(
+                                              text: "Eligibility Score",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              color: AppColors.primary1,
+                                            ),
+                                            CustomText(
+                                              text:
+                                              "${controller.successScoreRate.value.toInt()}/100",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              color: AppColors.primary1,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: LinearProgressIndicator(
+                                            value:
+                                            controller
+                                                .successScoreRate
+                                                .value /
+                                                100,
+                                            minHeight: 12,
+                                            backgroundColor: AppColors.grey_1,
                                             color: AppColors.primary1,
                                           ),
-                                          CustomText(
-                                            text: "Top Match",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.black,
-                                          ),
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 15,
-                                          vertical: 8,
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            50,
-                                          ),
-                                          color: AppColors.yellow1,
-                                        ),
-                                        child: Center(
-                                          child: CustomText(
-                                            text: "92%",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: AppColors.primary1,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    CustomButton(
+                                      onTap: () {},
+                                      title: "View Details",
+                                      textColor: AppColors.primary1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                            CustomText(
+                              text: "Other Recommendations",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 20.h),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: CustomCountryProgressCar(
+                                    valueScore: " 85",
+                                    title: index == 1 ? "Australia" : "Canada",
+                                    subTitle: "Top Match",
+                                    img: index == 0
+                                        ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png"
+                                        : null,
                                   ),
-                                  SizedBox(height: 20),
-                                  Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          CustomText(
-                                            text: "Eligibility Score",
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            color: AppColors.primary1,
-                                          ),
-                                          CustomText(
-                                            text:
-                                                "${controller.successScoreRate.value.toInt()}/100",
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14,
-                                            color: AppColors.primary1,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: LinearProgressIndicator(
-                                          value:
-                                              controller
-                                                  .successScoreRate
-                                                  .value /
-                                              100,
-                                          minHeight: 12,
-                                          backgroundColor: AppColors.grey_1,
-                                          color: AppColors.primary1,
-                                        ),
-                                      ),
-                                    ],
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                      // TAB - 01
+                      else if (controller.selectedDashboardTab.value == 1) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Booked Consultations",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 20.h),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: BookConsultationCard(
+                                    title: index == 1 ? "John Robertson" : null,
+                                    subTitle: "Visa Consultant - Australia",
+                                    img: AppConstants.profileImage2,
+                                    isBooked: index == 1 ? true : false,
+                                    onTapViewDetails: () {
+                                      Get.toNamed(
+                                        AppRoutes.consultProfileViewDetails,
+                                      );
+                                    },
+                                    onTapBookNow: () {
+                                      Get.to(ConsultBookScreen());
+                                    },
                                   ),
-                                  SizedBox(height: 20),
-                                  CustomButton(
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      } else if (controller.selectedDashboardTab.value == 2) {
+                        return Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Saved Countries",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
+                                  textAlign: TextAlign.start,
+                                ),
+                                SizedBox(height: 10.h),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: 2,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 10),
+                                      child: CountryVisaCard(
+                                        title: index == 1
+                                            ? "Australia"
+                                            : "Canada",
+                                        img: null,
+                                        subTitle: 'Independent',
+                                        description:
+                                        'Points-based system. Great lifestyle and career opportunities.',
+                                        matchPercent: '72',
+                                        tagText: index == 1
+                                            ? 'Fast Track'
+                                            : "High Demand",
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          children: [
+                            CustomText(
+                              text: "Payments", //PaymentCard
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 20.h),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: 2,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: PaymentCard(
+                                    subTitle: "Visa Consultant - Australia",
+                                    title: 'Document Review',
+                                    date: 'Dec 24, 2025',
+                                    price: '150',
+                                    isPaid: index == 1 ? true : false,
                                     onTap: () {},
-                                    title: "View Details",
-                                    textColor: AppColors.primary1,
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 20.h),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(16.w),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFF0FDF4),
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(
+                                  color: const Color(0xFFC8E6C9),
+                                  width: 1.w,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.03),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomText(
+                                    text: "Total Paid",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                  CustomText(
+                                    text: "\$150",
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(height: 20.h),
-                          CustomText(
-                            text: "Other Recommendations",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: CustomCountryProgressCar(
-                                  valueScore: " 85",
-                                  title: index == 1 ? "Australia" : "Canada",
-                                  subTitle: "Top Match",
-                                  img: index == 0
-                                      ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png"
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    }
-                    // TAB - 01
-                    else if (controller.selectedDashboardTab.value == 1) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(
-                            text: "Booked Consultations",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: BookConsultationCard(
-                                  title: index == 1 ? "John Robertson" : null,
-                                  subTitle: "Visa Consultant - Australia",
-                                  img: AppConstants.profileImage2,
-                                  isBooked: index == 1 ? true : false,
-                                  onTapViewDetails: () {
-                                    Get.toNamed(
-                                      AppRoutes.consultProfileViewDetails,
-                                    );
-                                  },
-                                  onTapBookNow: () {
-                                    Get.to(ConsultBookScreen());
-                                  },
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    } else if (controller.selectedDashboardTab.value == 2) {
-                      return Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "Saved Countries",
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary1,
-                                textAlign: TextAlign.start,
-                              ),
-                              SizedBox(height: 10.h),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: CountryVisaCard(
-                                      title: index == 1
-                                          ? "Australia"
-                                          : "Canada",
-                                      img: null,
-                                      subTitle: 'Independent',
-                                      description:
-                                          'Points-based system. Great lifestyle and career opportunities.',
-                                      matchPercent: '72',
-                                      tagText: index == 1
-                                          ? 'Fast Track'
-                                          : "High Demand",
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          CustomText(
-                            text: "Payments", //PaymentCard
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: PaymentCard(
-                                  subTitle: "Visa Consultant - Australia",
-                                  title: 'Document Review',
-                                  date: 'Dec 24, 2025',
-                                  price: '150',
-                                  isPaid: index == 1 ? true : false,
-                                  onTap: () {},
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF0FDF4),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: const Color(0xFFC8E6C9),
-                                width: 1.w,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.03),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  text: "Total Paid",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black,
-                                ),
-                                CustomText(
-                                  text: "\$150",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  }),
+                          ],
+                        );
+                      }
+                    }),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          );
+          }),
+    ));
   }
 }

@@ -148,14 +148,12 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loginEmailController.value.text =
-        "mefile5102@feriwor.com"; //"az0001@atomicmail.io" . p :   123123  / cakogib116@devlug.com
+    loginEmailController.value.text = "mefile5102@feriwor.com"; //"az0001@atomicmail.io" . p :   123123  / cakogib116@devlug.com
     loginPasswordController.value.text = "1234567";
   }
 
   Rx<TextEditingController> loginEmailController = TextEditingController().obs;
-  Rx<TextEditingController> loginPasswordController =
-      TextEditingController().obs;
+  Rx<TextEditingController> loginPasswordController = TextEditingController().obs;
   Future<void> loginUser() async {
     loginLoading.value = true;
 
@@ -167,14 +165,9 @@ class AuthController extends GetxController {
     try {
       var response = await ApiClient.postData(ApiUrl.signIn, jsonEncode(body));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Map<String, dynamic> jsonResponse = response.body is String
-            ? jsonDecode(response.body)
-            : response.body;
+        Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body;
 
-        showCustomSnackBar(
-          jsonResponse['message'] ?? "Login successful",
-          isError: false,
-        );
+        showCustomSnackBar(jsonResponse['message'] ?? "Login successful", isError: false,);
 
         // Access Token
         var dataMap = jsonResponse['data'] as Map<String, dynamic>;
