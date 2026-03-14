@@ -21,10 +21,15 @@ class ApiUrl {
   static const String myProfile = "/auth/me";
   static const String updateProfile = "/users/update-user";
 
-  static const String googleAuth = "/api/v1/user/google_auth";
 
-  ///========================= Host =========================
-  static const String createEvent = "/api/v1/event/create_event";
+  ///========================= User =========================
+  static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
+  static String getSingleCountry({required String country}) => "countries/$country";
+
+
+
+
+  static const String event = "/api/v1/event/create_event";
   static String updateEvent({required String eventId}) =>
       "/api/v1/event/update_event/$eventId";
   static String allHostEvent({required int page}) =>

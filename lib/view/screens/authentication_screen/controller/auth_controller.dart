@@ -148,8 +148,8 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loginEmailController.value.text = "mefile5102@feriwor.com"; //"az0001@atomicmail.io" . p :   123123  / cakogib116@devlug.com
-    loginPasswordController.value.text = "1234567";
+    loginEmailController.value.text = "az0001@atomicmail.io"; //"az0001@atomicmail.io" . p :   123123  / cakogib116@devlug.com    // mefile5102@feriwor.com
+    loginPasswordController.value.text = "123123";
   }
 
   Rx<TextEditingController> loginEmailController = TextEditingController().obs;

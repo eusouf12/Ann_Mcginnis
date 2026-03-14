@@ -64,19 +64,6 @@ class CustomCountryCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
 
-            SizedBox(height: 4.h),
-
-            Text(
-              cityName ?? "Tokyo",
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.grey,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-
             SizedBox(height: 12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,26 +76,25 @@ class CustomCountryCard extends StatelessWidget {
                     color: AppColors.primary1,
                   ),
                 ),
-
                 // Rating
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star_rounded,
-                      color: Colors.amber,
-                      size: 16.sp,
-                    ),
-                    SizedBox(width: 4.w),
-                    Text(
-                      rating.toString(),
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Icon(
+                //       Icons.star_rounded,
+                //       color: Colors.amber,
+                //       size: 16.sp,
+                //     ),
+                //     SizedBox(width: 4.w),
+                //     Text(
+                //       rating.toString(),
+                //       style: TextStyle(
+                //         fontSize: 12.sp,
+                //         fontWeight: FontWeight.w500,
+                //         color: Colors.black87,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ],
