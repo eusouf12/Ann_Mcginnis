@@ -32,7 +32,19 @@ class CustomRequirementCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(5.w),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,18 +90,18 @@ class CustomRequirementCard extends StatelessWidget {
               child: Icon(Icons.star, color: Colors.amber, size: 20.sp),
             ),
 
-          if (isCompleted)
-            Padding(
-              padding: EdgeInsets.only(left: 8.w),
-              child: Container(
-                padding: EdgeInsets.all(2.w),
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.check, color: Colors.white, size: 12.sp),
-              ),
-            ),
+          // if (isCompleted)
+          //   Padding(
+          //     padding: EdgeInsets.only(left: 8.w),
+          //     child: Container(
+          //       padding: EdgeInsets.all(2.w),
+          //       decoration: const BoxDecoration(
+          //         color: Colors.green,
+          //         shape: BoxShape.circle,
+          //       ),
+          //       child: Icon(Icons.check, color: Colors.white, size: 12.sp),
+          //     ),
+          //   ),
         ],
       ),
     );

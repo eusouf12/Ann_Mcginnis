@@ -8,26 +8,27 @@ import '../../../../components/custom_text/custom_text.dart';
 class CustomVisaCard extends StatelessWidget {
   final String title;
   final String description;
+  final String duration;
   final IconData icon;
   final String type;
-  final Color typeColor;
-  final Color typeTextColor;
-  final VoidCallback onTap;
+  final Color? typeColor;
+  final Color? typeTextColor;
+  final VoidCallback? onTap;
 
   const CustomVisaCard({
     super.key,
     required this.title,
+    required this.duration,
     required this.description,
     this.icon = Icons.work,
-    required this.onTap, required this.type, required this.typeColor,
-    required this.typeTextColor,
+     this.onTap, required this.type,  this.typeColor,
+     this.typeTextColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 260,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -75,12 +76,11 @@ class CustomVisaCard extends StatelessWidget {
                   text: type,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: typeTextColor,
+                  color: typeTextColor ?? Colors.black,
                 ),
               ),
             ],
           ),
-
           SizedBox(height: 16.h),
 
           // 2. Title
@@ -91,7 +91,6 @@ class CustomVisaCard extends StatelessWidget {
             color: Colors.black,
             textAlign: TextAlign.start,
           ),
-
           SizedBox(height: 8.h),
 
           // 3. Description
@@ -100,24 +99,32 @@ class CustomVisaCard extends StatelessWidget {
             fontSize: 14,
             color: Colors.grey[600]!,
             textAlign: TextAlign.start,
-            maxLines: 3,
+            maxLines: 10,
             fontWeight: FontWeight.w400,
           ),
-
           SizedBox(height: 20.h),
 
-          // 4. Button
-          CustomButton(
-            onTap: () {
-
-            },
-            title: "Learn More",
+          // 4. duration
+          CustomText(
+            text: duration,
             fontSize: 14,
-             height: 48,
-            fontWeight: FontWeight.bold,
-            textColor: Colors.white,
-            fillColor: AppColors.yellow1,
+            color: Colors.grey[600]!,
+            textAlign: TextAlign.start,
+            maxLines: 10,
+            fontWeight: FontWeight.w400,
           ),
+          // SizedBox(height: 20.h),
+          //
+          // // 4. Button
+          // CustomButton(
+          //   onTap: onTap,
+          //   title: "Learn More",
+          //   fontSize: 14,
+          //    height: 48,
+          //   fontWeight: FontWeight.bold,
+          //   textColor: Colors.white,
+          //   fillColor: AppColors.yellow1,
+          // ),
         ],
       ),
     );
