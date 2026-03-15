@@ -33,6 +33,7 @@ class UserDashboard extends StatelessWidget {
       userProfileController.getUserProfile();
       userDashboardController.getConsultants();
       userDashboardController.getBookedConsultants(loadMore: false);
+      userDashboardController.getSaveCountry(loadMore: false);
     });
     return CustomGradient(
       child: Scaffold(
@@ -454,45 +455,75 @@ class UserDashboard extends StatelessWidget {
                     }
                     // TAB - 03
                     else if (userDashboardController.selectedDashboardTab.value == 3) {
-                      return Column(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "Saved Countries",
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary1,
-                                textAlign: TextAlign.start,
-                              ),
-                              SizedBox(height: 10.h),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: 2,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: CountryVisaCard(
-                                      title: index == 1 ? "Australia" : "Canada",
-                                      img: null,
-                                      subTitle: 'Independent',
-                                      description: 'Points-based system. Great lifestyle and career opportunities.',
-                                      matchPercent: '72',
-                                      tagText: index == 1 ? 'Fast Track' : "High Demand",
-                                      onFavoriteTap: (){
-                                        userDashboardController.deleteSaveCountry(id: "");
-                                      },
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
+                      return Obx(() {
+
+                        if (userDashboardController.rxSavedCountryStatus.value == Status.loading && userDashboardController.savedCountryList.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+
+                        if (userDashboardController.savedCountryList.isEmpty) {
+                          return const Center(
+                            child: Padding(padding: EdgeInsets.only(top: 50),
+                              child: CustomText(text: "No saved countries found", fontSize: 16,),
+                            ),
+                          );
+                        }
+
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+
+                            if (!userDashboardController.isSavedCountryLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.savedCountryCurrentPage < userDashboardController.savedCountryTotalPages) {
+                              userDashboardController.getSaveCountry(loadMore: true);
+                            }
+
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(text: "Saved Countries", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
+                                SizedBox(height: 10.h),
+
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: userDashboardController.savedCountryList.length,
+                                  itemBuilder: (context, index) {
+                                    final country = userDashboardController.savedCountryList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 10),
+                                      child: CountryVisaCard(
+                                        title: country.country ?? "",
+                                        img: country.imageUrl != null ? "${ApiUrl.imageUrl}${country.flagUrl}" : "",
+                                        subTitle: country.label ?? "",
+                                        description: "${country.visaTypes?.length ?? 0} visa options available",
+                                        matchPercent: "${country.score ?? 0}",
+                                        tagText: country.fastTrack == true ? "Fast Track" : (country.englishSpeaking == true ? "English Friendly" : "Standard"),
+
+                                        onFavoriteTap: () {
+                                          userDashboardController.deleteSaveCountry(id: country.id ?? "",);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                                if (userDashboardController.isSavedCountryLoadMore.value)
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Center(child: CustomLoader()),
+                                  ),
+
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
                           ),
-                        ],
-                      );
+                        );
+                      });
                     }
+                    //TAB-04
                     else {
                       return Column(
                         children: [

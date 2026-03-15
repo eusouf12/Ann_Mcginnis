@@ -66,7 +66,9 @@ class CountryVisaCard extends StatelessWidget {
               children: [
                 CustomNetworkImage(imageUrl:img?? "", height: 20, width: 40),
                 SizedBox(width: 20,),
-                Column(children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                   CustomText(text: title ?? "Canada", fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.primary1),
                   CustomText(text: subTitle ?? "Top Match",fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.black),
                 ]),
