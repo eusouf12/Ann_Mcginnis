@@ -93,7 +93,7 @@ class RecommendedCountriesScreen extends StatelessWidget {
 
                           return CustomCountryCard(
                             onTap: () {
-                              Get.toNamed(AppRoutes.countryDetailsScreen, arguments: country.country);
+                              Get.toNamed(AppRoutes.countryDetailsScreen, arguments: {"country": country.country, "id": country.id});
                             },
                             countryName: country.country ?? "",
                             imagePath: ApiUrl.imageUrl+"${country.imageUrl}",

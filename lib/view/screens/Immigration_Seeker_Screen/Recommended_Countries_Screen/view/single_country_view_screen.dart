@@ -73,10 +73,12 @@ class CountryDetailsScreen extends StatelessWidget {
   }
 
   final RecommendedCountriesController controller = Get.put(RecommendedCountriesController());
-  final countryName = Get.arguments;
+  final args = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    final String countryName = args["country"];
+    final String id = args["id"];
     debugPrint("Country Name: $countryName");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.getSingleCountry(country: countryName);
@@ -178,16 +180,16 @@ class CountryDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 15.w),
+                          //save later btn
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                controller.saveCountry(id: id);
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary1,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(8.r)),
-                                padding:
-                                EdgeInsets.symmetric(vertical: 12.h),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                                padding: EdgeInsets.symmetric(vertical: 12.h),
                               ),
                               child: const CustomText(
                                 text: "Save for Later",

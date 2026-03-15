@@ -160,5 +160,29 @@ class RecommendedCountriesController extends GetxController {
       isSingleCountryLoading.value = false;
     }
   }
+// ============ Single Country  ===========
+  final isSaveCountryLoading = false.obs;
+  Future<void> saveCountry({required String id}) async {
+    isSaveCountryLoading.value = true;
+
+    try {
+
+      final response = await ApiClient.postData(ApiUrl.saveCountry(id: id), null,);
+      final Map<String, dynamic>  jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+          showCustomSnackBar(jsonResponse["message"] ?? "Saved successfully",isError: false);
+      }
+      else{
+        showCustomSnackBar(jsonResponse["message"] ??"Failed to save country", isError: true,);
+      }
+
+    } catch (e) {
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+    } finally {
+      isSaveCountryLoading.value = false;
+
+    }
+  }
 
 }

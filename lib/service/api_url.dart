@@ -25,6 +25,7 @@ class ApiUrl {
   ///========================= User =========================
   static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
   static String getSingleCountry({required String country}) => "/countries/$country";
+  static String saveCountry({required String id}) => "/recommendations/save/$id";
 
 
 
