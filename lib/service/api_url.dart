@@ -26,6 +26,9 @@ class ApiUrl {
   static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
   static String getSingleCountry({required String country}) => "/countries/$country";
   static String saveCountry({required String id}) => "/recommendations/save/$id";
+  static String deleteCountry({required String id}) => "/recommendations/saved/$id";
+  static String getConsultants({required String page}) => "/users/all-consultants?page=$page&limit=10";
+  static String getBookedConsultants({required String page}) => "/bookings/my-bookings?page=$page&limit=10";
 
 
 

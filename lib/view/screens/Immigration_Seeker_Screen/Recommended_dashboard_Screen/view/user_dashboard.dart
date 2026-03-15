@@ -11,9 +11,11 @@ import 'package:get/get.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
+import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
 import '../../Immigration_Profile_screen/controller/user_profile_controller.dart';
+import '../../Recommended_Countries_Screen/controller/recomended_countries_controller.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
@@ -21,15 +23,16 @@ import '../../SetUp_Profile_Screen/model/custom_save_countries.dart';
 
 class UserDashboard extends StatelessWidget {
   UserDashboard({super.key});
-  final UserDashboardController controller = Get.put(UserDashboardController());
-  final UserProfileController userProfileController = Get.put(
-    UserProfileController(),
-  );
+  final UserDashboardController userDashboardController = Get.put(UserDashboardController());
+  final UserProfileController userProfileController = Get.put(UserProfileController(),);
+  final RecommendedCountriesController controller = Get.put(RecommendedCountriesController());
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userProfileController.getUserProfile();
+      userDashboardController.getConsultants();
+      userDashboardController.getBookedConsultants(loadMore: false);
     });
     return CustomGradient(
       child: Scaffold(
@@ -135,15 +138,14 @@ class UserDashboard extends StatelessWidget {
               // toggle tab
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Obx(
-                      () => Container(
+                child: Obx(() => Container(
                     padding: EdgeInsets.only(top: 20.h, left: 10.h, right: 10.h),
                     decoration: BoxDecoration(color: AppColors.primary1),
                     child: Row(
-                      children: List.generate(controller.tabs.length, (index) {
-                        bool isSelected = controller.selectedDashboardTab.value == index;
+                      children: List.generate(userDashboardController.tabs.length, (index) {
+                        bool isSelected = userDashboardController.selectedDashboardTab.value == index;
                         return GestureDetector(
-                          onTap: () => controller.changeTab(index),
+                          onTap: () => userDashboardController.changeTab(index),
                           child: Container(
                             padding: EdgeInsets.only(bottom: 20.h, right: 10.w, left: 10.w,),
                             decoration: BoxDecoration(
@@ -157,7 +159,7 @@ class UserDashboard extends StatelessWidget {
                               ),
                             ),
                             child: CustomText(
-                              text: controller.tabs[index],
+                              text: userDashboardController.tabs[index],
                               fontSize: 14,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                               color: Colors.white,
@@ -171,322 +173,397 @@ class UserDashboard extends StatelessWidget {
               ),
               SizedBox(height: 20.h),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    child: Obx(() {
-                      // TAB - 00
-                      if (controller.selectedDashboardTab.value == 0) {
-                        //Eligibility Results
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: "Eligibility Results",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary1,
-                              textAlign: TextAlign.start,
-                            ),
-                            SizedBox(height: 20.h),
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 10.h),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors.primary1,
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                                color: Color(0xFFDBEAFE),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  children: [
-                                    Row(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10,),
+                  child: Obx(() {
+                    // TAB - 00
+                    if (userDashboardController.selectedDashboardTab.value == 0)      {
+                      //Eligibility Results
+                      return Obx(() {
+                        if (controller.rxRecommendedStatus.value == Status.loading && controller.recommendedCountries.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+
+                        if (controller.recommendedCountries.isEmpty) {
+                          return const Center(child: CustomText(text: "No countries found", fontSize: 16));
+                        }
+                        final topCountry = controller.recommendedCountries.first;
+                        final otherCountries = controller.recommendedCountries.skip(1).toList();
+                        debugPrint("Full Image Path 2222: ${ApiUrl.imageUrl}${topCountry.flagUrl}");
+
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+                            if (!controller.isRecommendedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && controller.recommendedCurrentPage < controller.recommendedTotalPages) {
+                              controller.getRecommendedCountries(loadMore: true);
+                            }
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(text: "Eligibility Results", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1),
+                                SizedBox(height: 20.h),
+
+                                // --- TOP MATCH CARD ---
+                                Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: AppColors.primary1, width: 2),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xFFDBEAFE),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Column(
                                       children: [
-                                        CustomNetworkImage(
-                                          imageUrl:
-                                          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png",
-                                          height: 20,
-                                          width: 40,
-                                        ),
-                                        SizedBox(width: 20),
-                                        Column(
+                                        Row(
                                           children: [
-                                            CustomText(
-                                              text: "Canada",
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.primary1,
+                                            //flag
+                                            CustomNetworkImage(imageUrl: "${ApiUrl.imageUrl}${topCountry.flagUrl}", height: 20, width: 40),
+                                            const SizedBox(width: 15),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  CustomText(text: topCountry.country ?? "Unknown", fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.primary1),
+                                                  CustomText(text:  "Top Match", fontSize: 14, color: AppColors.black),
+                                                ],
+                                              ),
                                             ),
-                                            CustomText(
-                                              text: "Top Match",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.black,
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                color: AppColors.yellow1,
+                                              ),
+                                              child: CustomText(text: "${topCountry.score}%", fontSize: 14, fontWeight: FontWeight.bold),
                                             ),
                                           ],
                                         ),
-                                        Spacer(),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 15,
-                                            vertical: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              50,
-                                            ),
-                                            color: AppColors.yellow1,
-                                          ),
-                                          child: Center(
-                                            child: CustomText(
-                                              text: "92%",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.primary1,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Column(
-                                      children: [
+                                        const SizedBox(height: 20),
+                                        // Progress Bar for Top Country text
                                         Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            CustomText(
-                                              text: "Eligibility Score",
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              color: AppColors.primary1,
-                                            ),
-                                            CustomText(
-                                              text:
-                                              "${controller.successScoreRate.value.toInt()}/100",
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14,
-                                              color: AppColors.primary1,
-                                            ),
+                                            const CustomText(text: "Eligibility Score", fontSize: 14,color: AppColors.black,fontWeight: FontWeight.w600),
+                                            CustomText(text: "${topCountry.score}/100", fontSize: 14,color: AppColors.black,fontWeight: FontWeight.w600),
                                           ],
                                         ),
                                         const SizedBox(height: 10),
+                                        // Progress Bar
                                         ClipRRect(
                                           borderRadius: BorderRadius.circular(10),
-                                          child: LinearProgressIndicator(
-                                            value:
-                                            controller
-                                                .successScoreRate
-                                                .value /
-                                                100,
-                                            minHeight: 12,
-                                            backgroundColor: AppColors.grey_1,
-                                            color: AppColors.primary1,
+                                          child: LinearProgressIndicator(value: (topCountry.score ?? 0) / 100,
+                                            minHeight: 12, backgroundColor: AppColors.grey_1, color: AppColors.primary1,
                                           ),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomButton(
+                                            onTap: () {
+                                              Get.toNamed(AppRoutes.countryDetailsScreen, arguments: {"country": topCountry.country, "id": topCountry.id});
+                                            },
+                                            title: "View Details"
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 20),
-                                    CustomButton(
-                                      onTap: () {},
-                                      title: "View Details",
-                                      textColor: AppColors.primary1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 20.h),
-                            CustomText(
-                              text: "Other Recommendations",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary1,
-                              textAlign: TextAlign.start,
-                            ),
-                            SizedBox(height: 20.h),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: CustomCountryProgressCar(
-                                    valueScore: " 85",
-                                    title: index == 1 ? "Australia" : "Canada",
-                                    subTitle: "Top Match",
-                                    img: index == 0
-                                        ? "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png"
-                                        : null,
                                   ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                      // TAB - 01
-                      else if (controller.selectedDashboardTab.value == 1) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: "Booked Consultations",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary1,
-                              textAlign: TextAlign.start,
-                            ),
-                            SizedBox(height: 20.h),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: BookConsultationCard(
-                                    title: index == 1 ? "John Robertson" : null,
-                                    subTitle: "Visa Consultant - Australia",
-                                    img: AppConstants.profileImage2,
-                                    isBooked: index == 1 ? true : false,
-                                    onTapViewDetails: () {
-                                      Get.toNamed(
-                                        AppRoutes.consultProfileViewDetails,
-                                      );
-                                    },
-                                    onTapBookNow: () {
-                                      Get.to(ConsultBookScreen());
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        );
-                      } else if (controller.selectedDashboardTab.value == 2) {
-                        return Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomText(
-                                  text: "Saved Countries",
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primary1,
-                                  textAlign: TextAlign.start,
                                 ),
-                                SizedBox(height: 10.h),
+                                const SizedBox(height: 30),
+                                CustomText(text: "Other Recommendations", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1),
+                                const SizedBox(height: 20),
+
+                                // --- OTHER RECOMMENDATIONS LIST ---
                                 ListView.builder(
                                   shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: 2,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: otherCountries.length,
                                   itemBuilder: (context, index) {
+                                    final country = otherCountries[index];
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 10),
-                                      child: CountryVisaCard(
-                                        title: index == 1
-                                            ? "Australia"
-                                            : "Canada",
-                                        img: null,
-                                        subTitle: 'Independent',
-                                        description:
-                                        'Points-based system. Great lifestyle and career opportunities.',
-                                        matchPercent: '72',
-                                        tagText: index == 1
-                                            ? 'Fast Track'
-                                            : "High Demand",
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: CustomCountryProgressCar(
+                                        valueScore: "${country.score}",
+                                        title: country.country ?? "",
+                                        subTitle: country.label ?? "Recommendation",
+                                        img: country.flagUrl ?? "",
                                       ),
                                     );
                                   },
                                 ),
+
+
+                                if (controller.isRecommendedLoadMore.value)
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Center(child: CustomLoader()),
+                                  ),
                               ],
                             ),
-                          ],
+                          ),
                         );
-                      } else {
-                        return Column(
-                          children: [
-                            CustomText(
-                              text: "Payments", //PaymentCard
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary1,
-                              textAlign: TextAlign.start,
+                      });
+                    }
+                    // TAB - 01
+                    else if (userDashboardController.selectedDashboardTab.value == 1) {
+                      return Obx(() {
+                        if (userDashboardController.rxConsultantStatus.value == Status.loading && userDashboardController.consultantList.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+                        if (userDashboardController.consultantList.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: CustomText(text: "No consultants found", fontSize: 16),
                             ),
-                            SizedBox(height: 20.h),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: 2,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: PaymentCard(
-                                    subTitle: "Visa Consultant - Australia",
-                                    title: 'Document Review',
-                                    date: 'Dec 24, 2025',
-                                    price: '150',
-                                    isPaid: index == 1 ? true : false,
-                                    onTap: () {},
-                                  ),
-                                );
-                              },
-                            ),
-                            SizedBox(height: 20.h),
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(16.w),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFF0FDF4),
-                                borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                  color: const Color(0xFFC8E6C9),
-                                  width: 1.w,
+                          );
+                        }
+
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+                            if (!userDashboardController.isConsultantLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.consultantCurrentPage < userDashboardController.consultantTotalPages) {userDashboardController.getConsultants(loadMore: true);}
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Booked Consultations",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
                                 ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.03),
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 2),
+                                SizedBox(height: 20.h),
+
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: userDashboardController.consultantList.length,
+                                  itemBuilder: (context, index) {
+                                    final consultant = userDashboardController.consultantList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: BookConsultationCard(
+                                        title: consultant.userId?.fullname ?? "",
+                                        subTitle: consultant.businessName ?? "",
+                                        img: (consultant.userId?.avatar != null && consultant.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage, // Fallback image
+                                        isBooked: false,
+                                        onTapViewDetails: () {
+                                          Get.toNamed(
+                                            AppRoutes.consultProfileViewDetails,
+                                            arguments: consultant.id,
+                                          );
+                                        },
+                                        onTapBookNow: () {
+                                          Get.to(ConsultBookScreen());
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                                if (userDashboardController.isConsultantLoadMore.value)
+                                  const Padding(padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Center(child: CustomLoader(),),
                                   ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    text: "Total Paid",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                  CustomText(
-                                    text: "\$150",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ],
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                    }
+                    // TAB - 02
+                    else if (userDashboardController.selectedDashboardTab.value == 2) {
+                      return Obx(() {
+
+                        if (userDashboardController.rxBookedStatus.value == Status.loading && userDashboardController.bookedConsultants.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+
+                        if (userDashboardController.bookedConsultants.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: CustomText(
+                                text: "No bookings found",
+                                fontSize: 16,
                               ),
                             ),
-                          ],
+                          );
+                        }
+
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+
+                            if (!userDashboardController.isBookedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.bookedCurrentPage < userDashboardController.bookedTotalPages) {
+                              userDashboardController.getBookedConsultants(loadMore: true);
+                            }
+
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(text: "Booked Consultations", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
+                                SizedBox(height: 20.h),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: userDashboardController.bookedConsultants.length,
+                                  itemBuilder: (context, index) {
+                                    final booking = userDashboardController.bookedConsultants[index];
+                                    final consultant = booking.consultantId;
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: BookConsultationCard(
+                                        title: consultant?.userId?.fullname ?? "",
+                                        subTitle: consultant?.businessName ?? "",
+                                        img: (consultant?.userId?.avatar != null && consultant!.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
+                                        isBooked: true,
+                                        onTapViewDetails: () {
+                                          Get.toNamed(
+                                            AppRoutes.consultProfileViewDetails,
+                                            arguments: consultant?.id,
+                                          );
+                                        },
+                                        onTapBookNow: () {
+                                          Get.to(ConsultBookScreen());
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                                if (userDashboardController.isBookedLoadMore.value)
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Center(child: CustomLoader()),
+                                  ),
+
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
+                          ),
                         );
-                      }
-                    }),
-                  ),
+                      });
+                    }
+                    // TAB - 03
+                    else if (userDashboardController.selectedDashboardTab.value == 3) {
+                      return Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: "Saved Countries",
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary1,
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 10.h),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: 2,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: CountryVisaCard(
+                                      title: index == 1 ? "Australia" : "Canada",
+                                      img: null,
+                                      subTitle: 'Independent',
+                                      description: 'Points-based system. Great lifestyle and career opportunities.',
+                                      matchPercent: '72',
+                                      tagText: index == 1 ? 'Fast Track' : "High Demand",
+                                      onFavoriteTap: (){
+                                        userDashboardController.deleteSaveCountry(id: "");
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+                    else {
+                      return Column(
+                        children: [
+                          CustomText(
+                            text: "Payments", //PaymentCard
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary1,
+                            textAlign: TextAlign.start,
+                          ),
+                          SizedBox(height: 20.h),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: 2,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: PaymentCard(
+                                  subTitle: "Visa Consultant - Australia",
+                                  title: 'Document Review',
+                                  date: 'Dec 24, 2025',
+                                  price: '150',
+                                  isPaid: index == 1 ? true : false,
+                                  onTap: () {},
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFF0FDF4),
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: const Color(0xFFC8E6C9),
+                                width: 1.w,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.03),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(
+                                  text: "Total Paid",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
+                                ),
+                                CustomText(
+                                  text: "\$150",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.black,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  }),
                 ),
               ),
             ],

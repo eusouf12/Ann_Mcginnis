@@ -142,6 +142,7 @@ class CountryRecommendation {
   int? score;
   String? label;
   String? imageUrl;
+  String? flagUrl;
 
 
   CountryRecommendation({
@@ -155,6 +156,7 @@ class CountryRecommendation {
     this.score,
     this.label,
     this.imageUrl,
+    this.flagUrl,
   });
 
   factory CountryRecommendation.fromJson(Map<String, dynamic> json) {
@@ -167,7 +169,8 @@ class CountryRecommendation {
       fastTrack: json['fastTrack'],
       score: json['score'],
       label: json['label'],
-      imageUrl: json['imageUrl'],
+      imageUrl: json['imageUrl'] ?? "",
+      flagUrl: json['flagUrl'] ?? "",
       visaTypes: json['visaTypes'] != null ? List<String>.from(json['visaTypes']) : [],
     );
   }

@@ -53,7 +53,7 @@ class BookConsultationCard extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -79,33 +79,34 @@ class BookConsultationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: title ?? "Dr. Sarah Mitchell",
+                      text: title ?? "",
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.primary1, // অথবা Colors.black
+                      color: AppColors.primary1,
                       textAlign: TextAlign.start,
+                      maxLines: 5,
                     ),
                     SizedBox(height: 4.h),
                     CustomText(
-                      text: subTitle ?? "Immigration Specialist - Canada",
+                      text: subTitle ?? "",
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[600]!,
                       textAlign: TextAlign.start,
                     ),
-                    SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        Icon(Icons.calendar_month, size: 14.sp, color: Colors.grey[700]),
-                        SizedBox(width: 6.w),
-                        CustomText(
-                          text: "${date ?? 'Dec 12, 2024'} - ${time ?? '10:00 AM'}",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Colors.grey[800]!,
-                        ),
-                      ],
-                    )
+                   // SizedBox(height: 6.h),
+                    // Row(
+                    //   children: [
+                    //     Icon(Icons.calendar_month, size: 14.sp, color: Colors.grey[700]),
+                    //     SizedBox(width: 6.w),
+                    //     CustomText(
+                    //       text: "${date ?? 'Dec 12, 2024'} - ${time ?? '10:00 AM'}",
+                    //       fontWeight: FontWeight.w500,
+                    //       fontSize: 12,
+                    //       color: Colors.grey[800]!,
+                    //     ),
+                    //   ],
+                    // )
                   ],
                 ),
               ),

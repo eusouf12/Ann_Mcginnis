@@ -64,30 +64,17 @@ class CountryVisaCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomNetworkImage(imageUrl:img?? "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png", height: 20, width: 40),
+                CustomNetworkImage(imageUrl:img?? "", height: 20, width: 40),
                 SizedBox(width: 20,),
                 Column(children: [
-                  CustomText(
-                      text: title ?? "Canada",
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primary1
-                  ),
-                  CustomText(
-                      text: subTitle ?? "Top Match",fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black
-                  ),
+                  CustomText(text: title ?? "Canada", fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.primary1),
+                  CustomText(text: subTitle ?? "Top Match",fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.black),
                 ]),
                 Spacer(),
                 // Favorite Heart Icon
                 GestureDetector(
                   onTap: onFavoriteTap,
-                  child: Icon(
-                    isFavorite==false ? Icons.favorite : Icons.favorite_border,
-                    color: const Color(0xFF1565C0),
-                    size: 24.sp,
-                  ),
+                  child: Icon(isFavorite==false ? Icons.favorite : Icons.favorite_border, color: const Color(0xFF1565C0), size: 24.sp,),
                 ),
               ],
             ),

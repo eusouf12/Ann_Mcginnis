@@ -1,3 +1,4 @@
+import 'package:ann_mcginnis/service/api_url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
@@ -38,21 +39,23 @@ class CustomCountryProgressCar extends StatelessWidget {
       child: Column(
         children: [
           Row(children: [
-            CustomNetworkImage(imageUrl:img?? "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/2560px-Flag_of_Australia.svg.png", height: 20, width: 40),
+            CustomNetworkImage(imageUrl: ApiUrl.imageUrl+"${img ??""}", height: 20, width: 40),
             SizedBox(width: 20,),
-            Column(children: [
-              CustomText(
-                  text: title ?? "Canada",
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary1
-              ),
-              CustomText(
-                  text: subTitle ?? "Top Match",fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.black
-              ),
-            ]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                      text: title ?? "Canada",
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary1
+                  ),
+                  CustomText(
+                      text: subTitle ?? "Top Match",fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.black
+                  ),
+                ]),
             Spacer(),
             CustomText(
               text: "${valueScore ?? "85"}%",
@@ -66,7 +69,7 @@ class CustomCountryProgressCar extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
-              value: int.parse(valueScore ?? "50")/100,
+              value: int.parse(valueScore ?? "0")/100,
               minHeight: 12,
               backgroundColor: AppColors.grey_1,
               color: AppColors.primary1,
