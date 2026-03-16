@@ -13,6 +13,7 @@ import '../../view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/recommended_countries_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_Countries_Screen/view/single_country_view_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Recommended_dashboard_Screen/view/user_dashboard.dart';
+import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/legal_advice_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/set_up_profile_screen_1.dart';
 import '../../view/screens/Immigration_Seeker_Screen/message_screen/view/chat_list_screen.dart';
 import '../../view/screens/authentication_screen/forgot_screen/forgot_screen.dart';
@@ -59,6 +60,7 @@ class AppRoutes {
   static const String userHelpSupport = "/UserHelpSupport";
   static const String chatListScreen = "/ChatListScreen";
   static const String consultProfileViewDetails = "/ConsultProfileViewDetails";
+  static const String legalAdviceScreen = "/LegalAdviceScreen";
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
@@ -95,6 +97,7 @@ class AppRoutes {
     GetPage(name: userHelpSupport, page: () => ImmigrationHelpSupport()),
     GetPage(name: chatListScreen, page: () => ChatListScreen()),
     GetPage(name: consultProfileViewDetails, page: () => ConsultProfileViewDetails()),
+    GetPage(name: legalAdviceScreen, page: () => LegalAdviceScreen()),
 
     ///=============================== Consultant ======================================
     GetPage(name: consultantDashboard, page: () => ConsultantDashboard()),

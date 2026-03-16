@@ -1,8 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
 
 class SetupProfileController extends GetxController {
   final Rx<File?> selectedImage = Rx<File?>(null);
@@ -26,20 +33,55 @@ class SetupProfileController extends GetxController {
   }
 
   // Step 1 Controllers
-  final fullNameController = TextEditingController().obs;
-  var selectedAgeRange = "".obs;
-  var selectedCountry = "".obs;
+  final nationalityController = TextEditingController().obs;
+  var selectedEnglishProficiency = "".obs;
+  var selectedIeltsScore = TextEditingController().obs;
+  var selectedToeflScore = TextEditingController().obs;
 
-  final List<String> ageRanges = ["10-15","16-25", "26-35", "36-45", "46+"];
+  final List<String> englishProficiencyRanges = ["basic","conversational", "fluent", "native", "Advanced"];
 
   String? validateName(String? value) {
     if (value == null || value.isEmpty) return "This field is required";
     return null;
   }
+  String? validateIeltsScore(String value) {
+
+    if (value.isEmpty) {
+      return "Please enter IELTS score";
+    }
+
+    final score = double.tryParse(value);
+
+    if (score == null) {
+      return "Enter a valid number";
+    }
+
+    if (score < 0 || score > 9) {
+      return "IELTS score must be between 0 and 9";
+    }
+
+    return null;
+  }
+  String? validateToeflScore(String value) {
+
+    if (value.isEmpty) {
+      return "Please enter TOEFL score";
+    }
+
+    final score = int.tryParse(value);
+
+    if (score == null) {
+      return "Enter a valid number";
+    }
+
+    if (score < 0 || score > 120) {
+      return "TOEFL score must be between 0 and 120";
+    }
+
+    return null;
+  }
 
   // Step 2 Controllers
-  final firstNameController = TextEditingController().obs;
-  final lastNameController = TextEditingController().obs;
   final fieldOfStudyController = TextEditingController().obs;
   final graduationYearController = TextEditingController().obs;
   final achievementsController = TextEditingController().obs;
@@ -67,6 +109,7 @@ class SetupProfileController extends GetxController {
   var selectedCareerFields = <String>[].obs;
   var hasManagementExperience = false.obs;
   final workHistoryController = TextEditingController();
+  var selectedTotalWorkExperienceYears = TextEditingController().obs;
 
   final List<String> occupationList = [
     "Student",
@@ -103,6 +146,9 @@ class SetupProfileController extends GetxController {
 
   // ================= Step 4: Criminal History Variables =================
   var hasCriminalHistory = "".obs;
+  var hasCriminalHistoryResolved = "".obs;
+  var selectedSeverity = "".obs;
+  final List<String> severityRanges = ["minor","moderate", "serious",];
 
   // ================= Step 5: Financial Information Variables =================
   final netWorthController = TextEditingController();
@@ -165,6 +211,101 @@ class SetupProfileController extends GetxController {
   void decrementPets() {
     if (numberOfPets.value > 1) {
       numberOfPets.value--;
+    }
+  }
+
+  //=========== Set Profile ==============
+  final isSetupProfileLoading = false.obs;
+  final rxSetupProfileStatus = Status.loading.obs;
+  void setSetupProfileStatus(Status status) => rxSetupProfileStatus.value = status;
+
+  Future<void> setupUserProfile() async {
+
+    isSetupProfileLoading.value = true;
+    setSetupProfileStatus(Status.loading);
+
+    try {
+
+      Map<String, dynamic> body = {
+
+        "nationality": nationalityController.value.text.trim(),
+        "fieldOfStudy": fieldOfStudyController.value.text.trim(),
+        "yearOfGraduation": int.tryParse(graduationYearController.value.text) ?? 0,
+        "certifications": certificates,
+        "englishProficiency": selectedEnglishProficiency.value,
+        "ieltsScore": double.tryParse(selectedIeltsScore.value.text) ?? 0,
+        "toeflScore": int.tryParse(selectedToeflScore.value.text) ?? 0,
+        "criminalHistory": {
+          "hasRecord": hasCriminalHistory.value == "Yes",
+          "severity": selectedSeverity.value,
+          "resolved": hasCriminalHistoryResolved.value == "Yes",
+        },
+        "currentOccupation": currentOccupation.value ?? "",
+        "remoteWorkStatus": remoteWorkStatus.value == "Yes",
+        "careerFields": selectedCareerFields,
+        "hasManagementExperience": hasManagementExperience.value,
+        "totalWorkExperienceYears": int.tryParse(selectedTotalWorkExperienceYears.value.text) ?? 0,
+        "workHistoryNotes": workHistoryController.text,
+        "netWorth": int.tryParse(netWorthController.text) ?? 0,
+        "lengthOfStay": selectedDuration.value ?? "",
+        "isRetired": isRetired.value,
+        "hasBusinessExperience": hasBusinessExperience.value,
+        "internationalAchievements": selectedAchievements,
+        "travelingWithPets": isTravelingWithPets.value,
+        "petType": selectedPetType.value ?? "",
+        "numberOfPets": numberOfPets.value,
+        "petDetails": petDetailsController.text,
+      };
+
+      final response = await ApiClient.postData(ApiUrl.setupUserProfile, jsonEncode(body),);
+
+      final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        recommendationsCountries();
+
+        Get.offAllNamed(AppRoutes.legalAdviceScreen);
+        showCustomSnackBar(jsonResponse["message"] ?? "Profile setup successful", isError: false,);
+        setSetupProfileStatus(Status.completed);
+
+
+      } else {
+        setSetupProfileStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to setup profile", isError: true,);
+      }
+
+    } catch (e) {
+      setSetupProfileStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+
+      isSetupProfileLoading.value = false;
+
+    }
+  }
+
+  final isRecommendationsCountriesLoading = false.obs;
+  Future<void> recommendationsCountries() async {
+    isRecommendationsCountriesLoading.value = true;
+
+    try {
+
+      final response = await ApiClient.postData(ApiUrl.recommendationsCountries, null,);
+      final Map<String, dynamic>  jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(jsonResponse["message"] ?? "Saved successfully",isError: false);
+      }
+      else{
+        showCustomSnackBar(jsonResponse["message"] ??"Failed to save country", isError: true,);
+      }
+
+    } catch (e) {
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+    } finally {
+      isRecommendationsCountriesLoading.value = false;
+
     }
   }
 

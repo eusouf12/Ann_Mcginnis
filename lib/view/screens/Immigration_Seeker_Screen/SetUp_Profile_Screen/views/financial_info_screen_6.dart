@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
+import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/setup_profile_controller.dart';
@@ -214,20 +215,26 @@ class SetUpProfileScreen6 extends StatelessWidget {
             SizedBox(height: 30.h),
 
             // Continue Button
-            CustomButton(
-              onTap: () {
-                // Print Data
-                print("Traveling with Pets: ${controller.isTravelingWithPets.value}");
-                print("Pet Type: ${controller.selectedPetType.value}");
-                print("Number of Pets: ${controller.numberOfPets.value}");
-                print("Details: ${controller.petDetailsController.text}");
 
-               Get.to(LegalAdviceScreen());
-              },
-              title: "Continue",
-              fillColor: const Color(0xFFFBB03B),
-              textColor: Colors.white,
-            ),
+            Obx(() {
+              return controller.isSetupProfileLoading.value ?
+              CustomLoader()
+                  :
+              CustomButton(
+                onTap: () {
+                  // Print Data
+                  print("Traveling with Pets: ${controller.isTravelingWithPets.value}");
+                  print("Pet Type: ${controller.selectedPetType.value}");
+                  print("Number of Pets: ${controller.numberOfPets.value}");
+                  print("Details: ${controller.petDetailsController.text}");
+                  controller.setupUserProfile();
+                },
+                title: "Continue",
+                fillColor: const Color(0xFFFBB03B),
+                textColor: Colors.white,
+              );
+            }),
+
             SizedBox(height: 20.h),
           ],
         ),

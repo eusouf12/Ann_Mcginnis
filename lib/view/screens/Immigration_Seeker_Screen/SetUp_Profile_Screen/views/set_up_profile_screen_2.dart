@@ -52,25 +52,6 @@ class SetUpProfileScreen2 extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomFormCard(
-                      title: "First Name",
-                      hintText: "Enter your first name",
-                      controller: controller.firstNameController.value,
-                      titleColor: Colors.black,
-                      fieldBorderColor: Colors.grey.shade300,
-                      fillBorderRadius: 12,
-                      // validator: (v) => controller.validateRequired(v),
-                    ),
-                    // Last Name
-                    CustomFormCard(
-                      title: "Last Name",
-                      hintText: "Enter your last name",
-                      controller: controller.lastNameController.value,
-                      titleColor: Colors.black,
-                      fieldBorderColor: Colors.grey.shade300,
-                      fillBorderRadius: 12,
-                      // validator: (v) => controller.validateRequired(v),
-                    ),
                     // Field of Study
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

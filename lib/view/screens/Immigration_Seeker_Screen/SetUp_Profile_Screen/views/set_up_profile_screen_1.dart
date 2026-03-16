@@ -53,64 +53,50 @@ class SetUpProfileScreen1 extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 30.h),
+                      //Nationality
                       CustomFormCard(
-                        title: "Full Name",
+                        title: "Nationality",
                         titleColor: Colors.black,
-                        hintText: "Enter your Full name",
-                        controller: setupProfileController.fullNameController.value,
+                        hintText: "Enter your nationality",
+                        controller: setupProfileController.nationalityController.value,
                         fieldBorderColor: Colors.grey.shade300,
                         inputTextColor: Colors.black,
                         curserColor: AppColors.primary,
                         fillBorderRadius: 12,
-                        validator: (value) => setupProfileController.validateName(setupProfileController.fullNameController.value.text),                      ),
-                      CustomText(text: "Age Range", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
+                        validator: (value) => setupProfileController.validateName(setupProfileController.nationalityController.value.text),                      ),
+                      //
+                      CustomText(text: "EnglishProficiency", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
                       Obx(() => _buildDropdown(
-                        hint: "Select your age range",
-                        value: setupProfileController.selectedAgeRange.value.isEmpty ? null : setupProfileController.selectedAgeRange.value,
-                        items: setupProfileController.ageRanges,
-                        onChanged: (val) => setupProfileController.selectedAgeRange.value = val!,
+                        hint: "Select your englishProficiency",
+                        value: setupProfileController.selectedEnglishProficiency.value.isEmpty ? null : setupProfileController.selectedEnglishProficiency.value,
+                        items: setupProfileController.englishProficiencyRanges,
+                        onChanged: (val) => setupProfileController.selectedEnglishProficiency.value = val!,
                       )),
                       SizedBox(height: 15.h),
-                      CustomText(text: "Country of Origin", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
-                      Obx(() => InkWell(
-                        onTap: () {
-                          showCountryPicker(
-                            context: context,
-                            showPhoneCode: false,
-                            onSelect: (Country country) {
-                              setupProfileController.selectedCountry.value = country.name;
-                            },
-                            countryListTheme: CountryListThemeData(
-                              borderRadius: BorderRadius.circular(20),
-                              inputDecoration: InputDecoration(
-                                hintText: 'Search country',
-                                prefixIcon: const Icon(Icons.search),
-                                border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey.shade300)),
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                text: setupProfileController.selectedCountry.value.isEmpty
-                                    ? "Select your country"
-                                    : setupProfileController.selectedCountry.value,
-                                color: setupProfileController.selectedCountry.value.isEmpty ? Colors.grey : Colors.black,
-                                fontSize: 14,
-                              ),
-                              const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                            ],
-                          ),
-                        ),
-                      )),
+                      //IeltsScore
+                      CustomFormCard(
+                        title: "Ielts Score",
+                        titleColor: Colors.black,
+                        hintText: "Enter your ieltsScore(0-9)",
+                        controller: setupProfileController.selectedIeltsScore.value,
+                        fieldBorderColor: Colors.grey.shade300,
+                        inputTextColor: Colors.black,
+                        curserColor: AppColors.primary,
+                        fillBorderRadius: 12,
+                        validator: (value) =>setupProfileController.validateIeltsScore(value ?? ""),                      ),
+                      //toeflScore
+                      CustomFormCard(
+                        title: "Toefl Score",
+                        titleColor: Colors.black,
+                        hintText: "Enter your toeflScore(0-120)",
+                        controller: setupProfileController.selectedToeflScore.value,
+                        fieldBorderColor: Colors.grey.shade300,
+                        inputTextColor: Colors.black,
+                        curserColor: AppColors.primary,
+                        fillBorderRadius: 12,
+                        validator: (value) => setupProfileController.validateToeflScore(value ?? ""
+                        ),                        ),
+
                     ],
                   ),
                 ),
@@ -119,11 +105,8 @@ class SetUpProfileScreen1 extends StatelessWidget {
                 // Continue Button
                 CustomButton(
                   onTap: () {
-                    // if (formKey.currentState!.validate()) {
-                    //   showCustomSnackBar("Error, Please select age and country",isError: true);
-                    // }
                     if (formKey.currentState!.validate()) {
-                      debugPrint("Name: ${setupProfileController.fullNameController.value.text}, Age: ${setupProfileController.selectedAgeRange.value}, country: ${setupProfileController.selectedCountry.value}");
+                      debugPrint("Name: ${setupProfileController.nationalityController.value.text}, englishProficiency: ${setupProfileController.selectedEnglishProficiency.value}");
                       Get.to(SetUpProfileScreen2());
                     }
                   },

@@ -129,8 +129,56 @@ class SetUpProfileScreen4 extends StatelessWidget {
                     ],
                   )),
                   SizedBox(height: 20.h),
+                  CustomText(text: "Severity", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
+                  Obx(() => _buildDropdown(
+                    hint: "Select your Severity",
+                    value: controller.selectedSeverity.value.isEmpty ? null : controller.selectedSeverity.value,
+                    items: controller.severityRanges,
+                    onChanged: (val) => controller.selectedSeverity.value = val!,
+                  )),
+                  SizedBox(height: 15.h),
+                  //hasCriminalHistoryResolved
+                  Row(
+                    children: [
+                      const CustomText(
+                        text: "Has your criminal history been resolved? ",
+                        fontSize: 14,color: Colors.black, fontWeight: FontWeight.w500,
+                      ),
+                      const CustomText(
+                        text: "*",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15.h),
 
-                  // 4. Grey Lock/Security Box
+                  // 4. Yes/No Selection Cards
+                  Obx(() => Row(
+                    children: [
+                      Expanded(
+                        child: _buildSelectionCard(
+                          title: "Yes",
+                          value: "Yes",
+                          groupValue: controller.hasCriminalHistoryResolved.value,
+                          onChanged: (val) => controller.hasCriminalHistoryResolved.value = val,
+                        ),
+                      ),
+                      SizedBox(width: 15.w),
+                      Expanded(
+                        child: _buildSelectionCard(
+                          title: "No",
+                          value: "No",
+                          groupValue: controller.hasCriminalHistoryResolved.value,
+                          onChanged: (val) => controller.hasCriminalHistoryResolved.value = val,
+                        ),
+                      ),
+                    ],
+                  )),
+                  SizedBox(height: 15.h),
+
+                  // 5. Grey Lock/Security Box
                   Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
@@ -230,6 +278,25 @@ class SetUpProfileScreen4 extends StatelessWidget {
               color: Colors.black87,
             ),
           ],
+        ),
+      ),
+    );
+  }
+  Widget _buildDropdown({required String hint, String? value, required List<String> items, required Function(String?) onChanged}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          isExpanded: true,
+          hint: CustomText(text: hint, color: Colors.grey, fontSize: 14),
+          icon: const Icon(Icons.keyboard_arrow_down),
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          onChanged: onChanged,
         ),
       ),
     );

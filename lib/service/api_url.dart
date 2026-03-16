@@ -21,7 +21,7 @@ class ApiUrl {
   static const String changePassword = "/auth/change-password";
   static const String myProfile = "/auth/me";
   static const String updateProfile = "/users/update-user";
-
+  static const String setupUserProfile = "/users/user-profile-complete";
 
 
   ///========================= User =========================
@@ -33,6 +33,8 @@ class ApiUrl {
   static String getBookedConsultants({required String page}) => "/bookings/my-bookings?page=$page&limit=10";
   static String getSaveCountry({required String page}) => "/recommendations/saved?page=$page&limit=10";
   static String getSingleConsultant({required String id}) => "/users/consultant/$id";
+  static const String recommendationsCountries = "/recommendations/generate";
+
 
 
 

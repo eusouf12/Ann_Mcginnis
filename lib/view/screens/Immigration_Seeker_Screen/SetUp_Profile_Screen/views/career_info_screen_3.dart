@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
+import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/setup_profile_controller.dart';
@@ -147,6 +148,16 @@ class CareerInfoScreen3 extends StatelessWidget {
                       },
                     )),
                     SizedBox(height: 20.h),
+                    CustomFormCard(
+                      title: "Experience Years",
+                      titleColor: Colors.black,
+                      hintText: "Enter your experience years",
+                      controller: controller.selectedTotalWorkExperienceYears.value,
+                      fieldBorderColor: Colors.grey.shade300,
+                      inputTextColor: Colors.black,
+                      curserColor: AppColors.primary,
+                      fillBorderRadius: 12,
+                      validator: (value) => controller.validateName(controller.selectedTotalWorkExperienceYears.value.text),                      ),
 
                     // 5. Work History Notes (Text Area)
                     CustomText(
