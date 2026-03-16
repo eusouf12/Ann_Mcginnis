@@ -1,5 +1,6 @@
 import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_Profile_screen/Immigration_Profile_screen.dart';
 import 'package:get/get.dart';
+import '../../view/screens/Consultant/consult_SetUp_profile/view/consult_setup_screen_1.dart';
 import '../../view/screens/Consultant/consultant_dashboard_screen/view/booking_details.dart';
 import '../../view/screens/Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/consult_profile_view_details.dart';
@@ -43,7 +44,7 @@ class AppRoutes {
   static const String singleView = "/SingleView";
 
   ///===========================Immigration Seeker==========================
-  static const String setUpProfileScreen = "/SetUpProfileScreen";
+  static const String setUpProfileScreen1 = "/SetUpProfileScreen1";
   static const String recommendedCountriesScreen = "/RecommendedCountriesScreen";
   static const String countryDetailsScreen = "/CountryDetailsScreen";
   static const String userDashboard = "/UserDashboard";
@@ -61,6 +62,7 @@ class AppRoutes {
 
   ///=============================== Consultant ======================================
   static const String consultantDashboard = "/ConsultantDashboard";
+  static const String setUpProfileScreenConsultant1 = "/SetUpProfileScreenConsultant1";
   static const String bookingDetailsScreen = "/BookingDetailsScreen";
 
 
@@ -80,10 +82,11 @@ class AppRoutes {
 
     ///============== Immigration Seeker ==================
     GetPage(name: recommendedCountriesScreen, page: () => RecommendedCountriesScreen()),
-    GetPage(name: setUpProfileScreen, page: () => SetUpProfileScreen1()),
+    GetPage(name: setUpProfileScreen1, page: () => SetUpProfileScreen1()),
     GetPage(name: countryDetailsScreen, page: () => CountryDetailsScreen()),
     GetPage(name: userDashboard, page: () => UserDashboard()),
     GetPage(name: userProfileScreen, page: () => UserProfileScreen()),
+    GetPage(name: setUpProfileScreenConsultant1, page: () => SetUpProfileScreenConsultant1()),
     GetPage(name: userEditScreen, page: () => UserEditScreen()),
     GetPage(name: userChangePassScreen, page: () => ImmigrationChangePassScreen()),
     GetPage(name: userTermsServicesScreen, page: () => ImmigrationTermsServicesScreen()),

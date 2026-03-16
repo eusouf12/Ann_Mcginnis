@@ -171,6 +171,8 @@ class AuthController extends GetxController {
 
         // Access Token
         var dataMap = jsonResponse['data'] as Map<String, dynamic>;
+        var userMap = dataMap['user'] as Map<String, dynamic>;
+        bool isProfileCompleted = userMap['isProfileCompleted'] ?? false;
         String accessToken = dataMap['accessToken'].toString();
         debugPrint("Bearer Token: $accessToken");
         await SharePrefsHelper.setString(AppConstants.bearerToken, accessToken);
@@ -186,11 +188,23 @@ class AuthController extends GetxController {
           "Debug Id===========================================================${id} ==${userRole}",
         );
         await SharePrefsHelper.setString(AppConstants.role, userRole);
+        debugPrint("Navigating with Role: $userRole and Profile Status: $isProfileCompleted");
 
-        userRole.toLowerCase() == "user"
-            ? Get.offAllNamed(AppRoutes.recommendedCountriesScreen)
-            : Get.offAllNamed(AppRoutes.consultantDashboard);
-      } else {
+        if (userRole.toLowerCase() == "user") {
+          if (isProfileCompleted) {
+            Get.offAllNamed(AppRoutes.recommendedCountriesScreen);
+          } else {
+            Get.offAllNamed(AppRoutes.setUpProfileScreen1);
+          }
+        } else {
+          if (isProfileCompleted) {
+            Get.offAllNamed(AppRoutes.consultantDashboard);
+          } else {
+            Get.offAllNamed(AppRoutes.setUpProfileScreenConsultant1);
+          }
+        }
+      }
+      else {
         refresh();
 
         Map<String, dynamic> errorResponse;

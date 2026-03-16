@@ -12,8 +12,8 @@ import '../controller/consult_setup_controller.dart';
 import '../widget/custom_progressbar.dart';
 import 'consult_setup_screen_2.dart';
 
-class SetUpProfileScreen1 extends StatelessWidget {
-  SetUpProfileScreen1({super.key});
+class SetUpProfileScreenConsultant1 extends StatelessWidget {
+  SetUpProfileScreenConsultant1({super.key});
 
   final ConsultSetupController setupProfileController= Get.put(ConsultSetupController());
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
