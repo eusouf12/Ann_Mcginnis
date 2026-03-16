@@ -173,8 +173,7 @@ class UserProfileController extends GetxController {
 
   //=================== CHANGE PASS===================
   Rx<TextEditingController> newPasswordController = TextEditingController().obs;
-  Rx<TextEditingController> confirmPasswordController =
-      TextEditingController().obs;
+  Rx<TextEditingController> confirmPasswordController = TextEditingController().obs;
   Rx<TextEditingController> oldPasswordController = TextEditingController().obs;
   RxBool changePassLoading = false.obs;
 
@@ -251,14 +250,52 @@ class UserProfileController extends GetxController {
       debugPrint("Password update error: $e");
     }
   }
-
   void resetPasswordFields() {
     oldPasswordController.value.clear();
     newPasswordController.value.clear();
     confirmPasswordController.value.clear();
   }
-
   //=================== Privacy Policy =================
+  final isContactLoading = false.obs;
+
+  final rxContactStatus = Status.loading.obs;
+  void setContactStatus(Status status) => rxContactStatus.value = status;
+  Future<void> sendContactMessage({required String name, required String email, required String subject, required String message,}) async {
+    isContactLoading.value = true;
+    setContactStatus(Status.loading);
+
+    try {
+      Map<String, String> body  = {
+        "name": name,
+        "email": email,
+        "subject": subject,
+        "message": message,
+      };
+
+      final response = await ApiClient.postData(ApiUrl.contactUs, jsonEncode(body));
+
+      final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setContactStatus(Status.completed);
+        Get.back();
+        showCustomSnackBar(jsonResponse["message"] ?? "Message sent successfully", isError: false,);
+
+      } else {
+        setContactStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to send message", isError: true,);
+      }
+
+    } catch (e) {
+      setContactStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+    } finally {
+      isContactLoading.value = false;
+    }
+  }
+
+
+  // =================== Privacy Policy =================
   final rxPrivacyStatus = Status.loading.obs;
   void setPrivacyStatus(Status status) => rxPrivacyStatus.value = status;
   Rx<PrivacyPolicyData?> privacyModel = Rx<PrivacyPolicyData?>(null);

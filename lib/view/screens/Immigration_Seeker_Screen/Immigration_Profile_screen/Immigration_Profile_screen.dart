@@ -15,6 +15,8 @@ class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({super.key});
 
   final UserProfileController controller = Get.put(UserProfileController());
+   String? name;
+   String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +42,9 @@ class UserProfileScreen extends StatelessWidget {
                   }
 
                   final user = controller.userData.value;
-
-                  final imageUrl = (user?.avatar ?? "").isNotEmpty
-                      ? "${ApiUrl.imageUrl}${user!.avatar}"
-                      : AppConstants.profileImage;
+                  final imageUrl = (user?.avatar ?? "").isNotEmpty ? "${ApiUrl.imageUrl}${user!.avatar}" : AppConstants.profileImage;
+                  name = user!.fullname;
+                  email = user.email;
 
                   return Row(
                     children: [
@@ -56,7 +57,7 @@ class UserProfileScreen extends StatelessWidget {
 
                       SizedBox(width: 15.w),
                       CustomText(
-                        text: user?.fullname ?? "",
+                        text: name ?? "",
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                         color: AppColors.black,
@@ -112,7 +113,7 @@ class UserProfileScreen extends StatelessWidget {
 
                 _buildOption(
                   titleKey: 'Help & Support',
-                  onTap: () => Get.toNamed(AppRoutes.userHelpSupport),
+                  onTap: () => Get.toNamed(AppRoutes.userHelpSupport,arguments: {"name" : name , "email": email}),
                 ),
 
                 SizedBox(height: 15.h),

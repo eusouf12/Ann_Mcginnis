@@ -47,8 +47,8 @@ class CustomConsultationCard extends StatelessWidget {
               ),
               SizedBox(height: 4.h),
               CustomText(
-                text: "${subTitle} minutes session",
-                fontSize: 12,
+                text: "1 hour session",
+                fontSize: 13,
                 color: Colors.grey,
               ),
             ],

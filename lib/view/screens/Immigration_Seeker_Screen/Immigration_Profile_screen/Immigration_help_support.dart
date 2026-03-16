@@ -5,14 +5,26 @@ import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_from_card/custom_from_card.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
 import '../../../components/custom_image/custom_image.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_text/custom_text.dart';
+import 'controller/user_profile_controller.dart';
+import 'package:get/get.dart';
 
 class ImmigrationHelpSupport extends StatelessWidget {
-  const ImmigrationHelpSupport({super.key});
+  ImmigrationHelpSupport({super.key});
+  final UserProfileController supportController = Get.put(UserProfileController());
+  final args = Get.arguments;
+  final subjectController = TextEditingController();
+  final messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final name = args['name'];
+    final email = args['email'];
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      supportController.getUserProfile();
+    });
     return CustomGradient(
       child: Scaffold(
         appBar: CustomRoyelAppbar(
@@ -48,7 +60,7 @@ class ImmigrationHelpSupport extends StatelessWidget {
                   titleColor: AppColors.black,
                   fillBorderRadius: 12,
                   curserColor: AppColors.black,
-                  controller: TextEditingController(),
+                  controller: subjectController,
                 ),
                 CustomFormCard(
                   title: 'Write in bellow box',
@@ -56,18 +68,30 @@ class ImmigrationHelpSupport extends StatelessWidget {
                   maxLine: 5,
                   fillBorderRadius: 12,
                   curserColor: AppColors.black,
-                  controller: TextEditingController(),
+                  controller: messageController,
                 ),
                 SizedBox(height: 40),
 
-                CustomButton(
-                  onTap: () {},
-                  title: 'Send',
-                  textColor: AppColors.white,
-                  borderRadius: 50,
-                  fillColor: AppColors.primary,
-                  fontSize: 14,
-                ),
+                Obx(() {
+                  return supportController.isContactLoading.value ?
+                  CustomLoader()
+                  : CustomButton(
+                    onTap: () {
+                      supportController.sendContactMessage(
+                        name: name,
+                        email: email,
+                        subject: subjectController.text,
+                        message: messageController.text,
+                      );
+                    },
+                    borderRadius: 12,
+                    textColor: AppColors.white,
+                    title: "Send",
+                    fillColor: AppColors.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  );
+                }),
               ],
             ),
           ),

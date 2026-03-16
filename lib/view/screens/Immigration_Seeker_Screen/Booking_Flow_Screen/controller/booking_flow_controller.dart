@@ -1,5 +1,13 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../../Recommended_dashboard_Screen/model/single_consultation.dart';
 
 class BookingFlowController extends GetxController {
   Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
@@ -35,5 +43,43 @@ class BookingFlowController extends GetxController {
   void selectConsultation(String type, String price) {
     selectedConsultationType.value = type;
     selectedPrice.value = price;
+  }
+
+  // ============== Single Consultant==================
+  Rx<ConsultantDetails?> singleConsultant = Rx<ConsultantDetails?>(null);
+  final isSingleConsultantLoading = false.obs;
+  final rxSingleConsultantStatus = Status.loading.obs;
+  void setSingleConsultantStatus(Status status) => rxSingleConsultantStatus.value = status;
+
+  Future<void> getSingleConsultant({required String id}) async {
+
+    isSingleConsultantLoading.value = true;
+    setSingleConsultantStatus(Status.loading);
+
+    try {
+
+      final response = await ApiClient.getData(ApiUrl.getSingleConsultant(id: id));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final ConsultantDetailsResponse model = ConsultantDetailsResponse.fromJson(jsonResponse);
+        singleConsultant.value = model.data;
+        setSingleConsultantStatus(Status.completed);
+
+      } else {
+        setSingleConsultantStatus(Status.error);
+        showCustomSnackBar("Failed to load consultant details", isError: true,);
+      }
+
+    } catch (e) {
+      setSingleConsultantStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isSingleConsultantLoading.value = false;
+
+    }
   }
 }

@@ -70,6 +70,19 @@ class CustomDetailsProfileCard extends StatelessWidget {
           color: Colors.blue,
           top: 5,
         ),
+        /// Experience & Patients
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.school, size: 16, color: Colors.black),
+            CustomText(
+              text: " ${experience}+ years",
+              color: Colors.black,
+              fontSize: 13,
+              right: 15,
+            ),
+          ],
+        ),
 
         /// Rating
         Padding(
@@ -112,27 +125,6 @@ class CustomDetailsProfileCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
-
-
-        /// Experience & Patients
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.school, size: 16, color: Colors.black),
-            CustomText(
-              text: " ${experience}+ years",
-              color: Colors.black,
-              fontSize: 13,
-              right: 15,
-            ),
-            const Icon(Icons.group_add_outlined, size: 16, color: Colors.black),
-            CustomText(
-              text: " ${patients}+ patients",
-              color: Colors.black,
-              fontSize: 13,
-            ),
-          ],
         ),
       ],
     );

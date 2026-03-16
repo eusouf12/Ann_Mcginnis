@@ -17,9 +17,11 @@ class ApiUrl {
   static const String privacyPolicy = "/legal-docs/privacy-policy";
   static const String termsCondition = "/legal-docs/terms-conditions";
   static const String aboutUs = "/legal-docs/about-us";
+  static const String contactUs = "/contact";
   static const String changePassword = "/auth/change-password";
   static const String myProfile = "/auth/me";
   static const String updateProfile = "/users/update-user";
+
 
 
   ///========================= User =========================
@@ -30,6 +32,7 @@ class ApiUrl {
   static String getConsultants({required String page}) => "/users/all-consultants?page=$page&limit=10";
   static String getBookedConsultants({required String page}) => "/bookings/my-bookings?page=$page&limit=10";
   static String getSaveCountry({required String page}) => "/recommendations/saved?page=$page&limit=10";
+  static String getSingleConsultant({required String id}) => "/users/consultant/$id";
 
 
 
