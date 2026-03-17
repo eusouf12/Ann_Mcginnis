@@ -80,7 +80,8 @@ class ConsultProfileViewDetails extends StatelessWidget {
                           child: CustomConsultationCard(
                             title: format,
                             subTitle: "30",
-                            price: "${consultant.consultationFees ?? 0}",
+                           // price: "${consultant.consultationFees ?? 0}",
+                            price: "",
                           ),
                         );
                       },

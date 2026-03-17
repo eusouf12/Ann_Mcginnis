@@ -35,7 +35,7 @@ class ConsultantDetails {
   String? professionalLicenseDoc;
   String? certificationsFile;
 
-  int? consultationFees;
+  //int? consultationFees;
   String? currency;
   int? discountRates;
   bool? stripeConnected;
@@ -54,7 +54,7 @@ class ConsultantDetails {
     this.profileDescription,
     this.professionalLicenseDoc,
     this.certificationsFile,
-    this.consultationFees,
+    //this.consultationFees,
     this.currency,
     this.discountRates,
     this.stripeConnected,
@@ -75,7 +75,7 @@ class ConsultantDetails {
       profileDescription: json['profileDescription'],
       professionalLicenseDoc: json['professionalLicenseDoc'],
       certificationsFile: json['certificationsFile'],
-      consultationFees: json['consultationFees'],
+      //consultationFees: json['consultationFees'],
       currency: json['currency'],
       discountRates: json['discountRates'],
       stripeConnected: json['stripeConnected'],

@@ -52,7 +52,7 @@ class Consultant {
   String? businessName;
   String? jobTitle;
   String? profileDescription;
-  int? consultationFees;
+  //ConsultationFees? consultationFees;
   String? currency;
   int? discountRates;
   bool? stripeConnected;
@@ -69,7 +69,7 @@ class Consultant {
     this.businessName,
     this.jobTitle,
     this.profileDescription,
-    this.consultationFees,
+   // this.consultationFees,
     this.currency,
     this.discountRates,
     this.stripeConnected,
@@ -83,15 +83,12 @@ class Consultant {
   factory Consultant.fromJson(Map<String, dynamic> json) {
     return Consultant(
       id: json['_id'],
-      availability: json['availability'] != null
-          ? Availability.fromJson(json['availability'])
-          : null,
-      userId:
-      json['userId'] != null ? UserId.fromJson(json['userId']) : null,
+      availability: json['availability'] != null ? Availability.fromJson(json['availability']) : null,
+      userId: json['userId'] != null ? UserId.fromJson(json['userId']) : null,
       businessName: json['businessName'],
       jobTitle: json['jobTitle'],
       profileDescription: json['profileDescription'],
-      consultationFees: json['consultationFees'],
+      //consultationFees: json['consultationFees'] != null ? ConsultationFees.fromJson(json['consultationFees']) : null,
       currency: json['currency'],
       discountRates: json['discountRates'],
       stripeConnected: json['stripeConnected'],
@@ -178,3 +175,23 @@ class Pagination {
     );
   }
 }
+
+// class ConsultationFees {
+//   int? videoCall;
+//   int? phoneCall;
+//   int? inPerson;
+//
+//   ConsultationFees({
+//     this.videoCall,
+//     this.phoneCall,
+//     this.inPerson,
+//   });
+//
+//   factory ConsultationFees.fromJson(Map<String, dynamic> json) {
+//     return ConsultationFees(
+//       videoCall: json['videoCall'],
+//       phoneCall: json['phoneCall'],
+//       inPerson: json['inPerson'],
+//     );
+//   }
+// }

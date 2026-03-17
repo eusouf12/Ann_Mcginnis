@@ -31,9 +31,9 @@ class UserDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userProfileController.getUserProfile();
-      userDashboardController.getConsultants();
-      userDashboardController.getBookedConsultants(loadMore: false);
-      userDashboardController.getSaveCountry(loadMore: false);
+       userDashboardController.getConsultants();
+       userDashboardController.getBookedConsultants(loadMore: false);
+       userDashboardController.getSaveCountry(loadMore: false);
     });
     return CustomGradient(
       child: Scaffold(
@@ -308,34 +308,51 @@ class UserDashboard extends StatelessWidget {
                     // TAB - 01
                     else if (userDashboardController.selectedDashboardTab.value == 1) {
                       return Obx(() {
-                        if (userDashboardController.rxConsultantStatus.value == Status.loading && userDashboardController.consultantList.isEmpty) {
+
+                        if (userDashboardController.isConsultantLoading.value &&
+                            userDashboardController.consultantList.isEmpty) {
                           return const Center(child: CustomLoader());
                         }
+
                         if (userDashboardController.consultantList.isEmpty) {
                           return const Center(
                             child: Padding(
                               padding: EdgeInsets.only(top: 50),
-                              child: CustomText(text: "No consultants found", fontSize: 16),
+                              child: CustomText(
+                                text: "No consultants found",
+                                fontSize: 16,
+                              ),
                             ),
                           );
                         }
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-                            if (!userDashboardController.isConsultantLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.consultantCurrentPage < userDashboardController.consultantTotalPages) {userDashboardController.getConsultants(loadMore: true);}
-                            return true;
+
+                            if (!userDashboardController.isConsultantLoadMore.value &&
+                                scrollInfo.metrics.pixels >=
+                                    scrollInfo.metrics.maxScrollExtent - 200 &&
+                                userDashboardController.consultantCurrentPage <
+                                    userDashboardController.consultantTotalPages) {
+
+                              userDashboardController.getConsultants(loadMore: true);
+                            }
+
+                            return false;
                           },
                           child: SingleChildScrollView(
                             physics: const AlwaysScrollableScrollPhysics(),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
                                 CustomText(
                                   text: "Booked Consultations",
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.primary1,
                                 ),
+
                                 SizedBox(height: 20.h),
 
                                 ListView.builder(
@@ -343,20 +360,29 @@ class UserDashboard extends StatelessWidget {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: userDashboardController.consultantList.length,
                                   itemBuilder: (context, index) {
-                                    final consultant = userDashboardController.consultantList[index];
+
+                                    final consultant =
+                                    userDashboardController.consultantList[index];
+
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: 12),
                                       child: BookConsultationCard(
                                         title: consultant.userId?.fullname ?? "",
                                         subTitle: consultant.businessName ?? "",
-                                        img: (consultant.userId?.avatar != null && consultant.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage, // Fallback image
+                                        img: (consultant.userId?.avatar != null &&
+                                            consultant.userId!.avatar!.isNotEmpty)
+                                            ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}"
+                                            : AppConstants.profileImage,
+
                                         isBooked: false,
+
                                         onTapViewDetails: () {
                                           Get.toNamed(
                                             AppRoutes.consultProfileViewDetails,
                                             arguments: consultant.id,
                                           );
                                         },
+
                                         onTapBookNow: () {
                                           Get.to(ConsultBookScreen());
                                         },
@@ -366,10 +392,13 @@ class UserDashboard extends StatelessWidget {
                                 ),
 
                                 if (userDashboardController.isConsultantLoadMore.value)
-                                  const Padding(padding: EdgeInsets.symmetric(vertical: 20),
-                                    child: Center(child: CustomLoader(),),
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    child: Center(child: CustomLoader()),
                                   ),
+
                                 SizedBox(height: 20.h),
+
                               ],
                             ),
                           ),
