@@ -26,24 +26,19 @@ class RecommendationResponse {
 class RecommendationBody {
   List<RecommendationData>? recommendations;
   Pagination? pagination;
+  AvailableFilters? availableFilters;
 
   RecommendationBody({
     this.recommendations,
     this.pagination,
+    this.availableFilters,
   });
 
   factory RecommendationBody.fromJson(Map<String, dynamic> json) {
     return RecommendationBody(
-      recommendations: json['recommendations'] != null
-          ? List<RecommendationData>.from(
-        json['recommendations'].map(
-              (x) => RecommendationData.fromJson(x),
-        ),
-      )
-          : [],
-      pagination: json['pagination'] != null
-          ? Pagination.fromJson(json['pagination'])
-          : null,
+      recommendations: json['recommendations'] != null ? List<RecommendationData>.from(json['recommendations'].map((x) => RecommendationData.fromJson(x),),) : [],
+      pagination: json['pagination'] != null ? Pagination.fromJson(json['pagination']) : null,
+      availableFilters: json['availableFilters'] != null ? AvailableFilters.fromJson(json['availableFilters']) : null,
     );
   }
 }
@@ -172,6 +167,69 @@ class CountryRecommendation {
       imageUrl: json['imageUrl'] ?? "",
       flagUrl: json['flagUrl'] ?? "",
       visaTypes: json['visaTypes'] != null ? List<String>.from(json['visaTypes']) : [],
+    );
+  }
+}
+
+class AvailableFilters {
+  List<VisaTypeFilter>? visaTypes;
+  AdditionalOptions? additionalOptions;
+  int? countryCount;
+
+  AvailableFilters({
+    this.visaTypes,
+    this.additionalOptions,
+    this.countryCount,
+  });
+
+  factory AvailableFilters.fromJson(Map<String, dynamic> json) {
+    return AvailableFilters(
+      visaTypes: json['visaTypes'] != null
+          ? List<VisaTypeFilter>.from(
+        json['visaTypes'].map((x) => VisaTypeFilter.fromJson(x)),
+      )
+          : [],
+      additionalOptions: json['additionalOptions'] != null
+          ? AdditionalOptions.fromJson(json['additionalOptions'])
+          : null,
+      countryCount: json['countryCount'],
+    );
+  }
+}
+
+class VisaTypeFilter {
+  String? label;
+  String? value;
+  int? count;
+
+  VisaTypeFilter({
+    this.label,
+    this.value,
+    this.count,
+  });
+
+  factory VisaTypeFilter.fromJson(Map<String, dynamic> json) {
+    return VisaTypeFilter(
+      label: json['label'],
+      value: json['value'],
+      count: json['count'],
+    );
+  }
+}
+
+class AdditionalOptions {
+  bool? englishOnly;
+  bool? fastTrackOnly;
+
+  AdditionalOptions({
+    this.englishOnly,
+    this.fastTrackOnly,
+  });
+
+  factory AdditionalOptions.fromJson(Map<String, dynamic> json) {
+    return AdditionalOptions(
+      englishOnly: json['englishOnly'],
+      fastTrackOnly: json['fastTrackOnly'],
     );
   }
 }
