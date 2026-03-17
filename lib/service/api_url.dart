@@ -22,6 +22,7 @@ class ApiUrl {
   static const String myProfile = "/auth/me";
   static const String updateProfile = "/users/update-user";
   static const String setupUserProfile = "/users/user-profile-complete";
+  static const String setupUserProfileConsultants = "/users/consultant-profile-complete";
 
 
   ///========================= User =========================

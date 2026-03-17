@@ -19,9 +19,35 @@ class ConsultSetupScreen3 extends StatefulWidget {
 }
 
 class _ConsultSetupScreen3State extends State<ConsultSetupScreen3> {
-  final ConsultSetupController controller = Get.find<ConsultSetupController>();
+  final ConsultSetupController controller = Get.put(ConsultSetupController());
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  String? selectedTimeZone = "GMT-8 (Pacific Time)";
+  final List<String> timeZones = [
+    "GMT-12 (Baker Island)",
+    "GMT-11 (Samoa)",
+    "GMT-10 (Hawaii)",
+    "GMT-9 (Alaska)",
+    "GMT-8 (Pacific Time)",
+    "GMT-7 (Mountain Time)",
+    "GMT-6 (Central Time)",
+    "GMT-5 (Eastern Time)",
+    "GMT-4 (Atlantic Time)",
+    "GMT-3 (Brazil)",
+    "GMT+0 (London/UTC)",
+    "GMT+1 (Central Europe)",
+    "GMT+2 (Eastern Europe)",
+    "GMT+3 (Moscow/East Africa)",
+    "GMT+4 (Gulf/UAE)",
+    "GMT+5 (Pakistan)",
+    "GMT+5:30 (India/IST)",
+    "GMT+6 (Bangladesh/BST)",
+    "GMT+7 (Indochina)",
+    "GMT+8 (China/Singapore)",
+    "GMT+9 (Japan/Korea)",
+    "GMT+10 (Australian Eastern)",
+    "GMT+12 (New Zealand)",
+  ];
   bool isWeeklyView = true;
 
   @override
@@ -68,49 +94,28 @@ class _ConsultSetupScreen3State extends State<ConsultSetupScreen3> {
                 // Time Zone Dropdown
                 const CustomText(text: "Time Zone", fontWeight: FontWeight.bold,color: Colors.black,),
                 SizedBox(height: 8.h),
-                _buildDropdown("GMT-8 (Pacific Time)"),
+                _buildDropdown(),
                 SizedBox(height: 20.h),
-
-                // Calendar Card
-                _buildCalendarCard(),
+                // ======== week selected
+                _buildWeeklyDaySelector(),
                 SizedBox(height: 20.h),
-
-                // Legend (Available, Blocked, Selected)
-                _buildLegend(),
-                SizedBox(height: 25.h),
-
-                // Selected Day Detail
-                CustomText(
-                  text: "Monday, January 15",
+                Obx(() => CustomText(
+                  text: controller.selectedDays.isEmpty
+                      ? "No days selected"
+                      : "Selected: ${controller.selectedDays.join(', ')}",
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-                SizedBox(height: 15.h),
-
-                // Time Slots
-                _buildTimeSlot("09:00 AM - 12:00 PM", "Morning Session"),
-                SizedBox(height: 10.h),
-                _buildTimeSlot("01:00 PM - 04:00 PM", "Afternoon Session"),
-
-                SizedBox(height: 15.h),
-                _buildAddTimeSlotBtn(),
-
-                SizedBox(height: 30.h),
-                const CustomText(text: "Quick Actions", fontWeight: FontWeight.bold,color: Colors.black,),
-                SizedBox(height: 15.h),
-
-                // Quick Action Cards
-                Row(
-                  children: [
-                    Expanded(child: _buildQuickActionCard(Icons.calendar_month, "Set Weekly", "Mon-Fri pattern")),
-                    SizedBox(width: 12.w),
-                    Expanded(child: _buildQuickActionCard(Icons.block, "Block Dates", "Holidays & time off", iconColor: Colors.red)),
-                  ],
-                ),
-
+                  color: AppColors.primary,
+                )),
                 SizedBox(height: 25.h),
-                _buildRecurringSwitch(),
+
+                const CustomText(text: "Preferred Time Slots", fontWeight: FontWeight.bold, color: Colors.black),
+                SizedBox(height: 15.h),
+                _buildTimeSlotList(),
+                _buildAddTimeSlotBtn(context),
+
+
+
                 SizedBox(height: 30.h),
 
                 // Navigation Buttons
@@ -131,9 +136,9 @@ class _ConsultSetupScreen3State extends State<ConsultSetupScreen3> {
     );
   }
 
-  // --- UI Helper Widgets ---
-
-  Widget _buildDropdown(String hint) {
+  //=============================== --- UI Helper Widgets ---
+//timeZone
+  Widget _buildDropdown() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.w),
       decoration: BoxDecoration(
@@ -142,179 +147,170 @@ class _ConsultSetupScreen3State extends State<ConsultSetupScreen3> {
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
+        child: Obx(() => DropdownButton<String>(
           isExpanded: true,
-          hint: Text(hint, style: TextStyle(fontSize: 14.sp)),
-          items: const [],
-          onChanged: (v) {},
-        ),
+          value: controller.selectedTimeZone.value, // কন্ট্রোলার থেকে ভ্যালু নিচ্ছে
+          icon: const Icon(Icons.arrow_drop_down, color: Colors.black54),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              controller.setTimeZone(newValue); // কন্ট্রোলারে আপডেট করছে
+            }
+          },
+          items: timeZones.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value, style: TextStyle(fontSize: 14.sp)),
+            );
+          }).toList(),
+        )),
       ),
     );
   }
 
-  Widget _toggleItem(String label, bool isActive, VoidCallback onTap) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: isActive ? Colors.blue : Colors.transparent,
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(color: isActive ? Colors.white : Colors.black54, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
+  // WeeklyDay
+  Widget _buildWeeklyDaySelector() {
+    final Map<String, String> dayShortNames = {
+      "Monday": "Mon",
+      "Tuesday": "Tue",
+      "Wednesday": "Wed",
+      "Thursday": "Thu",
+      "Friday": "Fri",
+      "Saturday": "Sat",
+      "Sunday": "Sun",
+    };
 
-  Widget _buildCalendarCard() {
-    return Container(
-      padding: EdgeInsets.all(10.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15.r),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-      ),
-      child: TableCalendar(
-        firstDay: DateTime.utc(2020, 10, 16),
-        lastDay: DateTime.utc(2030, 3, 14),
-        focusedDay: _focusedDay,
-        calendarFormat: CalendarFormat.month,
-        selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _selectedDay = selectedDay;
-            _focusedDay = focusedDay;
-          });
-        },
-        headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
-        calendarStyle: CalendarStyle(
-          selectedDecoration: const BoxDecoration(color: Colors.blue, shape: BoxShape.rectangle),
-          todayDecoration: BoxDecoration(color: Colors.blue.withOpacity(0.2), shape: BoxShape.rectangle),
-          defaultTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLegend() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _legendItem(Colors.green.shade100, "Available", isBorder: true),
-        SizedBox(width: 15.w),
-        _legendItem(Colors.grey.shade300, "Blocked"),
-        SizedBox(width: 15.w),
-        _legendItem(Colors.blue, "Selected"),
+        const CustomText(text: "Select Available Days", fontWeight: FontWeight.bold, color: Colors.black),
+        SizedBox(height: 15.h),
+        Obx(() => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: controller.weekDays.map((String fullDayName) {
+            // চেক করছি এই 'fullDayName' (যেমন: "Monday") লিস্টে আছে কি না
+            bool isSelected = controller.selectedDays.contains(fullDayName);
+
+            return GestureDetector(
+              onTap: () {
+                controller.toggleDay(fullDayName); // এখানে "Monday" ই যাবে
+              },
+              child: Container(
+                width: 42.w,
+                height: 42.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.primary1 : Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected ? AppColors.primary1 : Colors.grey.shade300,
+                  ),
+                  boxShadow: isSelected
+                      ? [BoxShadow(color: AppColors.primary1.withOpacity(0.3), blurRadius: 6, offset: const Offset(0, 3))]
+                      : [],
+                ),
+                child: Text(
+                  dayShortNames[fullDayName] ?? fullDayName, // UI তে দেখাবে "Mon"
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.sp,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        )),
       ],
     );
   }
 
-  Widget _legendItem(Color color, String label, {bool isBorder = false}) {
-    return Row(
-      children: [
-        Container(
-          width: 16.w, height: 16.w,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4.r),
-            border: isBorder ? Border.all(color: Colors.green) : null,
+  Widget _buildTimeSlotList() {
+    return Obx(() => Column(
+      children: List.generate(controller.preferredTimeSlots.length, (index) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: 10.h),
+          child: Container(
+            padding: EdgeInsets.all(15.w),
+            decoration: BoxDecoration(
+              color: Colors.green.shade50,
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: Colors.green.shade100),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.preferredTimeSlots[index],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                  onPressed: () => controller.removeTimeSlot(index),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    ));
+  }
+
+  Widget _buildAddTimeSlotBtn(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        TimeOfDay? startTime = await showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+          helpText: "Select Start Time",
+        );
+
+        if (startTime != null) {
+          TimeOfDay? endTime = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay(hour: startTime.hour + 1, minute: startTime.minute),
+            helpText: "Select End Time",
+          );
+
+          if (endTime != null) {
+            controller.addTimeSlot(startTime, endTime);
+          }
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 14.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          // এখানে বর্ডারটি দেওয়া হয়েছে
+          border: Border.all(
+            color: Colors.blue.shade200,
+            width: 1.5,
+            style: BorderStyle.solid,
           ),
         ),
-        SizedBox(width: 6.w),
-        Text(label, style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade700)),
-      ],
-    );
-  }
-
-  Widget _buildTimeSlot(String time, String session) {
-    return Container(
-      padding: EdgeInsets.all(15.w),
-      decoration: BoxDecoration(
-        color: Colors.green.shade50,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.green.shade100),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(time, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(session, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-            ],
-          ),
-          const Icon(Icons.delete_outline, color: Colors.redAccent),
-        ],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add_circle_outline, color: Colors.blue, size: 20.sp),
+            SizedBox(width: 8.w),
+            Text(
+              "Add Time Slot",
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.sp,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildAddTimeSlotBtn() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 12.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.blue.shade200, style: BorderStyle.solid),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.add, color: Colors.blue, size: 18),
-          SizedBox(width: 5),
-          Text("Add Time Slot", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickActionCard(IconData icon, String title, String sub, {Color iconColor = Colors.blue}) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: iconColor),
-          SizedBox(height: 8.h),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(sub, style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRecurringSwitch() {
-    return Container(
-      padding: EdgeInsets.all(15.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Recurring Availability", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("Apply this schedule to all upcoming weeks", style: TextStyle(fontSize: 10.sp, color: Colors.grey)),
-            ],
-          ),
-          Switch(value: true, onChanged: (v) {}, activeColor: Colors.blue),
-        ],
-      ),
-    );
-  }
 }

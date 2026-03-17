@@ -17,6 +17,8 @@ import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
 import '../../Immigration_Profile_screen/controller/user_profile_controller.dart';
 import '../../Recommended_Countries_Screen/controller/recomended_countries_controller.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
+import '../../SetUp_Profile_Screen/views/financial_info_screen_6.dart';
+import '../../SetUp_Profile_Screen/views/set_up_profile_screen_1.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
 import '../../SetUp_Profile_Screen/model/custom_save_countries.dart';
@@ -556,6 +558,13 @@ class UserDashboard extends StatelessWidget {
                     else {
                       return Column(
                         children: [
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(() =>  SetUpProfileScreen1());
+                            },
+                            child: const Icon(Icons.add),
+                          ),
+
                           CustomText(
                             text: "Payments", //PaymentCard
                             fontSize: 20,

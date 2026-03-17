@@ -75,6 +75,7 @@ class ConsultSetupScreen4 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Row(
                         children: [
                           Container(
@@ -99,27 +100,51 @@ class ConsultSetupScreen4 extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 16.h),
-                      const CustomText(
-                        text: "Hourly Rate",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 8.h),
-                      Row(
+                      _buildCurrencyDropdown(),
+                      SizedBox(height: 16.h),
+                      Obx(() => Column(
                         children: [
-                          Expanded(
-                            child: _buildTextField(
-                              hint: "0.00",
-                              prefixIcon: Icons.attach_money,
-                            ),
+                          // 1. Video Call
+                          CustomSectionCard(
+                            icon: Icons.videocam,
+                            title: "Video Call",
+                            isChecked: consultSetupController.isVideoSelected,
+                            onChanged: (val) => consultSetupController.isVideoSelected.value = val!,
                           ),
-                          SizedBox(width: 10.w),
-                          _buildCurrencyDropdown(),
+                          if (consultSetupController.isVideoSelected.value)
+                            _buildFeeInputField(consultSetupController.videoFeeController, "Set Video Consultation Fee (\$)"),
+
+                          SizedBox(height: 12.h),
+
+                          // 2. Phone Call
+                          CustomSectionCard(
+                            icon: Icons.phone,
+                            title: "Phone Call",
+                            isChecked: consultSetupController.isPhoneSelected,
+                            onChanged: (val) => consultSetupController.isPhoneSelected.value = val!,
+                          ),
+                          if (consultSetupController.isPhoneSelected.value)
+                            _buildFeeInputField(consultSetupController.phoneFeeController, "Set Phone Call Fee (\$)"),
+
+                          SizedBox(height: 12.h),
+
+                          // 3. In-Person
+                          CustomSectionCard(
+                            icon: Icons.person,
+                            title: "In-Person",
+                            isChecked: consultSetupController.isInPersonSelected,
+                            onChanged: (val) => consultSetupController.isInPersonSelected.value = val!,
+                          ),
+                          if (consultSetupController.isInPersonSelected.value)
+                            _buildFeeInputField(consultSetupController.inPersonFeeController, "Set In-Person Visit Fee (\$)"),
                         ],
-                      ),
+                      )),
+                      SizedBox(height: 16.h),
+
+
                       SizedBox(height: 10.h),
                       const CustomText(
-                        text: "Set your standard hourly consultation rate",
+                        text: "Set your standard consultation rate",
                         fontSize: 12,
                         color: Colors.grey,
                       ),
@@ -133,7 +158,7 @@ class ConsultSetupScreen4 extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
-                        textEditingController: TextEditingController(),
+                        textEditingController: consultSetupController.discountPercentageController,
                         hintText: "% DisCount percentage",
                         hintStyle: TextStyle(
                           color: AppColors.grey_1,
@@ -144,35 +169,7 @@ class ConsultSetupScreen4 extends StatelessWidget {
                         fieldBorderRadius: 12,
                       ),
                       SizedBox(height: 10),
-                      // describe
-                      CustomText(
-                        text: 'Describe',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: TextEditingController(),
-                        hintText:
-                            "Describe special offers (e.g., 10% off for 5+ sessions)",
-                        hintStyle: TextStyle(
-                          color: AppColors.grey_1,
-                          fontSize: 14,
-                        ),
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                      ),
-                      SizedBox(height: 10),
-                      //Payment Methods
-                      CustomText(
-                        text: "Payment Methods",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 8.h),
-                      _buildDropdownField("Select accepted payment methods"),
+
                     ],
                   ),
                 ),
@@ -191,83 +188,34 @@ class ConsultSetupScreen4 extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Column(
+                  child:
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.amber.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Icon(
-                              Icons.settings,
-                              color: Colors.amber,
-                              size: 20,
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          CustomText(
-                            text: "Additional Details",
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.h),
-                      CustomText(
-                        text: "Consultation Format",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 16.h),
-                      CustomSectionCard(
-                        icon: Icons.videocam,
-                        title: "Video Call",
-                        isChecked: consultSetupController.isCallChecked,
-                        onChanged: consultSetupController.callToggle,
-                      ),
-                      //"Phone Call"
-                      CustomSectionCard(
-                        icon: Icons.phone,
-                        title: "Phone Call",
-                        isChecked: consultSetupController.isCallChecked,
-                        onChanged: consultSetupController.callToggle,
-                      ),
-                      //"In-Person"
-                      CustomSectionCard(
-                        icon: Icons.person,
-                        title: "In-Person",
-                        isChecked: consultSetupController.isCallChecked,
-                        onChanged: consultSetupController.callToggle,
-                      ),
-                      SizedBox(height: 20),
-                      CustomText(
+
+                      // --- Additional Notes Section ---
+                      const CustomText(
                         text: 'Additional Notes',
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                         textAlign: TextAlign.start,
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 10.h),
                       CustomTextField(
-                        textEditingController: TextEditingController(),
-                        hintText:
-                            "Add any additional details about your consultation services, availability, or requirements...",
-                        hintStyle: TextStyle(
-                          color: AppColors.grey_1,
+                        textEditingController: consultSetupController.notesController,
+                        hintText: "Add any additional details about your consultation services, availability, or requirements...",
+                        hintStyle: const TextStyle(
+                          color: Color(0xFF9CA3AF),
                           fontSize: 14,
                         ),
-                        fillColor: AppColors.white,
+                        fillColor: Colors.white,
                         fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
+                        fieldBorderRadius: 12.r,
                         maxLines: 4,
                       ),
                       SizedBox(height: 16.h),
                     ],
-                  ),
+                  )
                 ),
                 SizedBox(height: 25.h),
                 // 3. Pricing Guidelines Info Box
@@ -315,6 +263,27 @@ class ConsultSetupScreen4 extends StatelessWidget {
                 // Bottom Buttons
                 CustomButton(
                   onTap: () {
+                    // ডাটা কনসোলে প্রিন্ট করার জন্য debugPrint
+                    debugPrint("========== STEP 4 FORM DATA ==========");
+                    debugPrint("Selected Currency: ${consultSetupController.selectedCurrency.value}");
+
+                    debugPrint("--- Consultation Formats & Fees ---");
+                    if (consultSetupController.isVideoSelected.value) {
+                      debugPrint("Video Call: Enabled | Fee: ${consultSetupController.videoFeeController.text}");
+                    }
+                    if (consultSetupController.isPhoneSelected.value) {
+                      debugPrint("Phone Call: Enabled | Fee: ${consultSetupController.phoneFeeController.text}");
+                    }
+                    if (consultSetupController.isInPersonSelected.value) {
+                      debugPrint("In-Person: Enabled | Fee: ${consultSetupController.inPersonFeeController.text}");
+                    }
+
+                    debugPrint("--- Discounts ---");
+
+                    debugPrint("--- Additional Notes ---");
+                    debugPrint("Notes: ${consultSetupController.notesController.text}");
+                    debugPrint("======================================");
+
                     Get.to(ConsultReviewProfileScreen());
                   },
                   title: "Save Settings",
@@ -341,73 +310,44 @@ class ConsultSetupScreen4 extends StatelessWidget {
   }
 
   // --- UI Components ---
-  Widget _buildTextField({
-    required String hint,
-    IconData? prefixIcon,
-    int maxLines = 1,
-  }) {
-    return TextField(
-      maxLines: maxLines,
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
-        prefixIcon: prefixIcon != null
-            ? Icon(prefixIcon, color: Colors.grey, size: 20)
-            : null,
-        filled: true,
-        fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.h),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide(color: Colors.grey.shade300),
-        ),
-      ),
-    );
-  }
-
   Widget _buildCurrencyDropdown() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(10.r),
+        color: Colors.white,
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: "USD",
-          items: [
-            "USD",
-            "BDT",
-            "EUR",
-          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-          onChanged: (v) {},
-        ),
+        child: Obx(() => DropdownButton<String>(
+          value: consultSetupController.selectedCurrency.value,
+          isExpanded: true, // এটি বাটনটিকে কন্টেইনারের পুরো জায়গা জুড়ে ছড়িয়ে দিবে
+          icon: const Icon(Icons.arrow_drop_down),
+          items: ["USD", "BDT", "EUR"].map((e) =>
+              DropdownMenuItem(value: e, child: Text(e))
+          ).toList(),
+          onChanged: (v) {
+            if (v != null) consultSetupController.selectedCurrency.value = v;
+          },
+        )),
       ),
     );
   }
 
-  Widget _buildDropdownField(String hint) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          isExpanded: true,
-          hint: Text(
-            hint,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-          ),
-          items: const [],
-          onChanged: (v) {},
+  Widget _buildFeeInputField(TextEditingController controller, String hint) {
+    return Padding(
+      padding: EdgeInsets.only(top: 8.h, left: 15.w, right: 5.w),
+      child: CustomTextField(
+        textEditingController: controller,
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: Colors.grey.shade500,
+          fontSize: 14.sp,
         ),
+        keyboardType: TextInputType.number,
+        fillColor: const Color(0xFFF3F4F6),
+        fieldBorderColor: Colors.blue.withOpacity(0.3),
+        prefixIcon: const Icon(Icons.monetization_on_outlined, color: Colors.blue, size: 20),
       ),
     );
   }

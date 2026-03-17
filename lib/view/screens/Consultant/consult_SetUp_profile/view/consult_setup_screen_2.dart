@@ -12,13 +12,13 @@ import 'consult_setup_screen_3.dart';
 
 class ConsultSetupScreen2 extends StatelessWidget {
   ConsultSetupScreen2({super.key});
-  final ConsultSetupController consultSetupController = Get.put(ConsultSetupController());
+  final ConsultSetupController controller = Get.put(ConsultSetupController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      appBar: CustomRoyelAppbar(leftIcon: true,titleName: "Global Jump"),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Global Jump"),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.w),
         child: Column(
@@ -28,81 +28,91 @@ class ConsultSetupScreen2 extends StatelessWidget {
             SizedBox(height: 8.h),
             CustomProgressBar(factor: 0.50),
             SizedBox(height: 30.h),
-            Column(
-              children: [
-                SizedBox(height: 10.h),
-                Text(
-                  "Upload Your Professional\nDocuments",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  "Upload your certifications, licenses, and other credentials securely",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-                ),
-                SizedBox(height: 30.h),
-                Obx(
-                      () => Column(
-                    children: List.generate(consultSetupController.documents.length, (index) {
-                      final doc = consultSetupController.documents[index];
+            Text(
+              "Upload Your Professional\nDocuments",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              "Upload your certifications, licenses, and other credentials securely",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+            ),
+            SizedBox(height: 30.h),
 
-                      return Column(
-                        children: [
-                          CustomUploadCard(
-                            title: doc['title'],
-                            hintText: doc['file'].value == null
-                                ? "Upload PDF, JPG or PNG"
-                                : "Selected: ${doc['file'].value!.path.split('/').last}",
-                            icon: Icons.description_outlined,
-                            onChooseFile: () {
-                              consultSetupController.pickDocument(index);
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                        ],
-                      );
-                    }),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                DottedBorder(
-                  color: Colors.blue.shade200,
-                  borderType: BorderType.RRect,
-                  radius: Radius.circular(10.r),
-                  child: InkWell(
-                    onTap: consultSetupController.addMoreDocument,
-                    child: Container(
-                      width: double.infinity,
-                      height: 50.h,
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.add, color: Colors.blue),
-                          SizedBox(width: 6),
-                          Text(
-                            "Add More Documents",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ],
-                      ),
+            // --- Professional License ---
+            Obx(() => CustomUploadCard(
+              title: "Professional License",
+              hintText: controller.professionalLicense.value == null
+                  ? "Upload PDF, JPG or PNG"
+                  : "Selected: ${controller.professionalLicense.value!.path.split('/').last}",
+              icon: Icons.badge_outlined,
+              onChooseFile: controller.pickProfessionalLicense,
+            )),
+            SizedBox(height: 20.h),
+
+            // --- Certifications (Optional) ---
+            Obx(() => CustomUploadCard(
+              title: "Certifications(Optional)",
+              hintText: controller.certifications.value == null
+                  ? "Upload PDF, JPG or PNG"
+                  : "Selected: ${controller.certifications.value!.path.split('/').last}",
+              icon: Icons.card_membership_outlined,
+              onChooseFile: controller.pickCertifications,
+            )),
+            SizedBox(height: 20.h),
+
+            // --- Additional Documents (Array/List) ---
+            Obx(() => Column(
+              children: List.generate(controller.additionalDocuments.length, (index) {
+                final doc = controller.additionalDocuments[index];
+                return Column(
+                  children: [
+                    CustomUploadCard(
+                      title: doc['title'],
+                      hintText: doc['file'].value == null
+                          ? "Upload PDF, JPG or PNG"
+                          : "Selected: ${doc['file'].value!.path.split('/').last}",
+                      icon: Icons.description_outlined,
+                      onChooseFile: () => controller.pickAdditionalDocument(index),
                     ),
+                    SizedBox(height: 20.h),
+                  ],
+                );
+              }),
+            )),
+
+            // Add More Button
+            DottedBorder(
+              color: Colors.blue.shade200,
+              borderType: BorderType.RRect,
+              radius: Radius.circular(10.r),
+              child: InkWell(
+                onTap: controller.addMoreDocument,
+                child: Container(
+                  width: double.infinity,
+                  height: 50.h,
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.add, color: Colors.blue),
+                      SizedBox(width: 6),
+                      Text("Add More Documents", style: TextStyle(color: Colors.blue)),
+                    ],
                   ),
                 ),
-                SizedBox(height: 20.h),
-                //Continue btn
-                CustomButton(
-                  onTap: () {
-                      Get.to(ConsultSetupScreen3());
-                  },
+              ),
+            ),
+            SizedBox(height: 30.h),
 
-                  title: "Continue",
-                  fillColor: const Color(0xFFFBB03B),
-                  textColor: Colors.white,
-                ),
-              ],
+            // Continue Button
+            CustomButton(
+              onTap: () => Get.to(ConsultSetupScreen3()),
+              title: "Continue",
+              fillColor: const Color(0xFFFBB03B),
+              textColor: Colors.white,
             ),
           ],
         ),

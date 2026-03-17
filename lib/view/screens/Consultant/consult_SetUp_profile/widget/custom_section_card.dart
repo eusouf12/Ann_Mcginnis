@@ -45,6 +45,8 @@ class CustomSectionCard extends StatelessWidget {
             Checkbox(
               value: isChecked.value,
               onChanged: onChanged,
+              checkColor: AppColors.white,
+              activeColor: AppColors.primary1,
             ),
             Icon(icon, color: AppColors.primary1, size: 20),
             SizedBox(width: 10.w),

@@ -48,28 +48,17 @@ class SetUpProfileScreenConsultant1 extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 30.h),
+                      //Business name
                       CustomFormCard(
-                        title: "First Name",
+                        title: "Business Name",
                         titleColor: Colors.black,
-                        hintText: "Enter your first name",
-                        controller: setupProfileController.firstNameController.value,
+                        hintText: "Enter your business name",
+                        controller: setupProfileController.businessNameController.value,
                         fieldBorderColor: Colors.grey.shade300,
                         inputTextColor: Colors.black,
                         curserColor: AppColors.primary,
                         fillBorderRadius: 12,
-                        validator: (value) => setupProfileController.validateName(setupProfileController.firstNameController.value.text),
-                      ),
-                      //last name
-                      CustomFormCard(
-                        title: "Last Name",
-                        titleColor: Colors.black,
-                        hintText: "Enter your last name",
-                        controller: setupProfileController.lastNameController.value,
-                        fieldBorderColor: Colors.grey.shade300,
-                        inputTextColor: Colors.black,
-                        curserColor: AppColors.primary,
-                        fillBorderRadius: 12,
-                        validator: (value) => setupProfileController.validateName(setupProfileController.lastNameController.value.text),
+                        validator: (value) => setupProfileController.validateName(setupProfileController.businessNameController.value.text),
                       ),
                       //job title
                       CustomFormCard(
@@ -83,86 +72,32 @@ class SetUpProfileScreenConsultant1 extends StatelessWidget {
                         fillBorderRadius: 12,
                         validator: (value) => setupProfileController.validateName(setupProfileController.jobTitleController.value.text),
                       ),
+                      //experience
+                      CustomFormCard(
+                        title: "Experience",
+                        titleColor: Colors.black,
+                        hintText: "Enter your experience",
+                        controller: setupProfileController.experienceYearsController.value,
+                        fieldBorderColor: Colors.grey.shade300,
+                        inputTextColor: Colors.black,
+                        curserColor: AppColors.primary,
+                        fillBorderRadius: 12,
+                        validator: (value) => setupProfileController.validateName(setupProfileController.experienceYearsController.value.text),
+                      ),
                       //Profile Description
                       CustomFormCard(
                         title: "Profile Description",
                         titleColor: Colors.black,
                         hintText: "Describe your experience in immigration consultation, your expertise, and the services you offer to clients. Highlight what makes you unique and how you can help people with their",
-                        controller: setupProfileController.jobTitleController.value,
+                        controller: setupProfileController.profileDescriptionController.value,
                         fieldBorderColor: Colors.grey.shade300,
                         inputTextColor: Colors.black,
                         curserColor: AppColors.primary,
                         fillBorderRadius: 12,
                         maxLine: 5,
-                        validator: (value) => setupProfileController.validateName(setupProfileController.jobTitleController.value.text),
+                        validator: (value) => setupProfileController.validateName(setupProfileController.profileDescriptionController.value.text),
                       ),
                       SizedBox(height: 24.h),
-
-                      // Container(
-                      //   padding: EdgeInsets.all(16.w),
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.white,
-                      //     borderRadius: BorderRadius.circular(16.r),
-                      //     border: Border.all(color: Colors.grey.shade300),
-                      //   ),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       const CustomText(
-                      //         text: "International Achievements",
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.w600,
-                      //         color: Colors.black,
-                      //       ),
-                      //       SizedBox(height: 4.h),
-                      //       CustomText(
-                      //         text: "Select any applicable achievements",
-                      //         fontSize: 13,
-                      //         color: Colors.grey.shade600,
-                      //       ),
-                      //       SizedBox(height: 12.h),
-                      //
-                      //       Obx(() => Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: setupProfileController.achievements.map((item) {
-                      //           final isChecked =
-                      //           setupProfileController.selectedAchievements.contains(item);
-                      //
-                      //           return Padding(
-                      //             padding: EdgeInsets.symmetric(vertical: 6.h),
-                      //             child: Row(
-                      //               crossAxisAlignment: CrossAxisAlignment.start,
-                      //               mainAxisAlignment: MainAxisAlignment.start,
-                      //               children: [
-                      //                 SizedBox(
-                      //                   height: 20,
-                      //                   width: 20,
-                      //                   child: Checkbox(
-                      //                     value: isChecked,
-                      //                     activeColor: AppColors.primary,
-                      //                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      //                     visualDensity: VisualDensity.compact,
-                      //                     onChanged: (_) {
-                      //                       setupProfileController.toggleAchievement(item);
-                      //                     },
-                      //                   ),
-                      //                 ),
-                      //                 const SizedBox(width: 10,),
-                      //                 CustomText(
-                      //                   text: item,
-                      //                   fontSize: 14,
-                      //                   color: Colors.black,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           );
-                      //         }).toList(),
-                      //       )),
-                      //
-                      //     ],
-                      //   ),
-                      // ),
-
                     ],
                   ),
                 ),
@@ -174,7 +109,9 @@ class SetUpProfileScreenConsultant1 extends StatelessWidget {
                     //   showCustomSnackBar("Error, Please select age and country",isError: true);
                     // }
                     if (formKey.currentState!.validate()) {
-                      debugPrint("Name: ${setupProfileController.firstNameController.value.text}");
+                      debugPrint("BusinessName: ${setupProfileController.businessNameController.value.text}");
+                      debugPrint("Job Name: ${setupProfileController.jobTitleController.value.text}");
+                      debugPrint("Des: ${setupProfileController.profileDescriptionController.value.text}");
                       Get.to(ConsultSetupScreen2());
                     }
                   },

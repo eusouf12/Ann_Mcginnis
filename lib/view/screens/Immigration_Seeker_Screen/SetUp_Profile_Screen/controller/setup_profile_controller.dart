@@ -231,7 +231,7 @@ class SetupProfileController extends GetxController {
         "nationality": nationalityController.value.text.trim(),
         "fieldOfStudy": fieldOfStudyController.value.text.trim(),
         "yearOfGraduation": int.tryParse(graduationYearController.value.text) ?? 0,
-        "certifications": certificates,
+        "certifications": selectedCertificate,
         "englishProficiency": selectedEnglishProficiency.value,
         "ieltsScore": double.tryParse(selectedIeltsScore.value.text) ?? 0,
         "toeflScore": int.tryParse(selectedToeflScore.value.text) ?? 0,
