@@ -119,8 +119,7 @@ class UserDashboardController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
-        final BookingResponse model =
-        BookingResponse.fromJson(jsonResponse);
+        final BookingResponse model = BookingResponse.fromJson(jsonResponse);
 
         bookedTotalPages = model.data?.pagination?.pages ?? 1;
 

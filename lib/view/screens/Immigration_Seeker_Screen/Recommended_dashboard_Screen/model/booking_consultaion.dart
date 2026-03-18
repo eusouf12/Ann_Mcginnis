@@ -47,20 +47,16 @@ class Booking {
   String? id;
   User? userId;
   Consultant? consultantId;
-
   double? originalAmount;
   double? discountRate;
   double? discountAmount;
   double? amount;
-
   String? currency;
   String? paymentStatus;
   String? bookingStatus;
-
   String? consultationDate;
   String? consultationTime;
   String? consultationType;
-
   String? createdAt;
   String? updatedAt;
 
@@ -86,9 +82,7 @@ class Booking {
     return Booking(
       id: json['_id'],
       userId: json['userId'] != null ? User.fromJson(json['userId']) : null,
-      consultantId: json['consultantId'] != null
-          ? Consultant.fromJson(json['consultantId'])
-          : null,
+      consultantId: json['consultantId'] != null ? Consultant.fromJson(json['consultantId']) : null,
       originalAmount: (json['originalAmount'] ?? 0).toDouble(),
       discountRate: (json['discountRate'] ?? 0).toDouble(),
       discountAmount: (json['discountAmount'] ?? 0).toDouble(),
@@ -113,11 +107,9 @@ class Consultant {
   String? businessName;
   String? jobTitle;
   String? profileDescription;
-
-  int? consultationFees;
+  ConsultationFees? consultationFees;
   String? currency;
   int? discountRates;
-
   List<String>? consultationFormats;
   String? additionalNotes;
 
@@ -139,18 +131,14 @@ class Consultant {
     return Consultant(
       id: json['_id'],
       userId: json['userId'] != null ? User.fromJson(json['userId']) : null,
-      availability: json['availability'] != null
-          ? Availability.fromJson(json['availability'])
-          : null,
+      availability: json['availability'] != null ? Availability.fromJson(json['availability']) : null,
+      consultationFees: json['consultationFees'] != null ? ConsultationFees.fromJson(json['consultationFees']) : null,
       businessName: json['businessName'],
       jobTitle: json['jobTitle'],
       profileDescription: json['profileDescription'],
-      consultationFees: json['consultationFees'],
       currency: json['currency'],
       discountRates: json['discountRates'],
-      consultationFormats: json['consultationFormats'] != null
-          ? List<String>.from(json['consultationFormats'])
-          : [],
+      consultationFormats: json['consultationFormats'] != null ? List<String>.from(json['consultationFormats']) : [],
       additionalNotes: json['additionalNotes'],
     );
   }
@@ -202,6 +190,26 @@ class Availability {
       preferredTimeSlots: json['preferredTimeSlots'] != null
           ? List<String>.from(json['preferredTimeSlots'])
           : [],
+    );
+  }
+}
+
+class ConsultationFees {
+  int? videoCall;
+  int? phoneCall;
+  int? inPerson;
+
+  ConsultationFees({
+    this.videoCall,
+    this.phoneCall,
+    this.inPerson,
+  });
+
+  factory ConsultationFees.fromJson(Map<String, dynamic> json) {
+    return ConsultationFees(
+      videoCall: json['videoCall'],
+      phoneCall: json['phoneCall'],
+      inPerson: json['inPerson'],
     );
   }
 }
