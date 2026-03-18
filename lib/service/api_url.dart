@@ -38,8 +38,6 @@ class ApiUrl {
 
 
 
-
-
   static const String event = "/api/v1/event/create_event";
   static String updateEvent({required String eventId}) =>
       "/api/v1/event/update_event/$eventId";
