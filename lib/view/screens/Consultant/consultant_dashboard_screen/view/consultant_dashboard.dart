@@ -9,8 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../../../../utils/app_images/app_images.dart';
+import '../../../../../service/api_url.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../Immigration_Seeker_Screen/Immigration_Profile_screen/controller/user_profile_controller.dart';
+import '../../../Immigration_Seeker_Screen/Recommended_Countries_Screen/controller/recomended_countries_controller.dart';
 import '../../profile_screen/consult_profile_screen.dart';
 import '../../profile_screen/widget/custom_appoinment_card.dart';
 import '../../profile_screen/widget/upcoming_appointments_card.dart';
@@ -25,9 +28,13 @@ class ConsultantDashboard extends StatelessWidget {
   ConsultantDashboard({super.key});
   final ConsultDashboardController controller = Get.put(ConsultDashboardController());
   final BookingController bookingController = Get.put(BookingController());
+  final UserProfileController userProfileController = Get.put(UserProfileController(),);
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userProfileController.getUserProfile();
+    });
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -37,7 +44,7 @@ class ConsultantDashboard extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              CustomImage(imageSrc: AppImages.logoApp, height: 28.h, width: 28.w, ),
+              CustomImage(imageSrc: AppImages.logoApp, height: 28.h, width: 28.w,),
               SizedBox(width: 8.w),
               CustomText(text: "Global Jump", fontSize: 18.sp, fontWeight: FontWeight.bold, color: AppColors.primary, textAlign: TextAlign.start,),
             ],
@@ -49,8 +56,7 @@ class ConsultantDashboard extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   IconButton(
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     icon: Icon(
                       Icons.notifications_none,
                       color: const Color(0xFF0D1B2A),
@@ -60,62 +66,68 @@ class ConsultantDashboard extends StatelessWidget {
                     constraints: const BoxConstraints(),
                   ),
                   // Red Badge
-                  Positioned(
-                    right: -2,
-                    top: -2,
-                    child: Container(
-                      padding: EdgeInsets.all(3.w),
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 16.w,
-                        minHeight: 16.w,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "2",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   right: -2,
+                  //   top: -2,
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(3.w),
+                  //     decoration: const BoxDecoration(
+                  //       color: Colors.red,
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //     constraints: BoxConstraints(
+                  //       minWidth: 16.w,
+                  //       minHeight: 16.w,
+                  //     ),
+                  //     child: Center(
+                  //       child: Text(
+                  //         "2",
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 10.sp,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
 
             SizedBox(width: 15.w),
             // 4. Profile Image
-            GestureDetector(
-              onTap: () {
-                Get.to(ProfileScreen());
-              },
-              child:   ClipOval(
-                child: CustomNetworkImage(
-                  imageUrl: AppConstants.profileImage2,
-                  height: 50.h,
-                  width: 50.h,
-                  boxShape: BoxShape.circle,
-                ),
-              ),
-            ),
+            Obx(() {
+              final user = userProfileController.userData.value;
 
+              String imageUrl = (user?.avatar != null && user!.avatar!.isNotEmpty)? ApiUrl.imageUrl + user.avatar! : AppConstants.profileImage2;
+
+              return GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoutes.userProfileScreen);
+                },
+                child: ClipOval(
+                  child: CustomNetworkImage(
+                    imageUrl: imageUrl,
+                    height: 50.h,
+                    width: 50.h,
+                    boxShape: BoxShape.circle,
+                  ),
+                ),
+              );
+            }),
             SizedBox(width: 20.w),
           ],
         ),
-
-        body: Column(
+          body: Obx(() {
+            final user = userProfileController.userData.value;
+            return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: CustomText(
-                text: "Welcome, Sarah!",
+                text: "Welcome, ${user?.fullname}",
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary1,
@@ -521,7 +533,8 @@ class ConsultantDashboard extends StatelessWidget {
               ),
             ),
           ],
-        ),
+        );
+          }),
       ),
     );
   }
