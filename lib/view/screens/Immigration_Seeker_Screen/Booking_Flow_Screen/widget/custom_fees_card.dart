@@ -5,6 +5,7 @@ import '../../../../components/custom_text/custom_text.dart';
 class CustomConsultationCard extends StatelessWidget {
   final String? title;
   final String? subTitle;
+  final String? currency;
   final String? price;
   final Color? bgColor;
   final Color? priceColor;
@@ -16,6 +17,7 @@ class CustomConsultationCard extends StatelessWidget {
     this.price,
     this.bgColor,
     this.priceColor,
+    this.currency,
   });
 
   @override
@@ -46,18 +48,28 @@ class CustomConsultationCard extends StatelessWidget {
                 color: Colors.black87,
               ),
               SizedBox(height: 4.h),
-              CustomText(
-                text: "1 hour session",
-                fontSize: 13,
-                color: Colors.grey,
-              ),
+              // CustomText(
+              //   text: "1 hour session",
+              //   fontSize: 13,
+              //   color: Colors.grey,
+              // ),
             ],
           ),
-          CustomText(
-            text: "\$ $price",
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-            color: priceColor ?? Colors.blue,
+          Column(
+            children: [
+              CustomText(
+                text: " $price",
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: priceColor ?? Colors.blue,
+              ),
+              CustomText(
+                text: " $currency",
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: priceColor ?? Colors.black,
+              ),
+            ],
           ),
         ],
       ),

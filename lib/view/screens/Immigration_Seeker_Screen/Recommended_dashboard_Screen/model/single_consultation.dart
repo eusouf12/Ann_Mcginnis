@@ -34,14 +34,15 @@ class ConsultantDetails {
 
   String? professionalLicenseDoc;
   String? certificationsFile;
-
-  //int? consultationFees;
+  ConsultationFees? consultationFees;
   String? currency;
   int? discountRates;
   bool? stripeConnected;
   List<String>? consultationFormats;
   String? additionalNotes;
   String? stripeAccountId;
+  int? experienceYears;
+  List<String>? additionalDocuments;
   String? createdAt;
   String? updatedAt;
 
@@ -54,13 +55,15 @@ class ConsultantDetails {
     this.profileDescription,
     this.professionalLicenseDoc,
     this.certificationsFile,
-    //this.consultationFees,
+    this.consultationFees,
     this.currency,
     this.discountRates,
     this.stripeConnected,
     this.consultationFormats,
     this.additionalNotes,
     this.stripeAccountId,
+    this.experienceYears,
+    this.additionalDocuments,
     this.createdAt,
     this.updatedAt,
   });
@@ -75,13 +78,15 @@ class ConsultantDetails {
       profileDescription: json['profileDescription'],
       professionalLicenseDoc: json['professionalLicenseDoc'],
       certificationsFile: json['certificationsFile'],
-      //consultationFees: json['consultationFees'],
+      consultationFees: json['consultationFees'] != null ? ConsultationFees.fromJson(json['consultationFees']) : null,
       currency: json['currency'],
       discountRates: json['discountRates'],
       stripeConnected: json['stripeConnected'],
       consultationFormats: json['consultationFormats'] != null ? List<String>.from(json['consultationFormats']) : [],
       additionalNotes: json['additionalNotes'],
       stripeAccountId: json['stripeAccountId'],
+      experienceYears: json['experienceYears'],
+      additionalDocuments: json['additionalDocuments'] != null ? List<String>.from(json['additionalDocuments']) : [],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
     );
@@ -134,6 +139,26 @@ class SingleConsultantUser {
       mobile: json['mobile'],
       avatar: json['avatar'],
       role: json['role'],
+    );
+  }
+}
+
+class ConsultationFees {
+  int? videoCall;
+  int? phoneCall;
+  int? inPerson;
+
+  ConsultationFees({
+    this.videoCall,
+    this.phoneCall,
+    this.inPerson,
+  });
+
+  factory ConsultationFees.fromJson(Map<String, dynamic> json) {
+    return ConsultationFees(
+      videoCall: json['videoCall'],
+      phoneCall: json['phoneCall'],
+      inPerson: json['inPerson'],
     );
   }
 }

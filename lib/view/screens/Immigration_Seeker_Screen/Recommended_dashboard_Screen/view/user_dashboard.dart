@@ -525,17 +525,22 @@ class UserDashboard extends StatelessWidget {
                                     final country = userDashboardController.savedCountryList[index];
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: 10),
-                                      child: CountryVisaCard(
-                                        title: country.country ?? "",
-                                        img: country.imageUrl != null ? "${ApiUrl.imageUrl}${country.flagUrl}" : "",
-                                        subTitle: country.label ?? "",
-                                        description: "${country.visaTypes?.length ?? 0} visa options available",
-                                        matchPercent: "${country.score ?? 0}",
-                                        tagText: country.fastTrack == true ? "Fast Track" : (country.englishSpeaking == true ? "English Friendly" : "Standard"),
-
-                                        onFavoriteTap: () {
-                                          userDashboardController.deleteSaveCountry(id: country.id ?? "",);
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(AppRoutes.countryDetailsScreen, arguments: {"country": country.country, "id": country.recommendationId?.id});
                                         },
+                                        child: CountryVisaCard(
+                                          title: country.country ?? "",
+                                          img: country.imageUrl != null ? "${ApiUrl.imageUrl}${country.flagUrl}" : "",
+                                          subTitle: country.label ?? "",
+                                          description: "${country.visaTypes?.length ?? 0} visa options available",
+                                          matchPercent: "${country.score ?? 0}",
+                                          tagText: country.fastTrack == true ? "Fast Track" : (country.englishSpeaking == true ? "English Friendly" : "Standard"),
+
+                                          onFavoriteTap: () {
+                                            userDashboardController.deleteSaveCountry(id: country.id ?? "",);
+                                          },
+                                        ),
                                       ),
                                     );
                                   },

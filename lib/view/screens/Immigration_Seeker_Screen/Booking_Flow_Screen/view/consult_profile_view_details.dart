@@ -56,10 +56,10 @@ class ConsultProfileViewDetails extends StatelessWidget {
                     title: consultant.jobTitle ?? "",
                     rating: 4.9,
                     totalReviews: "127",
-                    experience: "10",
+                    experience: consultant.experienceYears.toString(),
                   ),
                   SizedBox(height: 20.h),
-                  //Consultation Fees
+                  //======================== Consultation Fees ========================
                   CustomText(
                     text: "Consultation Fees",
                     fontSize: 16,
@@ -70,26 +70,31 @@ class ConsultProfileViewDetails extends StatelessWidget {
                   ),
                   Column(
                     children: List.generate(
-                      consultant.consultationFormats?.length ?? 0,
-                          (index) {
-
+                      consultant.consultationFormats?.length ?? 0, (index) {
                         final format = consultant.consultationFormats![index];
+                        int price = 0;
+
+                        if (format.toLowerCase().contains("video")) {
+                          price = consultant.consultationFees?.videoCall ?? 0;
+                        } else if (format.toLowerCase().contains("phone")) {
+                          price = consultant.consultationFees?.phoneCall ?? 0;
+                        } else {
+                          price = consultant.consultationFees?.inPerson ?? 0;
+                        }
 
                         return Padding(
                           padding: EdgeInsets.only(bottom: 12.h),
                           child: CustomConsultationCard(
                             title: format,
-                            subTitle: "30",
-                           // price: "${consultant.consultationFees ?? 0}",
-                            price: "",
+                            currency: consultant.currency,
+                            price: "${price}",
                           ),
                         );
                       },
                     ),
                   ),
-
                   SizedBox(height: 20.h),
-
+                  //======================== Availability ========================
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -137,9 +142,11 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                       // Today DATE or Selected Date
                       Obx(() {
-
+                        // যদি কোনো ডেট সিলেক্ট করা না থাকে তবে আজকের ডেট নিবে
                         final date = bookingFlowController.selectedDate.value ?? DateTime.now();
-                        final formattedDate = DateFormat('MMMM dd, yyyy').format(date);
+
+                        // 'EEEE' যোগ করার ফলে বার বা দিনের নাম (যেমন: Wednesday) চলে আসবে
+                        final formattedDate = DateFormat('EEEE, MMMM dd, yyyy').format(date);
 
                         return Center(
                           child: CustomText(
@@ -153,83 +160,49 @@ class ConsultProfileViewDetails extends StatelessWidget {
                       }),
                       SizedBox(height: 10.h),
 
-                      /// TIME SLOTS
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 3,
-                        ),
-                        itemCount:
-                        consultant.availability?.preferredTimeSlots?.length ?? 0,
+                      ///============ TIME SLOTS
+                      Obx(() {
+                        final bool isAvailable = bookingFlowController.isAvailableOnSelectedDay(
+                            consultant.availability?.recurringDays
+                        );
 
-                        itemBuilder: (context, index) {
-
-                          final slot =
-                          consultant.availability!.preferredTimeSlots![index];
-
-                          return CustomTimeCard(
-                            onTap: () {},
-                            time: slot,
-                            isSelected: false,
-                            isAvailable: true,
+                        if (!isAvailable) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 30.h),
+                            child: Center(child: CustomText(text: "Not available on ${DateFormat('EEEE').format(bookingFlowController.selectedDate.value!)}", color: Colors.red, fontWeight: FontWeight.bold,),),
                           );
-                        },
-                      ),
+                        }
+
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 3,
+                          ),
+                          itemCount: consultant.availability?.preferredTimeSlots?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            final slot = consultant.availability!.preferredTimeSlots![index];
+
+                            return Obx(() {
+                              final isSelected = bookingFlowController.selectedTimes.contains(slot);
+                              return CustomTimeCard(
+                                onTap: () => bookingFlowController.toggleTime(slot),
+                                time: slot,
+                                isSelected: isSelected,
+                                isAvailable: true,
+                              );
+                            });
+                          },
+                        );
+                      })
                     ],
                   ),
-                 // available or not
-                  SizedBox(height: 16.h),
-                  Row(
-                    children: [
-                      Container(
-                        width: 14,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFDCFCE7),
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: Colors.green,
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6.w),
-                      CustomText(
-                        text: "Available",
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-
-                      SizedBox(width: 20.w),
-
-                      Container(
-                        width: 14,
-                        height: 14,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6.w),
-                      CustomText(
-                        text: "Unavailable",
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
-
                   SizedBox(height: 20.h),
 
-                  /// ABOUT
+                  //================== ABOUT ===================
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -251,7 +224,6 @@ class ConsultProfileViewDetails extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 20.h),
                 ],
               ),
