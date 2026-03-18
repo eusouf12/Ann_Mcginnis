@@ -331,12 +331,7 @@ class UserDashboard extends StatelessWidget {
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
 
-                            if (!userDashboardController.isConsultantLoadMore.value &&
-                                scrollInfo.metrics.pixels >=
-                                    scrollInfo.metrics.maxScrollExtent - 200 &&
-                                userDashboardController.consultantCurrentPage <
-                                    userDashboardController.consultantTotalPages) {
-
+                            if (!userDashboardController.isConsultantLoadMore.value && scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200 && userDashboardController.consultantCurrentPage < userDashboardController.consultantTotalPages) {
                               userDashboardController.getConsultants(loadMore: true);
                             }
 
@@ -363,19 +358,14 @@ class UserDashboard extends StatelessWidget {
                                   itemCount: userDashboardController.consultantList.length,
                                   itemBuilder: (context, index) {
 
-                                    final consultant =
-                                    userDashboardController.consultantList[index];
+                                    final consultant = userDashboardController.consultantList[index];
 
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: 12),
                                       child: BookConsultationCard(
                                         title: consultant.userId?.fullname ?? "",
                                         subTitle: consultant.businessName ?? "",
-                                        img: (consultant.userId?.avatar != null &&
-                                            consultant.userId!.avatar!.isNotEmpty)
-                                            ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}"
-                                            : AppConstants.profileImage,
-
+                                        img: (consultant.userId?.avatar != null && consultant.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
                                         isBooked: false,
 
                                         onTapViewDetails: () {
@@ -386,7 +376,10 @@ class UserDashboard extends StatelessWidget {
                                         },
 
                                         onTapBookNow: () {
-                                          Get.to(ConsultBookScreen());
+                                          Get.toNamed(
+                                            AppRoutes.consultBookScreen,
+                                            arguments: consultant.id,
+                                          );
                                         },
                                       ),
                                     );

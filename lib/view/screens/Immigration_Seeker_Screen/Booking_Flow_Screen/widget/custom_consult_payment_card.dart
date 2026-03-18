@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConsultationTypeCard extends StatelessWidget {
   final String title;
-  final String subTitle;
   final String price;
   final bool isSelected;
   final VoidCallback onTap;
@@ -12,7 +11,6 @@ class ConsultationTypeCard extends StatelessWidget {
   const ConsultationTypeCard({
     super.key,
     required this.title,
-    required this.subTitle,
     required this.price,
     required this.isSelected,
     required this.onTap,
@@ -58,14 +56,6 @@ class ConsultationTypeCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  Text(
-                    subTitle,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.grey[600],
-                    ),
-                  ),
                 ],
               ),
             ),

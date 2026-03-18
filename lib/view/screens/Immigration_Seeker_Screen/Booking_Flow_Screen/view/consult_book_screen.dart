@@ -17,9 +17,13 @@ import 'booking_sucess_screen.dart';
 class ConsultBookScreen extends StatelessWidget {
   ConsultBookScreen({super.key});
   final BookingFlowController bookingFlowController = Get.put(BookingFlowController());
+  final String consultantId = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bookingFlowController.getSingleConsultant(id: consultantId);
+    });
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -82,97 +86,143 @@ class ConsultBookScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //Change date
+                        // --- Availability Header with Date & Day ---
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomText(
-                              text: "Availability Time -",
+                            const CustomText(
+                              text: "Availability-",
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                               right: 10,
                             ),
+                            Obx(() {
+                              final date = bookingFlowController.selectedDate.value ?? DateTime.now();
+                              final formattedDate = DateFormat('EEEE, MMMM dd, yyyy').format(date);
 
-                             Obx(() {
-                               final formattedDate = DateFormat('MMMM dd, yyyy').format(bookingFlowController.selectedDate.value ?? DateTime.now(),);
-
-                               return Center(
-                                child: CustomText(
-                                  text: formattedDate,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  bottom: 15,
-                                ),
+                              return CustomText(
+                                text: formattedDate,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                bottom: 15,
                               );
                             }),
                           ],
                         ),
                         SizedBox(height: 10.h),
-                        // Time Slots
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 3,
-                          ),
-                          itemCount: 4,
-                          itemBuilder: (context, index) {
-                            String time = index == 0 ? '9:00 AM' : index == 1 ? '10:30 AM' : index == 2 ? '12:00 PM' : '2:30 PM';
-                            bool isAvailable = index== 1?false: true;
-                            print("isAvailable===== ${isAvailable}");
-                            return Obx(() {
-                              final isSelected = bookingFlowController.selectedTimes.contains(time);
-                              return CustomTimeCard(
-                                time: time,
-                                isAvailable: isAvailable,
-                                isSelected: isAvailable && isSelected,
-                                onTap: () {
-                                  if (isAvailable) {
-                                    bookingFlowController.toggleTime(time);
-                                  }
-                                },
-                              );
-                            });
 
-                          },
-                        ),
-                        SizedBox(height: 20.h),
-                        // video or audio card
-                        CustomText(text: "Consultation Type" , fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black, ),
-                        SizedBox(height: 10.h),
-                        Obx(() => Column(
-                          children: [
-                            ConsultationTypeCard(
-                              title: "Video Call",
-                              subTitle: "45 minutes session",
-                              price: "\$89",
-                              isSelected: bookingFlowController.selectedConsultationType.value == "Video Call",
-                              onTap: () {
-                                bookingFlowController.selectConsultation("Video Call", "\$89");
-                              },
+                        // --- Time Slots Logic ---
+                        Obx(() {
+                          final consultant = bookingFlowController.singleConsultant.value;
+                          final bool isDayAvailable = bookingFlowController.isAvailableOnSelectedDay(
+                            consultant?.availability?.recurringDays,
+                          );
+
+                          if (!isDayAvailable) {
+                            return Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(vertical: 30.h),
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10.r),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.event_busy, color: Colors.red.shade400, size: 30),
+                                  SizedBox(height: 8.h),
+                                  CustomText(
+                                    text: "Not available on this day",
+                                    color: Colors.red.shade700,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                          final List<String> slots = consultant?.availability?.preferredTimeSlots ?? [];
+
+                          if (slots.isEmpty) {
+                            return const Center(child: Text("No time slots available"));
+                          }
+
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              childAspectRatio: 3,
                             ),
+                            itemCount: slots.length,
+                            itemBuilder: (context, index) {
+                              final time = slots[index];
 
-                            SizedBox(height: 12.h),
+                              return Obx(() {
+                                final isSelected = bookingFlowController.selectedTimes.contains(time);
+                                // এখানে আপনি চাইলে আপনার নিজস্ব logic (যেমন: Is already booked) দিয়ে isAvailable সেট করতে পারেন
+                                bool isAvailable = true;
 
-                            ConsultationTypeCard(
-                              title: "Phone Call",
-                              subTitle: "45 minutes session",
-                              price: "\$69",
-                              isSelected: bookingFlowController.selectedConsultationType.value == "Phone Call",
-                              onTap: () {
-                                bookingFlowController.selectConsultation("Phone Call", "\$69");
-                              },
-                            ),
-                          ],
-                        ),)
+                                return CustomTimeCard(
+                                  time: time,
+                                  isAvailable: isAvailable,
+                                  isSelected: isSelected,
+                                  onTap: () {
+                                    if (isAvailable) {
+                                      bookingFlowController.toggleTime(time);
+                                    }
+                                  },
+                                );
+                              });
+                            },
+                          );
+                        }),
                       ],
                     ),
+                    //================ consultant type===============
+                    SizedBox(height: 20.h),
+                    // video or audio card
+                    CustomText(text: "Consultation Type" , fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black, ),
+                    SizedBox(height: 10.h),
+                    Obx(() {
+                      final consultant = bookingFlowController.singleConsultant.value;
+                      if (consultant?.id == null) return const SizedBox();
+                      final formats = consultant?.consultationFormats ?? [];
+                      final fees = consultant?.consultationFees;
+
+                      return Column(
+                        children: formats.map((format) {
+                          String title = "";
+                          String price = "0";
+                          String subTitle = "45 minutes session";
+                          if (format == "Video Consultation") {
+                            title = "Video Call";
+                            price = "\$${fees?.videoCall ?? 0}";
+                          } else if (format == "Phone Call") {
+                            title = "Phone Call";
+                            price = "\$${fees?.phoneCall ?? 0}";
+                          } else if (format == "In-Person") {
+                            title = "In-Person";
+                            price = "\$${fees?.inPerson ?? 0}";
+                          }
+
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 12.h),
+                            child: ConsultationTypeCard(
+                              title: title,
+                              price: price,
+                              isSelected: bookingFlowController.selectedConsultationType.value == title,
+                              onTap: () {
+                                bookingFlowController.selectConsultation(title, price);
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    }),
                     SizedBox(height: 20.h),
                   ],
                 ),

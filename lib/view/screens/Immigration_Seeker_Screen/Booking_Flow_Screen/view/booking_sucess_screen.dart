@@ -6,30 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../controller/booking_flow_controller.dart';
+
 
 
 class BookingConfirmedScreen extends StatelessWidget {
-  const BookingConfirmedScreen({super.key});
+  BookingConfirmedScreen({super.key});
+  final BookingFlowController bookingFlowController = Get.put(BookingFlowController());
+  final String consultantId = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bookingFlowController.getSingleConsultant(id: consultantId);
+    });
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.sp),
-          onPressed: () => Get.back(),
-        ),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, leading: IconButton(icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.sp),onPressed: () => Get.back(),),
         centerTitle: true,
-        title: Text(
-          "Booking Confirmed",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text("Booking Confirmed",
+          style: TextStyle(color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.bold,),
         ),
       ),
       body: SingleChildScrollView(
