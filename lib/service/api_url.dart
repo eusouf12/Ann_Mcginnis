@@ -38,25 +38,21 @@ class ApiUrl {
   static String getSingleConsultant({required String id}) => "/users/consultant/$id";
   static const String recommendationsCountries = "/recommendations/generate";
 
+  ///========================= Consultant =========================
+  static const String consultantAnalytics = "/bookings/consultant/analytics";
+  static const String allAppointments = "/bookings/consultant/my-bookings";
 
 
-  static const String event = "/api/v1/event/create_event";
-  static String updateEvent({required String eventId}) =>
-      "/api/v1/event/update_event/$eventId";
-  static String allHostEvent({required int page}) =>
-      "/api/v1/event/find_my_event_list?page=$page&limit=10";
-  static String allHostEventChatRoom({required int page}) =>
-      "/api/v1/event_chat_room/find_by_my_event_chatroom?page=$page&limit=10";
+
+
 
   static String getGalleryPostFilter({
     required int page,
     required String filter,
-  }) =>
-      "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";
+  }) => "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";
   //share post
   static String sharePost(String postId) => "post/$postId";
 
   // map
-  static const String getMap =
-      "/map?sw_lat=18&sw_lng=89&ne_lat=24&ne_lng=92&category_id=68185fc91db8477bce1fade2";
+  static const String getMap = "/map?sw_lat=18&sw_lng=89&ne_lat=24&ne_lng=92&category_id=68185fc91db8477bce1fade2";
 }

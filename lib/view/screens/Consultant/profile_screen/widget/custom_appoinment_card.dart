@@ -17,7 +17,7 @@ class CustomAppointmentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      padding:  EdgeInsets.symmetric(horizontal: 16,vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.0),
@@ -31,19 +31,17 @@ class CustomAppointmentCard extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // The Icon Circle
           Container(
             padding: const EdgeInsets.all(8),
 
-            child: Icon(icon, color: AppColors.primary1, size: 32,),
+            child: Icon(icon, color: AppColors.primary1, size: 26,),
           ),
-          SizedBox(height: 10),
-
           // The Number Text
-          CustomText(text: value, fontSize: 32, fontWeight: FontWeight.bold, color: AppColors.primary1),
-          SizedBox(height: 10),
+          CustomText(text: value, fontSize: 26, fontWeight: FontWeight.bold, color: AppColors.primary1),
+          SizedBox(height:8),
           // The Label Text
           CustomText(text: label,  fontWeight: FontWeight.w500, color: Colors.grey,fontSize: 14),
         ],
