@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/booking_flow_controller.dart';
 import '../widget/custom_consult_payment_card.dart';
 import '../widget/custom_time_card.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'booking_sucess_screen.dart';
+
 
 
 class ConsultBookScreen extends StatelessWidget {
@@ -191,27 +192,35 @@ class ConsultBookScreen extends StatelessWidget {
                       if (consultant?.id == null) return const SizedBox();
                       final formats = consultant?.consultationFormats ?? [];
                       final fees = consultant?.consultationFees;
+                      final currency = consultant?.currency;
 
                       return Column(
                         children: formats.map((format) {
                           String title = "";
                           String price = "0";
+                          String currencyName = "0";
                           if (format == "Video Consultation") {
                             title = "Video Call";
-                            price = "\$${fees?.videoCall ?? 0}";
-                          } else if (format == "Phone Call") {
+                            price = "${fees?.videoCall ?? 0}";
+                            currencyName = "${currency}";
+                          }
+                          else if (format == "Phone Call") {
                             title = "Phone Call";
-                            price = "\$${fees?.phoneCall ?? 0}";
-                          } else if (format == "In-Person") {
+                            price = "${fees?.phoneCall ?? 0}";
+                            currencyName = "${currency}";
+                          }
+                          else if (format == "In-Person") {
                             title = "In-Person";
-                            price = "\$${fees?.inPerson ?? 0}";
+                            price = "${fees?.inPerson ?? 0}";
+                            currencyName = "${currency}";
                           }
 
                           return Padding(
                             padding: EdgeInsets.only(bottom: 12.h),
                             child: ConsultationTypeCard(
                               title: title,
-                              price: price,
+                              price: "$currencyName$price",
+                              currency: currencyName,
                               isSelected: bookingFlowController.selectedConsultationType.value == title,
                               onTap: () {
                                 bookingFlowController.selectConsultation(title, price);
@@ -245,33 +254,18 @@ class ConsultBookScreen extends StatelessWidget {
               ),
               SizedBox(width: 10),
               Expanded(
-                child: CustomButton(
-                  onTap: () {
-                    final date = bookingFlowController.formattedSelectedDate;
-                    final times = bookingFlowController.selectedTimes;
-                    final double rating = 4.9;
-                    final int totalReviews = 127;
-                    if ( times.isNotEmpty) {
-                      debugPrint("Booking Date: $date");
-                      debugPrint("Booking Times: $times");
-                       Get.to(() => BookingConfirmedScreen(),
-                           arguments: {
-                              'name':"Dr Sarah",
-                              'title':"Clinical Psychologist",
-                             'id':"12345678",
-                             "rating": rating, //'rating': rating.toString(),
-                             "reviews":totalReviews,
-                             'date': date,
-                             'times': times
-                          }
-                       );
-                    } else {
-                      Get.snackbar("Error", "Please select date and time");
-                    }
-                  },
-                  title: "Book Now",
-                  textColor: AppColors.white,
-                ),
+                child: Obx(() {
+                  final consultant = bookingFlowController.singleConsultant.value;
+                  return bookingFlowController.isBookingLoading.value
+                      ? CustomLoader()
+                      : CustomButton(
+                    onTap: () {
+                      bookingFlowController.bookConsultation(id: consultant?.id ?? "", name: consultant?.userId?.fullname ??'', img: consultant?.userId?.avatar ?? '', jobTitle: consultant?.jobTitle ??'', currency: consultant?.currency ??"");
+                    },
+                    title: "Book Now",
+                    textColor: AppColors.white,
+                  );
+                }),
               ),
             ],
           )

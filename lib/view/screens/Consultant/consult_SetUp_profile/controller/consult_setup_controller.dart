@@ -300,9 +300,9 @@ class ConsultSetupController extends GetxController {
         }),
 
         "consultationFormats": jsonEncode([
-          if (isVideoSelected.value) "Video Consultation",
-          if (isPhoneSelected.value) "Phone Call",
-          if (isInPersonSelected.value) "In-Person",
+          if (isVideoSelected.value) "video-call",
+          if (isPhoneSelected.value) "phone-call",
+          if (isInPersonSelected.value) "in-person",
         ]),
 
         "availability": jsonEncode({

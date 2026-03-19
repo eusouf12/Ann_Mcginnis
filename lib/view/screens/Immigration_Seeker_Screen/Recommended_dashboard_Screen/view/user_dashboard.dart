@@ -36,6 +36,7 @@ class UserDashboard extends StatelessWidget {
        userDashboardController.getConsultants();
        userDashboardController.getBookedConsultants(loadMore: false);
        userDashboardController.getSaveCountry(loadMore: false);
+      controller.getRecommendedCountries();
     });
     return CustomGradient(
       child: Scaffold(

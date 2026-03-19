@@ -1,50 +1,58 @@
 
 import 'package:ann_mcginnis/core/app_routes/app_routes.dart';
+import 'package:ann_mcginnis/service/api_url.dart';
 import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
 import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
+import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../../../utils/app_const/app_const.dart';
+import '../../../../components/custom_netwrok_image/custom_network_image.dart';
+import '../../../../components/custom_text/custom_text.dart';
 import '../controller/booking_flow_controller.dart';
-
-
 
 class BookingConfirmedScreen extends StatelessWidget {
   BookingConfirmedScreen({super.key});
   final BookingFlowController bookingFlowController = Get.put(BookingFlowController());
-  final String consultantId = Get.arguments;
+  final args = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    final consultantId = args['consultantId'];
+    final name = args['consultantName'];
+    final img = args['consultantPhoto'];
+    final jobTitle = args['jobTitle'];
+    final bookDate = args['consultationDate'];
+    final bookTime = args['consultationTime'];
+    final type = args['consultationType'];
+    final price = args['consultationPrice'];
+    final currency = args['currency'];
+    debugPrint("price: $price");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bookingFlowController.getSingleConsultant(id: consultantId);
     });
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0, leading: IconButton(icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.sp),onPressed: () => Get.back(),),
-        centerTitle: true,
-        title: Text("Booking Confirmed",
-          style: TextStyle(color: Colors.black, fontSize: 18.sp, fontWeight: FontWeight.bold,),
-        ),
-      ),
+      appBar: CustomRoyelAppbar(leftIcon: false,titleName:"Booking Confirmed" ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Column(
           children: [
             _buildSuccessHeader(),
             SizedBox(height: 20.h),
-            _buildConsultantCard(),
+            _buildConsultantCard(name, jobTitle, img),
             SizedBox(height: 20.h),
             _buildSectionTitle("Consultation Details"),
-            _buildConsultationDetails(),
+            _buildConsultationDetails(bookDate, bookTime, type),
             SizedBox(height: 20.h),
             _buildSectionTitle("Booking Summary"),
-            _buildBookingSummary(),
+            _buildBookingSummary(type, price,currency),
             SizedBox(height: 20.h),
-            _buildSectionTitle("Contact Information"),
-            _buildContactInfo(),
-            SizedBox(height: 30.h),
+            // _buildSectionTitle("Contact Information"),
+            // _buildContactInfo(),
+            // SizedBox(height: 30.h),
             _buildBottomButtons(),
             SizedBox(height: 20.h),
           ],
@@ -68,88 +76,34 @@ class BookingConfirmedScreen extends StatelessWidget {
           child: Icon(Icons.check, color: Colors.white, size: 35.sp),
         ),
         SizedBox(height: 15.h),
-        Text(
-          "Booking Confirmed!",
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1A237E),
-          ),
-        ),
+        CustomText(text: "Booking Confirmed!",fontSize: 18.sp, color: Color(0xFF1A237E),fontWeight: FontWeight.bold,),
         SizedBox(height: 8.h),
-        Text(
-          "Your consultation has been successfully booked",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.grey[600],
-          ),
-        ),
+        CustomText(text:  "Your consultation has been successfully booked",fontSize: 12.sp, color: Colors.grey,textAlign: TextAlign.center,),
       ],
     );
   }
 
-  Widget _buildConsultantCard() {
+  Widget _buildConsultantCard(String name, String title, String imgUrl) {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4)),
         ],
       ),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12.r),
-            child: Image.network(
-              "https://i.pravatar.cc/150?img=5",
-              height: 60.h,
-              width: 60.h,
-              fit: BoxFit.cover,
-            ),
-          ),
+          CustomNetworkImage(imageUrl :imgUrl.isNotEmpty ?ApiUrl.imageUrl + imgUrl  :  AppConstants.profileImage2, height: 80, width: 80,boxShape: BoxShape.circle,),
           SizedBox(width: 15.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Dr. Sarah Johnson",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1A237E),
-                  ),
-                ),
+                CustomText(text: name, fontSize: 18.sp, fontWeight: FontWeight.bold, color: const Color(0xFF1A237E)),
                 SizedBox(height: 4.h),
-                Text(
-                  "Business Strategy Consultant",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                SizedBox(height: 6.h),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 16.sp),
-                    SizedBox(width: 4.w),
-                    Text(
-                      "4.9 (127 reviews)",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
+                CustomText(text: title,fontSize: 12.sp, color: Colors.grey,fontWeight: FontWeight.normal,),
               ],
             ),
           ),
@@ -163,43 +117,33 @@ class BookingConfirmedScreen extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 10.h),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF0D1B2A),
-          ),
-        ),
+        child:CustomText(text: title,fontSize: 14.sp, color: Color(0xFF0D1B2A),fontWeight: FontWeight.bold,),
       ),
     );
   }
 
-  Widget _buildConsultationDetails() {
+  Widget _buildConsultationDetails(String date, String time, String type) {
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16.r)),
       child: Column(
         children: [
           _buildDetailRow(
             icon: Icons.calendar_today,
             label: "Date",
-            value: "Monday, December 18, 2023",
+            value: date,
           ),
           SizedBox(height: 15.h),
           _buildDetailRow(
             icon: Icons.access_time,
-            label: "Time",
-            value: "2:00 PM - 3:00 PM EST",
+            label: "Time Slot",
+            value: time,
           ),
           SizedBox(height: 15.h),
           _buildDetailRow(
-            icon: Icons.videocam,
+            icon: type.toLowerCase().contains("video") ? Icons.videocam : Icons.phone,
             label: "Format",
-            value: "Video Call",
+            value: type,
           ),
         ],
       ),
@@ -213,7 +157,7 @@ class BookingConfirmedScreen extends StatelessWidget {
           height: 40.h,
           width: 40.h,
           decoration: BoxDecoration(
-            color: const Color(0xFFE3F2FD), // Light Blue
+            color: const Color(0xFFE3F2FD),
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: Icon(icon, color: const Color(0xFF1A237E), size: 20.sp),
@@ -222,44 +166,29 @@ class BookingConfirmedScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-            ),
+            Text(label, style: TextStyle(fontSize: 12.sp, color: Colors.grey[500])),
             SizedBox(height: 2.h),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF0D1B2A),
-              ),
-            ),
+            Text(value, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: const Color(0xFF0D1B2A))),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildBookingSummary() {
+  Widget _buildBookingSummary(String type, String price,String currency) {
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16.r)),
       child: Column(
         children: [
-          _buildSummaryRow("Service", "1-Hour Strategy Session"),
+          _buildSummaryRow("Service", "$type Session"),
           SizedBox(height: 12.h),
-          _buildSummaryRow("Specialization", "Business Growth"),
-          SizedBox(height: 12.h),
-          _buildSummaryRow("Duration", "60 minutes"),
+          _buildSummaryRow("Duration", "Scheduled Slot"),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(color: Colors.grey[200]),
           ),
-          _buildSummaryRow("Total Amount", "\$150", isTotal: true),
+          _buildSummaryRow("Total Amount", "$currency $price", isTotal: true),
         ],
       ),
     );
@@ -269,82 +198,13 @@ class BookingConfirmedScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: isTotal ? 16.sp : 14.sp,
-            fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
-            color: isTotal ? Colors.black : Colors.grey[600],
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: isTotal ? 18.sp : 14.sp,
-            fontWeight: FontWeight.bold,
-            color: isTotal ? const Color(0xFF1A237E) : const Color(0xFF0D1B2A),
-          ),
-        ),
+        Text(title, style: TextStyle(fontSize: isTotal ? 16.sp : 14.sp, fontWeight: isTotal ? FontWeight.bold : FontWeight.w500, color: isTotal ? Colors.black : Colors.grey[600])),
+        Text(value, style: TextStyle(fontSize: isTotal ? 18.sp : 14.sp, fontWeight: FontWeight.bold, color: isTotal ? const Color(0xFF1A237E) : const Color(0xFF0D1B2A))),
       ],
     );
   }
 
-  Widget _buildContactInfo() {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Column(
-        children: [
-          _buildDetailRow(
-            icon: Icons.email,
-            label: "Email",
-            value: "sarah.johnson@consultpro.com",
-          ),
-          SizedBox(height: 15.h),
-          _buildDetailRow(
-            icon: Icons.phone,
-            label: "Phone",
-            value: "+1 (555) 123-4567",
-          ),
-          SizedBox(height: 15.h),
-// Info Box
-          Container(
-            padding: EdgeInsets.all(12.w),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE3F2FD).withOpacity(0.5),
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.info, color: const Color(0xFF1A237E), size: 18.sp),
-                SizedBox(width: 8.w),
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      style: TextStyle(fontSize: 12.sp, color: Colors.black87),
-                      children: const [
-                        TextSpan(
-                          text: "Meeting Link: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(
-                          text: "You will receive a video call link via email 30 minutes before your scheduled consultation.",
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   Widget _buildBottomButtons() {
     return CustomButton(onTap: (){

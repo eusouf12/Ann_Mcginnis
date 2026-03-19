@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -243,16 +244,23 @@ class ConsultProfileViewDetails extends StatelessWidget {
           );
         }),
 
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: CustomButton(
-            onTap: (){
-                 Get.to(ConsultBookScreen());
-            },
-            title: "Book Now",
-            textColor: AppColors.white,
-          ),
-        ),
+        bottomNavigationBar: Obx(() {
+          final consultant = bookingFlowController.singleConsultant.value;
+          if (bookingFlowController.isSingleConsultantLoading.value || consultant == null) {
+            return const SizedBox.shrink();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: CustomButton(
+              onTap: () {
+                Get.toNamed(AppRoutes.consultBookScreen, arguments: consultant.id,);
+              },
+              title: "Book Now",
+              textColor: AppColors.white,
+            ),
+          );
+        }),
       ),
     );
   }

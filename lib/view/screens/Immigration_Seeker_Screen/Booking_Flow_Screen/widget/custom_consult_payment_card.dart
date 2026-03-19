@@ -1,10 +1,12 @@
 import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
+import 'package:ann_mcginnis/view/screens/Consultant/profile_screen/consult_profile_setup_screen.dart' hide AppColors;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ConsultationTypeCard extends StatelessWidget {
   final String title;
   final String price;
+  final String currency;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -12,6 +14,7 @@ class ConsultationTypeCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.price,
+    required this.currency,
     required this.isSelected,
     required this.onTap,
   });
@@ -61,14 +64,12 @@ class ConsultationTypeCard extends StatelessWidget {
             ),
 
             // 3. Price
-            Text(
-              price,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1A237E),
-              ),
-            ),
+            Column(
+              children: [
+                CustomText(text: price,fontWeight: FontWeight.bold,fontSize: 16.sp,color: const Color(0xFF1A237E),),
+                CustomText(text: currency,fontWeight: FontWeight.bold,fontSize: 10.sp,color:  Colors.black,)
+              ],
+            )
           ],
         ),
       ),
