@@ -8,6 +8,7 @@ import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Recommended_
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/app_images/app_images.dart';
 import '../../../../components/custom_image/custom_image.dart';
@@ -563,82 +564,107 @@ class UserDashboard extends StatelessWidget {
                       });
                     }
                     //TAB-04
-                    else {
-                      return Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Get.to(() =>  SetUpProfileScreen1());
-                            },
-                            child: const Icon(Icons.add),
-                          ),
+                    else  {
+                      return Obx(() {
 
-                          CustomText(
-                            text: "Payments", //PaymentCard
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: PaymentCard(
-                                  subTitle: "Visa Consultant - Australia",
-                                  title: 'Document Review',
-                                  date: 'Dec 24, 2025',
-                                  price: '150',
-                                  isPaid: index == 1 ? true : false,
-                                  onTap: () {},
-                                ),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16.w),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFF0FDF4),
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(
-                                color: const Color(0xFFC8E6C9),
-                                width: 1.w,
+                        if (userDashboardController.rxBookedStatus.value == Status.loading && userDashboardController.bookedConsultants.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+
+                        if (userDashboardController.bookedConsultants.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: CustomText(
+                                text: "No Payment History found",
+                                fontSize: 16,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.03),
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          );
+                        }
+
+                        return NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+
+                            if (!userDashboardController.isBookedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.bookedCurrentPage < userDashboardController.bookedTotalPages) {
+                              userDashboardController.getBookedConsultants(loadMore: true);
+                            }
+
+                            return true;
+                          },
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
                               children: [
-                                CustomText(
-                                  text: "Total Paid",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black,
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: userDashboardController.bookedConsultants.length,
+                                  itemBuilder: (context, index) {
+                                    final booking = userDashboardController.bookedConsultants[index];
+                                    final consultant = booking.consultantId;
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 10),
+                                      child: PaymentCard(
+                                        title: 'Document Review',
+                                        consultationType: booking.consultationType ?? "",
+                                        name: consultant?.userId?.fullname ?? "",
+                                        subTitle: consultant?.jobTitle ?? "",
+                                        date: booking.paymentStatus == "paid"? DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.updatedAt!)) : "",
+                                        price: "${booking.currency} ${booking.amount?.toInt()}",
+                                        isPaid:booking.paymentStatus == "paid" ? true : false,
+                                        onTap: () {
+                                          booking.paymentStatus == "pending" ?(){}
+                                          //Get.toNamed(RouteName.consultantProfile, arguments: consultant)
+                                          :  Get.toNamed(AppRoutes.bookingDetailsScreen,arguments: booking);
+                                        },
+                                      ),
+                                    );
+                                  },
                                 ),
-                                CustomText(
-                                  text: "\$150",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black,
-                                ),
+                                SizedBox(height: 20.h),
+                                // Container(
+                                //   width: double.infinity,
+                                //   padding: EdgeInsets.all(16.w),
+                                //   decoration: BoxDecoration(
+                                //     color: Color(0xFFF0FDF4),
+                                //     borderRadius: BorderRadius.circular(12.r),
+                                //     border: Border.all(
+                                //       color: const Color(0xFFC8E6C9),
+                                //       width: 1.w,
+                                //     ),
+                                //     boxShadow: [
+                                //       BoxShadow(
+                                //         color: Colors.black.withOpacity(0.03),
+                                //         blurRadius: 5,
+                                //         offset: const Offset(0, 2),
+                                //       ),
+                                //     ],
+                                //   ),
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                //     crossAxisAlignment: CrossAxisAlignment.start,
+                                //     children: [
+                                //       CustomText(
+                                //         text: "Total Paid",
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold,
+                                //         color: AppColors.black,
+                                //       ),
+                                //       CustomText(
+                                //         text: "\$150",
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold,
+                                //         color: AppColors.black,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
-                        ],
-                      );
+                        );
+                      });
                     }
                   }),
                 ),

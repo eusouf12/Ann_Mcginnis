@@ -7,6 +7,8 @@ import '../../../../components/custom_text/custom_text.dart';
 class PaymentCard extends StatelessWidget {
   final String title;
   final String subTitle;
+  final String name;
+  final String consultationType;
   final String date;
   final String price;
   final bool isPaid;
@@ -16,6 +18,8 @@ class PaymentCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.subTitle,
+    required this.name,
+    required this.consultationType,
     required this.date,
     required this.price,
     this.isPaid = false,
@@ -62,11 +66,31 @@ class PaymentCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     CustomText(
+                      text: name,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                      textAlign: TextAlign.start,
+                    ),
+                    CustomText(
                       text: subTitle,
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[700]!,
                       textAlign: TextAlign.start,
+                      bottom: 6,
+                    ),
+                    Row(
+                      children: [
+                        Icon(consultationType.toLowerCase().contains("video") == true ? Icons.videocam : Icons.phone, size: 20.sp, color: AppColors.primary1),
+                        SizedBox(width: 6.w),
+                        CustomText(
+                            text: consultationType.replaceAll("-", " ") ?? "",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color:  AppColors.primary1
+                        ),
+                      ],
                     ),
                     SizedBox(height: 4.h),
                     CustomText(
@@ -84,10 +108,10 @@ class PaymentCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   CustomText(
-                    text: "\$${price}",
-                    fontSize: 18,
+                    text: price,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.black,
+                    color: AppColors.primary1,
                   ),
                   SizedBox(height: 6.h),
                   // Status Badge
