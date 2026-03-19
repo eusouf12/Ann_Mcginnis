@@ -142,10 +142,7 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                       // Today DATE or Selected Date
                       Obx(() {
-                        // যদি কোনো ডেট সিলেক্ট করা না থাকে তবে আজকের ডেট নিবে
                         final date = bookingFlowController.selectedDate.value ?? DateTime.now();
-
-                        // 'EEEE' যোগ করার ফলে বার বা দিনের নাম (যেমন: Wednesday) চলে আসবে
                         final formattedDate = DateFormat('EEEE, MMMM dd, yyyy').format(date);
 
                         return Center(
@@ -167,9 +164,24 @@ class ConsultProfileViewDetails extends StatelessWidget {
                         );
 
                         if (!isAvailable) {
-                          return Padding(
+                          return Container(
+                            width: double.infinity,
                             padding: EdgeInsets.symmetric(vertical: 30.h),
-                            child: Center(child: CustomText(text: "Not available on ${DateFormat('EEEE').format(bookingFlowController.selectedDate.value!)}", color: Colors.red, fontWeight: FontWeight.bold,),),
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Column(
+                              children: [
+                                Icon(Icons.event_busy, color: Colors.red.shade400, size: 30),
+                                SizedBox(height: 8.h),
+                                CustomText(
+                                  text: "Not available on ${DateFormat('EEEE').format(bookingFlowController.selectedDate.value!)}",
+                                  color: Colors.red.shade700,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
                           );
                         }
 

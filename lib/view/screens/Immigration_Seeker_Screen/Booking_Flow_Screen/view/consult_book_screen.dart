@@ -163,7 +163,6 @@ class ConsultBookScreen extends StatelessWidget {
 
                               return Obx(() {
                                 final isSelected = bookingFlowController.selectedTimes.contains(time);
-                                // এখানে আপনি চাইলে আপনার নিজস্ব logic (যেমন: Is already booked) দিয়ে isAvailable সেট করতে পারেন
                                 bool isAvailable = true;
 
                                 return CustomTimeCard(
@@ -197,7 +196,6 @@ class ConsultBookScreen extends StatelessWidget {
                         children: formats.map((format) {
                           String title = "";
                           String price = "0";
-                          String subTitle = "45 minutes session";
                           if (format == "Video Consultation") {
                             title = "Video Call";
                             price = "\$${fees?.videoCall ?? 0}";
