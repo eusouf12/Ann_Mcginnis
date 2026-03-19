@@ -17,11 +17,11 @@ import '../../Booking_Flow_Screen/view/consult_book_screen.dart';
 import '../../Immigration_Profile_screen/controller/user_profile_controller.dart';
 import '../../Recommended_Countries_Screen/controller/recomended_countries_controller.dart';
 import '../../Recommended_Countries_Screen/widget/custom_country_progress_card.dart';
-import '../../SetUp_Profile_Screen/views/financial_info_screen_6.dart';
 import '../../SetUp_Profile_Screen/views/set_up_profile_screen_1.dart';
 import '../widget/book_consultation_card.dart';
 import '../widget/custom_payment_card.dart';
 import '../../SetUp_Profile_Screen/model/custom_save_countries.dart';
+import '../widget/my_bookin_consultant.dart';
 
 class UserDashboard extends StatelessWidget {
   UserDashboard({super.key});
@@ -33,9 +33,9 @@ class UserDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userProfileController.getUserProfile();
-       userDashboardController.getConsultants();
-       userDashboardController.getBookedConsultants(loadMore: false);
-       userDashboardController.getSaveCountry(loadMore: false);
+      userDashboardController.getConsultants();
+      userDashboardController.getBookedConsultants(loadMore: false);
+      userDashboardController.getSaveCountry(loadMore: false);
       controller.getRecommendedCountries();
     });
     return CustomGradient(
@@ -446,18 +446,27 @@ class UserDashboard extends StatelessWidget {
                                     final consultant = booking.consultantId;
                                     return Padding(
                                       padding: const EdgeInsets.only(bottom: 12),
-                                      child: BookConsultationCard(
+                                      child: MyBookinConsultant(
                                         title: consultant?.userId?.fullname ?? "",
                                         subTitle: consultant?.businessName ?? "",
+                                        date: booking.consultationDate,
+                                        time: booking.consultationTime,
+                                        discountRate: booking.discountRate,
+                                        currency: booking.currency,
+                                        originalAmount: booking.originalAmount,
+                                        amount: booking.amount,
+                                        discountAmount: booking.discountAmount,
+                                        consultationType: booking.consultationType,
+                                        show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" ? true : false,
                                         img: (consultant?.userId?.avatar != null && consultant!.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
-                                        isBooked: true,
+                                        status: booking.bookingStatus,
                                         onTapViewDetails: () {
                                           Get.toNamed(
                                             AppRoutes.consultProfileViewDetails,
                                             arguments: consultant?.id,
                                           );
                                         },
-                                        onTapBookNow: () {
+                                        onTapReschedule: () {
                                           Get.to(ConsultBookScreen());
                                         },
                                       ),
