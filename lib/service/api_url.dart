@@ -40,7 +40,7 @@ class ApiUrl {
 
   ///========================= Consultant =========================
   static const String consultantAnalytics = "/bookings/consultant/analytics";
-  static const String allAppointments = "/bookings/consultant/my-bookings";
+  static String allAppointments ({required String page}) => "/bookings/consultant/my-bookings?page=$page&limit=10";
 
 
 

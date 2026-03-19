@@ -11,7 +11,9 @@ class UpcomingAppointmentsCard extends StatelessWidget {
   final String? subTitle;
   final String? date;
   final String? time;
+  final String? status;
   final bool isConfirm;
+  final bool show;
   final VoidCallback? onTapJoin;
   final VoidCallback? onTapReschedule;
   final VoidCallback? onTapViewDetails;
@@ -23,7 +25,9 @@ class UpcomingAppointmentsCard extends StatelessWidget {
     this.title,
     this.subTitle,
     this.date,
+    required this.show,
     this.time,
+    this.status,
     this.isConfirm = false,
     this.onTapJoin,
     this.onTapReschedule,
@@ -79,7 +83,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: title ?? "Dr. Sarah Mitchell",
+                      text: title ?? "",
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppColors.primary1,
@@ -87,25 +91,13 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h),
                     CustomText(
-                      text: subTitle ?? "Immigration Specialist - Canada",
+                      text: subTitle ?? "",
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey[600]!,
                       textAlign: TextAlign.start,
                     ),
-                    SizedBox(height: 6.h),
-                    Row(
-                      children: [
-                        Icon(Icons.calendar_month, size: 14.sp, color: Colors.grey[700]),
-                        SizedBox(width: 6.w),
-                        CustomText(
-                          text: "${date ?? 'Dec 12, 2024'} - ${time ?? '10:00 AM'}",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          color: Colors.grey[800]!,
-                        ),
-                      ],
-                    )
+
                   ],
                 ),
               ),
@@ -120,7 +112,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                     child: CustomText(
-                      text: isConfirm ? "Confirmed" : "Pending",
+                      text: status ?? "",
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: isConfirm ? AppColors.primary1 : Colors.orange,
@@ -131,16 +123,39 @@ class UpcomingAppointmentsCard extends StatelessWidget {
 
             ],
           ),
-          SizedBox(height: 16.h),
-
+          SizedBox(height: 6.h),
+          Row(
+            children: [
+              Icon(Icons.calendar_month, size: 14.sp, color: Colors.grey[700]),
+              SizedBox(width: 6.w),
+              CustomText(
+                text: "${date ?? ''} - ${time ?? ''}",
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                color: Colors.grey[800]!,
+              ),
+            ],
+          ),
+          SizedBox(height: 10.h),
           // Button Section
+          show==true?
+          status =="cancelled"|| status =="completed"?
+          CustomButton(
+            onTap: (){} ,
+            title:status =="cancelled" ? "Cancelled" : "Completed" ,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            height: 40,
+            fillColor:status =="cancelled" ? AppColors.red : AppColors.green,
+            textColor: AppColors.white,
+          ) : SizedBox.shrink() :
           Row(
             children: [
               // ================= BUTTON 1 =================
               Expanded(
                 child: SizedBox(
                   height: 40.h,
-                  child:isConfirm? CustomButton(
+                  child:status == "accepted"? CustomButton(
                     onTap:  onTapJoin ,
                     title: "Join Call" ,
                     fontSize: 14,
@@ -167,26 +182,17 @@ class UpcomingAppointmentsCard extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   height: 40.h,
-                  child: isConfirm
-                      ? CustomButton(
+                  child:  CustomButton(
                     onTap: onTapViewDetails,
                     title: "View Details",
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    fillColor: AppColors.white,
+                    fillColor: AppColors.grey.withOpacity(0.3),
                     textColor: Colors.black,
-                    isBorder: true,
+                    isBorder: false,
                     borderColor: Colors.grey,
                     icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
                   )
-                      : CustomButton(
-                    onTap: onTapReschedule,
-                    title: "Reschedule",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor: AppColors.grey_1,
-                    textColor: Colors.black,
-                  ),
                 ),
               ),
             ],

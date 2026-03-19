@@ -36,6 +36,7 @@ class ConsultantDashboard extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       userProfileController.getUserProfile();
       controller.getBookingSummary();
+      controller.getAllAppointments();
     });
     return CustomGradient(
       child: Scaffold(
@@ -228,7 +229,7 @@ class ConsultantDashboard extends StatelessWidget {
                               ],
                             );
                           }),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 16.h),
                           //======= btn sms and calender ======
                           Row(
                             children: [
@@ -367,7 +368,7 @@ class ConsultantDashboard extends StatelessWidget {
                           //     ),
                           //   ),
                           // ),
-                          SizedBox(height: 30.h),
+                          SizedBox(height: 10.h),
                           // appoinment
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -376,63 +377,117 @@ class ConsultantDashboard extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: 20.h),
-                          UpcomingAppointmentsCard(
-                            title: "John Robertson" ,
-                            subTitle: "Visa Consultant - Australia",
-                            img: AppConstants.profileImage2,
-                            isConfirm: true,
-                            onTapViewDetails: (){
-                              Get.toNamed(AppRoutes.consultProfileViewDetails);
-                            },
-                            onTapConfirm: (){
-                              // Get.to(ConsultBookScreen());
-                            },
-                          ),
+                          Obx(() {
+                            if (controller.rxAppointmentStatus.value == Status.loading && controller.appointmentList.isEmpty) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+                            if (controller.appointmentList.isEmpty) {
+                              return const Center(child: Text("No upcoming appointments found"));
+                            }
+                            final firstAppointment = controller.appointmentList[0];
+
+
+                            final consultant = firstAppointment.consultantId;
+                            final consultantUser = consultant?.userId;
+
+                            return UpcomingAppointmentsCard(
+                              title: consultantUser?.fullname ?? "Unknown Name",
+                              subTitle: consultant?.jobTitle ?? "",
+                              date: firstAppointment.consultationDate,
+                              time: firstAppointment.consultationTime,
+                              status: firstAppointment.bookingStatus,
+                              show: firstAppointment.bookingStatus == "completed" || firstAppointment.bookingStatus == "cancelled" ? true : false,
+                              img: (consultantUser?.avatar != null && consultantUser!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultantUser.avatar}" : AppConstants.profileImage2,
+                              isConfirm: firstAppointment.bookingStatus == "accepted",
+
+                              onTapViewDetails: () {
+                                Get.toNamed(AppRoutes.consultProfileViewDetails, arguments: firstAppointment);
+                              },
+                              onTapConfirm: () {
+                              },
+                            );
+                          })
 
                         ],
                       );
                     }
                     // TAB - 01
                     else if (controller.selectedConsultantDashboardTab.value == 1) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(text: "Upcoming Appointments", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
-                              GestureDetector(
-                                  onTap: () {},
-                                  child: CustomText(text: "View All", fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.yellow1,)
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: 2,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: UpcomingAppointmentsCard(
-                                  title:index==1 ? "John Robertson" : null,
-                                  subTitle: "Visa Consultant - Australia",
-                                  img: AppConstants.profileImage2,
-                                  isConfirm:index==1? true:false,
-                                  onTapViewDetails: (){
-                                    Get.toNamed(AppRoutes.bookingDetailsScreen);
-                                  },
-                                  onTapConfirm: (){
-                                    // Get.to(ConsultBookScreen());
-                                  },
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      );
+                      return Obx(() {
+
+                        if (controller.isAppointmentLoading.value && controller.appointmentList.isEmpty) {
+                          return const Center(child: CustomLoader());
+                        }
+
+                        if (controller.appointmentList.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: CustomText(
+                                text: "No appointments found",
+                                fontSize: 16,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Upcoming Appointments",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                            ),
+
+                            SizedBox(height: 20.h),
+
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: controller.appointmentList.length,
+                              itemBuilder: (context, index) {
+
+                                final booking = controller.appointmentList[index];
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: UpcomingAppointmentsCard(
+                                    title: booking.userId?.fullname ?? "",
+                                    subTitle: booking.consultantId?.jobTitle ?? "",
+                                    date: booking.consultationDate,
+                                    time: booking.consultationTime,
+                                    status: booking.bookingStatus,
+                                    show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" ? true : false,
+                                    isConfirm: booking.bookingStatus == "accepted",
+                                    img: (booking.userId?.avatar != null && booking.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${booking.userId?.avatar}" : AppConstants.profileImage2,
+
+
+                                    onTapViewDetails: () {
+                                      Get.toNamed(
+                                        AppRoutes.bookingDetailsScreen,
+                                        arguments: booking.id,
+                                      );
+                                    },
+
+                                    onTapConfirm: () {
+                                      /// future: confirm API call
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+
+                            /// 🔥 LOAD MORE LOADER
+                            if (controller.isAppointmentLoadMore.value)
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                child: Center(child: CustomLoader()),
+                              ),
+                          ],
+                        );
+                      });
                     }
                     // tab 02
                     else if (controller.selectedConsultantDashboardTab.value == 2) {

@@ -7,6 +7,7 @@ import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../view/model/analytics_model.dart';
+import '../view/model/appointment_model.dart';
 
 class ConsultDashboardController extends GetxController {
   //tab Bar
@@ -55,6 +56,66 @@ class ConsultDashboardController extends GetxController {
 
     } finally {
       isBookingSummaryLoading.value = false;
+    }
+  }
+
+  // ========== ALL APPOINTMENTS ==========
+  RxList<Appointment> appointmentList = <Appointment>[].obs;
+  final isAppointmentLoading = false.obs;
+  final isAppointmentLoadMore = false.obs;
+  final rxAppointmentStatus = Status.loading.obs;
+  void setAppointmentStatus(Status status) => rxAppointmentStatus.value = status;
+
+  int appointmentCurrentPage = 1;
+  int appointmentTotalPages = 1;
+
+  Future<void> getAllAppointments({bool loadMore = false}) async {
+    if (loadMore) {
+      if (isAppointmentLoadMore.value ||
+          appointmentCurrentPage >= appointmentTotalPages) return;
+
+      isAppointmentLoadMore.value = true;
+      appointmentCurrentPage++;
+
+    }
+    else {
+      isAppointmentLoading.value = true;
+      setAppointmentStatus(Status.loading);
+      appointmentCurrentPage = 1;
+      appointmentList.clear();
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.allAppointments(page: appointmentCurrentPage.toString()));
+
+      final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final AppointmentResponse model = AppointmentResponse.fromJson(jsonResponse);
+        appointmentTotalPages = model.data?.pagination?.pages ?? 1;
+        final List<Appointment> newData = model.data?.bookings ?? [];
+        final existingIds = appointmentList.map((e) => e.id).toSet();
+
+        for (final item in newData) {
+          if (!existingIds.contains(item.id)) {
+            appointmentList.add(item);
+          }
+        }
+        setAppointmentStatus(Status.completed);
+
+      } else {
+        setAppointmentStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to load appointments", isError: true,);
+      }
+
+    } catch (e) {
+      setAppointmentStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+
+    } finally {
+      isAppointmentLoading.value = false;
+      isAppointmentLoadMore.value = false;
     }
   }
 }
