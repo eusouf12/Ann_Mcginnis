@@ -61,13 +61,26 @@ class ConsultProfileViewDetails extends StatelessWidget {
                   ),
                   SizedBox(height: 20.h),
                   //======================== Consultation Fees ========================
-                  CustomText(
-                    text: "Consultation Fees",
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    bottom: 15,
-                    textAlign: TextAlign.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: "Consultation Fees",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        bottom: 15,
+                        textAlign: TextAlign.start,
+                      ),
+                      CustomText(
+                        text: "Discount (${consultant.discountRates}%)",
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary1,
+                        bottom: 15,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
                   ),
                   Column(
                     children: List.generate(
