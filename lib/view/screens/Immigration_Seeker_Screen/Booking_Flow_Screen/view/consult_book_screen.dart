@@ -219,7 +219,7 @@ class ConsultBookScreen extends StatelessWidget {
                             padding: EdgeInsets.only(bottom: 12.h),
                             child: ConsultationTypeCard(
                               title: title,
-                              price: "$currencyName$price",
+                              price: "$price",
                               currency: currencyName,
                               isSelected: bookingFlowController.selectedConsultationType.value == title,
                               onTap: () {
@@ -260,7 +260,7 @@ class ConsultBookScreen extends StatelessWidget {
                       ? CustomLoader()
                       : CustomButton(
                     onTap: () {
-                      bookingFlowController.bookConsultation(id: consultant?.id ?? "", name: consultant?.userId?.fullname ??'', img: consultant?.userId?.avatar ?? '', jobTitle: consultant?.jobTitle ??'', currency: consultant?.currency ??"");
+                      bookingFlowController.bookConsultation(id: consultant?.id ?? "", name: consultant?.userId?.fullname ??'', img: consultant?.userId?.avatar ?? '', jobTitle: consultant?.jobTitle ??'', currency: consultant?.currency ??"",discount:consultant?.discountRates.toString() ?? '',experience:consultant?.experienceYears.toString()??'',);
                     },
                     title: "Book Now",
                     textColor: AppColors.white,

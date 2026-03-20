@@ -43,7 +43,7 @@ class LoginOnlyScreen extends StatelessWidget {
                 // toggle btn
                 CustomButton(
                   onTap: () {},
-                  title: "Sing In",
+                  title: "Sign In",
                   fillColor: AppColors.primary,
                   textColor: Colors.white,
                   fontSize: 18,

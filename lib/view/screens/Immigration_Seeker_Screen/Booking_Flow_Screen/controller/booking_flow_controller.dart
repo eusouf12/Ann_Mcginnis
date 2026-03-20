@@ -77,7 +77,7 @@ class BookingFlowController extends GetxController {
 
   void setBookingStatus(Status status) => rxBookingStatus.value = status;
 
-  Future<void> bookConsultation({required String id, required String name, required String img, required String jobTitle,required String currency}) async {
+  Future<void> bookConsultation({required String id, required String name, required String img, required String jobTitle,required String currency,required String discount,required String experience}) async {
     isBookingLoading.value = true;
     setBookingStatus(Status.loading);
     if (selectedDate.value == null) {
@@ -123,6 +123,8 @@ class BookingFlowController extends GetxController {
             "consultationType": getBackendConsultationType(selectedConsultationType.value),
             "consultationPrice": selectedPrice.value,
             "currency": currency,
+            "discount": discount,
+            "experience": experience,
           },
         );
 

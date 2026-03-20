@@ -34,7 +34,7 @@ class SignUpScreen extends StatelessWidget {
                 Center(child: CustomImage(imageSrc: AppImages.logo1)),
                 SizedBox(height: 30),
                 CustomButton(onTap: (){},
-                  title: "Sing Up",
+                  title: "Sign Up",
                   fillColor: AppColors.primary,
                   textColor: Colors.white,
                   fontSize: 18,

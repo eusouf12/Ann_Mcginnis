@@ -27,9 +27,12 @@ class BookingConfirmedScreen extends StatelessWidget {
     final bookDate = args['consultationDate'];
     final bookTime = args['consultationTime'];
     final type = args['consultationType'];
-    final price = args['consultationPrice'];
-    final currency = args['currency'];
-    debugPrint("price: $price");
+    final double originalPrice = double.tryParse(args['consultationPrice'].toString()) ?? 0.0;
+    final String currencySymbol = args['currency'] ?? "";
+    final double discountRate = double.tryParse(args['discount'].toString()) ?? 0.0;
+    final experience = args['experience'];
+    double discountAmount = (originalPrice * discountRate) / 100;
+    double totalToPay = originalPrice - discountAmount;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       bookingFlowController.getSingleConsultant(id: consultantId);
     });
@@ -48,7 +51,7 @@ class BookingConfirmedScreen extends StatelessWidget {
             _buildConsultationDetails(bookDate, bookTime, type),
             SizedBox(height: 20.h),
             _buildSectionTitle("Booking Summary"),
-            _buildBookingSummary(type, price,currency),
+            _buildBookingSummary(type: type.toString(), originalPrice: originalPrice, totalPrice: totalToPay, currency: currencySymbol, discount: discountRate),
             SizedBox(height: 20.h),
             // _buildSectionTitle("Contact Information"),
             // _buildContactInfo(),
@@ -175,36 +178,42 @@ class BookingConfirmedScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBookingSummary(String type, String price,String currency) {
+  Widget _buildBookingSummary({required String type, required double originalPrice, required double totalPrice, required String currency, required double discount}) {
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16.r)),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+          ]
+      ),
       child: Column(
         children: [
           _buildSummaryRow("Service", "$type Session"),
           SizedBox(height: 12.h),
-          _buildSummaryRow("Duration", "Scheduled Slot"),
+          _buildSummaryRow("Subtotal", "$currency ${originalPrice.toStringAsFixed(2)}"),
+          SizedBox(height: 12.h),
+          _buildSummaryRow("Discount", "- $discount%", isDiscount: true),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 12.h),
             child: Divider(color: Colors.grey[200]),
           ),
-          _buildSummaryRow("Total Amount", "$currency $price", isTotal: true),
+          _buildSummaryRow("Total Amount", "$currency ${totalPrice.toStringAsFixed(2)}", isTotal: true),
         ],
       ),
     );
   }
 
-  Widget _buildSummaryRow(String title, String value, {bool isTotal = false}) {
+  Widget _buildSummaryRow(String title, String value, {bool isTotal = false, bool isDiscount = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: TextStyle(fontSize: isTotal ? 16.sp : 14.sp, fontWeight: isTotal ? FontWeight.bold : FontWeight.w500, color: isTotal ? Colors.black : Colors.grey[600])),
-        Text(value, style: TextStyle(fontSize: isTotal ? 18.sp : 14.sp, fontWeight: FontWeight.bold, color: isTotal ? const Color(0xFF1A237E) : const Color(0xFF0D1B2A))),
+        CustomText(text:title, fontSize: isTotal ? 16.sp : 14.sp, fontWeight: isTotal ? FontWeight.bold : FontWeight.w500, color: isTotal ? Colors.black : Colors.grey),
+        CustomText(text:value, fontSize: isTotal ? 18.sp : 14.sp, fontWeight: FontWeight.bold, color: isDiscount ? Colors.red : (isTotal ? const Color(0xFF1A237E) : const Color(0xFF0D1B2A))),
       ],
     );
   }
-
-
 
   Widget _buildBottomButtons() {
     return CustomButton(onTap: (){
