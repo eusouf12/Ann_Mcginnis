@@ -11,18 +11,6 @@ import '../../../Immigration_Seeker_Screen/Recommended_dashboard_Screen/model/bo
 
 class BookingDetailsController extends GetxController {
 
-  // Documents List
-  final clientDocuments = [
-    {"name": "Resume.pdf", "date": "March 8, 2024", "type": "pdf"},
-    {"name": "Passport_Copy.jpg", "date": "March 8, 2024", "type": "image"},
-  ].obs;
-
-  // Action Logs
-  final actionLogs = [
-    {"action": "Email confirmation sent", "status": "Success • 10:32 AM", "color": "green"},
-    {"action": "Meeting link generated", "status": "Completed • 10:32 AM", "color": "blue"},
-    {"action": "Calendar Invite sent", "status": "Pending • 10:35 AM", "color": "grey"},
-  ].obs;
 
   // Methods
   void contactClient() => print("Contacting Client...");

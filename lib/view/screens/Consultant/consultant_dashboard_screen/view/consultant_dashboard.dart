@@ -34,9 +34,11 @@ class ConsultantDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final DateTime now = DateTime.now();
       userProfileController.getUserProfile();
       controller.getBookingSummary();
       controller.getAllAppointments();
+      bookingController.getBookedDates(year: now.year, month: now.month);
     });
     return CustomGradient(
       child: Scaffold(
@@ -391,17 +393,17 @@ class ConsultantDashboard extends StatelessWidget {
                             final consultantUser = consultant?.userId;
 
                             return UpcomingAppointmentsCard(
-                              title: consultantUser?.fullname ?? "Unknown Name",
+                              title: firstAppointment.userId?.fullname ?? "Unknown Name",
                               subTitle: consultant?.jobTitle ?? "",
                               date: firstAppointment.consultationDate,
                               time: firstAppointment.consultationTime,
                               status: firstAppointment.bookingStatus,
                               show: firstAppointment.bookingStatus == "completed" || firstAppointment.bookingStatus == "cancelled" ? true : false,
-                              img: (consultantUser?.avatar != null && consultantUser!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultantUser.avatar}" : AppConstants.profileImage2,
+                              img: (firstAppointment.userId?.avatar != null && firstAppointment.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${firstAppointment.userId?.avatar}" : AppConstants.profileImage2,
                               isConfirm: firstAppointment.bookingStatus == "accepted",
 
                               onTapViewDetails: () {
-                                Get.toNamed(AppRoutes.consultProfileViewDetails, arguments: firstAppointment);
+                                Get.toNamed(AppRoutes.consultProfileViewDetails, arguments: firstAppointment.consultantId?.id);
                               },
                               onTapConfirm: () {
                               },
@@ -448,9 +450,7 @@ class ConsultantDashboard extends StatelessWidget {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: controller.appointmentList.length,
                               itemBuilder: (context, index) {
-
                                 final booking = controller.appointmentList[index];
-
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: UpcomingAppointmentsCard(
@@ -466,8 +466,8 @@ class ConsultantDashboard extends StatelessWidget {
 
                                     onTapViewDetails: () {
                                       Get.toNamed(
-                                        AppRoutes.bookingDetailsScreen,
-                                        arguments: booking.id,
+                                        AppRoutes.consultProfileViewDetails,
+                                        arguments: booking.consultantId?.id,
                                       );
                                     },
 
@@ -559,13 +559,16 @@ class ConsultantDashboard extends StatelessWidget {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomText(
-                            text: "Availability",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary1,
+                          Center(
+                            child: CustomText(
+                              text: "Availability",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primary1,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 40.h),
                           // Calendar Box
                           Container(
                             padding: EdgeInsets.all(12),
@@ -574,61 +577,52 @@ class ConsultantDashboard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
                             ),
-                            child: Obx(() {
-                              final __ = bookingController.availableDays.length;
-                               return  TableCalendar(
-                                focusedDay: DateTime.now(),
-                                firstDay: DateTime.now(),
-                                lastDay: DateTime(DateTime.now().year + 1),
-                                headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                            child:
+                            Obx(() {
+                              // ডাটা আপডেট ট্র্যাকার
+                              final _ = bookingController.bookedDatesList.length;
 
-                                selectedDayPredicate: (day) =>
-                                    bookingController.selectedDates.contains(DateTime(day.year, day.month, day.day)),
-                                onDaySelected: bookingController.onDaySelected,
+                              return TableCalendar(
+                                focusedDay: bookingController.focusedDay.value,
+                                firstDay: DateTime.utc(2020, 1, 1),
+                                lastDay: DateTime.utc(2030, 12, 31),
+                                headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+
+                                // সিলেকশন ডিজেবল করার জন্য এগুলো ফাকা রাখা হয়েছে
+                                selectedDayPredicate: (day) => false,
+                                onDaySelected: (selectedDay, focusedDay) {
+                                  // এখানে ক্লিক করলে কিছুই হবে না
+                                },
+
+                                onPageChanged: (focusedDay) {
+                                  bookingController.focusedDay.value = focusedDay;
+                                  bookingController.getBookedDates(year: focusedDay.year, month: focusedDay.month);
+                                },
 
                                 calendarBuilders: CalendarBuilders(
+                                  // আজকের দিনকেও সাধারণ দিনের মতো দেখানোর জন্য
+                                  todayBuilder: (context, day, focusedDay) => null,
+
                                   defaultBuilder: (context, day, focusedDay) {
                                     DateTime d = DateTime(day.year, day.month, day.day);
-                                    if (bookingController.availableDays.any((e) => isSameDay(e, d))) {
-                                      return _buildCalendarBox(day, AppColors.green.withOpacity(0.5));
-                                    }
-                                    if (bookingController.scheduledDays.any((e) => isSameDay(e, d))) {
-                                      return _buildCalendarBox(day, Colors.orangeAccent.withOpacity(0.5));
+
+                                    // API ডাটা চেক
+                                    final bookedDate = bookingController.bookedDatesList.firstWhereOrNull(
+                                            (e) => isSameDay(DateTime.tryParse(e.date ?? ""), d)
+                                    );
+
+                                    if (bookedDate != null) {
+                                      // কাস্টম বড় স্কয়ার বক্স (Yellow)
+                                      return _buildLargeYellowSquare(day, bookedDate.totalBookings ?? 0);
                                     }
                                     return null;
                                   },
-                                  selectedBuilder: (context, day, focusedDay) =>
-                                      _buildCalendarBox(day, AppColors.primary1, textColor: Colors.white),
                                 ),
                               );
-                            }
-                               ),
+                            })
                           ),
                           SizedBox(height: 24.h),
 
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomButton(
-                                  onTap: bookingController.addTimeToSelectedDates,
-                                  title: "Add Time",
-                                  icon: Icon(Icons.add, color: Colors.white),
-                                  fillColor: Colors.orange, // Yellowish-Orange color
-                                ),
-                              ),
-                              // SizedBox(width: 12.w),
-                              // Expanded(
-                              //   child: CustomButton(
-                              //     onTap: bookingController.blockOutSelectedDates,
-                              //     title: "Block Out",
-                              //     icon: Icon(Icons.block, color: Colors.white),
-                              //     fillColor: AppColors.primary1, // Deep Blue
-                              //   ),
-                              // ),
-                            ],
-                          ),
-
-                          SizedBox(height: 12.h),
 
                         ],
                       );
@@ -643,17 +637,25 @@ class ConsultantDashboard extends StatelessWidget {
       ),
     );
   }
-  Widget _buildCalendarBox(DateTime day, Color color, {Color textColor = Colors.black}) {
+  Widget _buildLargeYellowSquare(DateTime day, int count) {
     return Container(
-      margin: const EdgeInsets.all(4.0),
-      alignment: Alignment.center,
+      margin: const EdgeInsets.all(1),
+      padding:EdgeInsets.only(bottom: 3),
+      width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8.0),
+        color: AppColors.yellow1,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Colors.orange.withOpacity(0.3), width: 0.5),
       ),
-      child: Text(
-        '${day.day}',
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomText(text:'${day.day}',fontSize: 12.sp, fontWeight: FontWeight.bold, color: AppColors.black,),
+          CustomText(text: '$count',fontSize: 8.sp, fontWeight: FontWeight.bold, color: AppColors.red,),
+          CustomText(text: 'Booking',fontSize: 8.sp, fontWeight: FontWeight.bold, color: AppColors.red),
+
+        ],
       ),
     );
   }

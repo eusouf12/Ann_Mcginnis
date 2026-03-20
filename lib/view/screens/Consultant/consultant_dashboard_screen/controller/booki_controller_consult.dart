@@ -1,14 +1,21 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../view/model/book_calender_model.dart';
+
 class BookingController extends GetxController {
-  // বর্তমানে সিলেক্ট করা ডেটগুলো রাখার জন্য
   var selectedDates = <DateTime>{}.obs;
 
-  // কনসালট্যান্টের অ্যাভেইলএবল এবং শিডিউলড/ব্লকড ডেট
   var availableDays = <DateTime>[].obs;
   var scheduledDays = <DateTime>[].obs;
+  Rx<DateTime> focusedDay = DateTime.now().obs;
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     DateTime day = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
@@ -20,10 +27,9 @@ class BookingController extends GetxController {
     }
   }
 
-  // সিলেক্ট করা ডেটগুলোকে 'Available' (সবুজ) করা
+
   void addTimeToSelectedDates() {
     if (selectedDates.isNotEmpty) {
-      // যদি আগে থেকেই শিডিউলড লিস্টে থাকে তবে তা সরিয়ে ফেলা
       scheduledDays.removeWhere((date) => selectedDates.contains(date));
       availableDays.addAll(selectedDates);
       selectedDates.clear();
@@ -34,10 +40,9 @@ class BookingController extends GetxController {
     }
   }
 
-  // সিলেক্ট করা ডেটগুলোকে 'Blocked/Scheduled' (হলুদ) করা
+
   void blockOutSelectedDates() {
     if (selectedDates.isNotEmpty) {
-      // যদি আগে থেকেই অ্যাভেইলএবল লিস্টে থাকে তবে তা সরিয়ে ফেলা
       availableDays.removeWhere((date) => selectedDates.contains(date));
       scheduledDays.addAll(selectedDates);
       selectedDates.clear();
@@ -45,4 +50,47 @@ class BookingController extends GetxController {
           backgroundColor: Colors.orangeAccent, colorText: Colors.white);
     }
   }
+
+  // ================= show calender data ================
+// ========== BOOKED DATES ==========
+
+  RxList<BookedDate> bookedDatesList = <BookedDate>[].obs;
+
+  final isBookedDatesLoading = false.obs;
+  final rxBookedDatesStatus = Status.loading.obs;
+
+  void setBookedDatesStatus(Status status) => rxBookedDatesStatus.value = status;
+
+  Future<void> getBookedDates({required int year, required int month,}) async {
+
+    isBookedDatesLoading.value = true;
+    setBookedDatesStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.myBookingCalender(year: year.toString(), month: month.toString(),),
+      );
+
+      final Map<String, dynamic> jsonResponse =
+      response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final BookedDatesResponse model = BookedDatesResponse.fromJson(jsonResponse);
+
+        bookedDatesList.value = model.data?.bookedDates ?? [];
+        setBookedDatesStatus(Status.completed);
+
+      } else {
+        setBookedDatesStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to load booked dates", isError: true,);
+      }
+
+    } catch (e) {
+      setBookedDatesStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+    } finally {
+      isBookedDatesLoading.value = false;
+    }
+  }
+
 }
