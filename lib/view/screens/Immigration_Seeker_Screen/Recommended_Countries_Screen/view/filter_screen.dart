@@ -99,7 +99,7 @@ class FilterScreen extends StatelessWidget {
                 thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.r),
               ),
               child: Slider(
-                value: controller.successRate.value,
+                value: controller.successRate.value ?? 50.0,
                 min: 50,
                 max: 100,
                 divisions: 100,
@@ -113,7 +113,7 @@ class FilterScreen extends StatelessWidget {
                 children: [
                   Text("50%", style: TextStyle(color: Colors.grey, fontSize: 12.sp)),
                   Text(
-                    "${controller.successRate.value.toInt()}%",
+                    "${controller.successRate.value}%",
                     style: TextStyle(
                         color: const Color(0xFF2848D7),
                         fontWeight: FontWeight.bold,
@@ -158,25 +158,17 @@ class FilterScreen extends StatelessWidget {
           height: 50.h,
           child: ElevatedButton(
             onPressed: () {
-              // Print selected filters
-              print("=== Selected Filters ===");
+              // API কল করা হচ্ছে ফিল্টার ডাটা অনুযায়ী
+              controller.getRecommendedCountries();
 
-              // Selected Visa Types
-              controller.visaTypes.forEach((key, value) {
-                if (value) print("Visa Type: $key");
-              });
-
-              // Selected Additional Options
-              controller.additionalOptions.forEach((key, value) {
-                if (value) print("Additional Option: $key");
-              });
-
-              // Success Rate
-              print("Success Rate: ${controller.successRate.value.toInt()}%");
+              // ফিল্টার স্ক্রিন বন্ধ করে আগের স্ক্রিনে ফিরে যাওয়া
               Get.back();
+
+              // কনসোলে চেক করার জন্য (ঐচ্ছিক)
+              print("Filters Applied: Success Rate ${controller.successRate.value}%");
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.amber, // Orange/Yellow color from image
+              backgroundColor: Colors.amber,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
@@ -198,9 +190,12 @@ class FilterScreen extends StatelessWidget {
           width: double.infinity,
           height: 50.h,
           child: ElevatedButton(
-            onPressed: () => controller.clearFilters(),
+            onPressed: () {
+              controller.clearFilters();
+              Get.back(); // রিসেট করার পর স্ক্রিন বন্ধ করতে চাইলে
+            },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[300], // Grey color
+              backgroundColor: Colors.grey[300],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
@@ -221,11 +216,7 @@ class FilterScreen extends StatelessWidget {
   }
 
   // Reusable Checkbox Tile Widget
-  Widget _buildCheckboxTile({
-    required String title,
-    required bool value,
-    required Function(bool?) onChanged,
-  }) {
+  Widget _buildCheckboxTile({required String title, required bool value, required Function(bool?) onChanged,}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 0.h),
       child: Row(

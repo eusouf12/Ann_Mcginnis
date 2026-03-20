@@ -15,6 +15,7 @@ class RecommendedCountriesController extends GetxController {
     "Work Visa": false,
     "Student Visa": false,
     "Family Visa": false,
+    "Business Visa": false,
     "Tourist Visa": false,
     "Entrepreneur Visa": false,
     "Retirement Visa": false,
@@ -22,36 +23,25 @@ class RecommendedCountriesController extends GetxController {
     "Extraordinary talent.": false,
   }.obs;
 
-  // Additional Options
   var additionalOptions = {
     "English speaking countries": false,
-    "No interview required": false,
     "Fast track available": false,
   }.obs;
-
-  // Slider State
-  var successRate = 50.0.obs;
-
-  // Toggle Visa Checkbox
-  void toggleVisaType(String key) {
-    visaTypes[key] = !visaTypes[key]!;
-  }
-
-  // Toggle Additional Option Checkbox
-  void toggleAdditionalOption(String key) {
-    additionalOptions[key] = !additionalOptions[key]!;
-  }
-
-  // Update Slider
+  //success rate
+  Rx<double?> successRate = Rx<double?>(null);
   void updateSuccessRate(double value) {
     successRate.value = value;
   }
 
-  // Clear Filters
+  void toggleVisaType(String key) => visaTypes[key] = !visaTypes[key]!;
+  void toggleAdditionalOption(String key) => additionalOptions[key] = !additionalOptions[key]!;
+
+// clear filters
   void clearFilters() {
     visaTypes.updateAll((key, value) => false);
     additionalOptions.updateAll((key, value) => false);
-    successRate.value = 50.0;
+    successRate.value = null; // রিসেট করলে আবার null হয়ে যাবে
+    getRecommendedCountries(); // ফ্রেশ ডাটা লোড হবে
   }
 
   var selectedTab = 0.obs;
@@ -69,7 +59,6 @@ class RecommendedCountriesController extends GetxController {
 
   //=========== Get Recommended Countries ===========
   RxList<CountryRecommendation> recommendedCountries = <CountryRecommendation>[].obs;
-
   final isRecommendedLoading = false.obs;
   final isRecommendedLoadMore = false.obs;
   final rxRecommendedStatus = Status.loading.obs;
@@ -78,11 +67,8 @@ class RecommendedCountriesController extends GetxController {
   int recommendedTotalPages = 1;
 
   Future<void> getRecommendedCountries({bool loadMore = false}) async {
-
     if (loadMore) {
-      if (isRecommendedLoadMore.value || recommendedCurrentPage >= recommendedTotalPages) {
-        return;
-      }
+      if (isRecommendedLoadMore.value || recommendedCurrentPage >= recommendedTotalPages) return;
       isRecommendedLoadMore.value = true;
       recommendedCurrentPage++;
     }
@@ -94,35 +80,45 @@ class RecommendedCountriesController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.getRecommendedCountries(page: recommendedCurrentPage.toString()),);
+      List<String> selectedVisas = visaTypes.entries
+          .where((e) => e.value == true)
+          .map((e) => e.key)
+          .toList();
+      final response = await ApiClient.getData(
+        ApiUrl.getRecommendedCountries(
+          page: recommendedCurrentPage.toString(),
+          visaTypes: selectedVisas,
+          minSuccess: successRate.value?.toInt(),
+          englishOnly: additionalOptions["English speaking countries"],
+          fastTrackOnly: additionalOptions["Fast track available"],
+        ),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse = response.body is String
+            ? jsonDecode(response.body)
+            : Map<String, dynamic>.from(response.body);
 
-        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+        final RecommendationResponse model = RecommendationResponse.fromJson(jsonResponse);
 
-        final RecommendationResponse model =
-        RecommendationResponse.fromJson(jsonResponse);
         recommendedTotalPages = model.data?.pagination?.totalPages ?? 1;
-        final List<CountryRecommendation> newCountries =model.data?.recommendations?.first.results?.countries ?? [];
-        final existingIds = recommendedCountries.map((e) => e.id).toSet();
+        final List<CountryRecommendation> newCountries = model.data?.recommendations?.first.results?.countries ?? [];
 
+        final existingIds = recommendedCountries.map((e) => e.id).toSet();
         for (final item in newCountries) {
           if (!existingIds.contains(item.id)) {
             recommendedCountries.add(item);
           }
         }
         setRecommendedStatus(Status.completed);
-      }
-      else {
+      } else {
         setRecommendedStatus(Status.error);
-        showCustomSnackBar("Failed to load recommended countries", isError: true,);
+        showCustomSnackBar("Failed to load recommended countries", isError: true);
       }
-    }
-    catch (e) {
+    } catch (e) {
       setRecommendedStatus(Status.error);
-      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
-    }
-    finally {
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    } finally {
       isRecommendedLoading.value = false;
       isRecommendedLoadMore.value = false;
     }

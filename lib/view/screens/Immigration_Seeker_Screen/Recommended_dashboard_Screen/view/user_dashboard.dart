@@ -468,7 +468,10 @@ class UserDashboard extends StatelessWidget {
                                           );
                                         },
                                         onTapReschedule: () {
-                                          Get.to(ConsultBookScreen());
+                                          Get.toNamed(
+                                            AppRoutes.consultProfileViewDetails,
+                                            arguments: consultant?.id,
+                                          );
                                         },
                                       ),
                                     );

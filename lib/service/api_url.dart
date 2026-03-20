@@ -27,7 +27,31 @@ class ApiUrl {
 
 
   ///========================= User =========================
-  static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
+  // static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
+
+  static String getRecommendedCountries({required String page, List<String>? visaTypes, int? minSuccess, bool? englishOnly, bool? fastTrackOnly,}) {
+    String url = "/recommendations/history?page=$page&limit=10";
+
+    if (minSuccess != null) {
+      url += "&minSuccess=$minSuccess";
+    }
+
+    if (englishOnly == true) {
+      url += "&englishOnly=true";
+    }
+
+    if (fastTrackOnly == true) {
+      url += "&fastTrackOnly=true";
+    }
+
+    if (visaTypes != null && visaTypes.isNotEmpty) {
+      String types = visaTypes.join(",");
+      url += "&visaTypes=$types";
+    }
+
+    return url;
+  }
+
   static String getSingleCountry({required String country}) => "/countries/$country";
   static String saveCountry({required String id}) => "/recommendations/save/$id";
   static String deleteCountry({required String id}) => "/recommendations/saved/$id";
