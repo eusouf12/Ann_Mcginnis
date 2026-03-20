@@ -43,15 +43,17 @@ class RecommendedCountriesScreen extends StatelessWidget {
                   fieldBorderColor: AppColors.grey_1,
                   fillColor: AppColors.white,
                   prefixIcon: Icon(Icons.search, color: AppColors.grey_1),
-                  textEditingController: TextEditingController(),
-                  // textEditingController: searchController,
-                  inputTextStyle: TextStyle(color: AppColors.black),
-                  onFieldSubmitted: (value) {
-                    if (value.trim().isNotEmpty) {
-                    //   dmHomeController.filterAllNearbyMap(filter: "searchTerm=${value.trim()}");
-                    }
-                    // searchController.clear();
+                  onChanged: (value) {
+                    controller.searchQuery.value = value.trim();
+                    controller.getRecommendedCountries();
                   },
+
+                  onFieldSubmitted: (value) {
+                    controller.searchQuery.value = value.trim();
+                    controller.getRecommendedCountries();
+                  },
+
+                  inputTextStyle: TextStyle(color: AppColors.black),
                 ),
                 SizedBox(height: 25.h),
                 // gridview countries

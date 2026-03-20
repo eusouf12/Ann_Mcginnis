@@ -29,8 +29,12 @@ class ApiUrl {
   ///========================= User =========================
   // static String getRecommendedCountries ({required String page}) => "/recommendations/history?page=$page&limit=10";
 
-  static String getRecommendedCountries({required String page, List<String>? visaTypes, int? minSuccess, bool? englishOnly, bool? fastTrackOnly,}) {
+  static String getRecommendedCountries({required String page,String? search, List<String>? visaTypes, int? minSuccess, bool? englishOnly, bool? fastTrackOnly,}) {
     String url = "/recommendations/history?page=$page&limit=10";
+
+    if (search != null && search.isNotEmpty) {
+      url += "&search=${Uri.encodeComponent(search)}";
+    }
 
     if (minSuccess != null) {
       url += "&minSuccess=$minSuccess";

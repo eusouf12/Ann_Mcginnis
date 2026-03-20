@@ -32,7 +32,8 @@ class RecommendedCountriesController extends GetxController {
   void updateSuccessRate(double value) {
     successRate.value = value;
   }
-
+  //search
+  RxString searchQuery = "".obs;
   void toggleVisaType(String key) => visaTypes[key] = !visaTypes[key]!;
   void toggleAdditionalOption(String key) => additionalOptions[key] = !additionalOptions[key]!;
 
@@ -80,14 +81,12 @@ class RecommendedCountriesController extends GetxController {
     }
 
     try {
-      List<String> selectedVisas = visaTypes.entries
-          .where((e) => e.value == true)
-          .map((e) => e.key)
-          .toList();
+      List<String> selectedVisas = visaTypes.entries.where((e) => e.value == true).map((e) => e.key).toList();
       final response = await ApiClient.getData(
         ApiUrl.getRecommendedCountries(
           page: recommendedCurrentPage.toString(),
           visaTypes: selectedVisas,
+          search: searchQuery.value,
           minSuccess: successRate.value?.toInt(),
           englishOnly: additionalOptions["English speaking countries"],
           fastTrackOnly: additionalOptions["Fast track available"],
