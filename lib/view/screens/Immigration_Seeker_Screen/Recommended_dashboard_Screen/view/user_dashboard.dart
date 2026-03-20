@@ -458,7 +458,7 @@ class UserDashboard extends StatelessWidget {
                                         amount: booking.amount,
                                         discountAmount: booking.discountAmount,
                                         consultationType: booking.consultationType,
-                                        show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" ? true : false,
+                                        show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" || booking.bookingStatus == "ongoing" ? true : false,
                                         img: (consultant?.userId?.avatar != null && consultant!.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
                                         status: booking.bookingStatus,
                                         onTapViewDetails: () {

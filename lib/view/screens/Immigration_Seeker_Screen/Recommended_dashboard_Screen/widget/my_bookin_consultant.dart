@@ -113,14 +113,14 @@ class MyBookinConsultant extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) : Colors.deepPurple.withOpacity(0.1),
+                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) :status== "ongoing" ?Colors.deepOrange.withOpacity(0.1) : Colors.deepPurple.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: CustomText(
                   text: "$status",
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : Colors.deepPurple,
+                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : status== "ongoing" ?Colors.deepOrange : Colors.deepPurple,
                 ),
               ),
             ],
@@ -221,21 +221,21 @@ class MyBookinConsultant extends StatelessWidget {
 
           // Button Section
           show==true?
-          status =="cancelled"|| status =="completed"?
+          status =="cancelled"|| status =="completed" || status =="ongoing"?
           CustomButton(
             onTap: (){} ,
-            title:status =="cancelled" ? "Cancelled" : "Completed" ,
+            title:status =="cancelled" ? "Cancelled" : status =="completed" ? "Completed" : "Ongoing" ,
             fontSize: 14,
             fontWeight: FontWeight.bold,
             height: 40,
-            fillColor:status =="cancelled" ? AppColors.red : AppColors.primary1,
+            fillColor:status =="cancelled" ? AppColors.red : status =="completed" ? AppColors.primary1 : Colors.deepOrange,
             textColor: AppColors.white,
           ) : SizedBox.shrink() :
           // show==false?SizedBox.shrink():
           Row(
             children: [
               // ================= BUTTON 1 =================
-              status == "pending" || status =="cancelled"|| status =="completed"?
+              status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing"?
               SizedBox.shrink():
               Expanded(
                 child: SizedBox(
@@ -260,7 +260,7 @@ class MyBookinConsultant extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   height: 40.h,
-                  child: status =="cancelled"|| status =="completed"?
+                  child: status =="cancelled"|| status =="completed" || status =="ongoing"?
                   SizedBox.shrink():
                   CustomButton(
                     onTap: onTapReschedule,
