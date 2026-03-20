@@ -20,6 +20,7 @@ class MyBookinConsultant extends StatelessWidget {
   final String? consultationType;
   final bool show;
   final VoidCallback? onTapJoin;
+  final VoidCallback? onTapPayment;
   final VoidCallback? onTapReschedule;
   final VoidCallback? onTapViewDetails;
 
@@ -41,6 +42,7 @@ class MyBookinConsultant extends StatelessWidget {
     this.onTapJoin,
     this.onTapReschedule,
     this.onTapViewDetails,
+    this.onTapPayment,
   });
 
   @override
@@ -223,7 +225,7 @@ class MyBookinConsultant extends StatelessWidget {
           show==true?
           status =="cancelled"|| status =="completed" || status =="ongoing"?
           CustomButton(
-            onTap: (){} ,
+            onTap: status == "ongoing" ? onTapPayment : null,
             title:status =="cancelled" ? "Cancelled" : status =="completed" ? "Completed" : "Ongoing" ,
             fontSize: 14,
             fontWeight: FontWeight.bold,
