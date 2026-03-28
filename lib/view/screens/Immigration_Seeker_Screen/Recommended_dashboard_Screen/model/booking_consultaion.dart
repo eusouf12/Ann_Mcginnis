@@ -59,6 +59,7 @@ class Booking {
   String? consultationType;
   String? createdAt;
   String? updatedAt;
+  String? paymentDate;
 
   Booking({
     this.id,
@@ -76,6 +77,7 @@ class Booking {
     this.consultationType,
     this.createdAt,
     this.updatedAt,
+    this.paymentDate,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) {
@@ -95,6 +97,7 @@ class Booking {
       consultationType: json['consultationType'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      paymentDate: json['paymentDate'],
     );
   }
 }

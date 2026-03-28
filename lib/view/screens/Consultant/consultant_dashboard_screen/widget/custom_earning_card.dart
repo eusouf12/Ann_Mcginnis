@@ -70,7 +70,7 @@ class CustomSummaryCard extends StatelessWidget {
                 text: subtitle,
                 fontSize: 10,
                 fontWeight: FontWeight.w400,
-                color: Colors.white54,
+                color: Colors.white70,
               ),
             ],
           ),

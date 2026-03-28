@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'custom_bar_card.dart';
 
-
-
 class CustomLineChartCard extends StatefulWidget {
   final String title;
   final Map<ChartFilter, List<double>> data;
@@ -16,86 +14,88 @@ class CustomLineChartCard extends StatefulWidget {
 }
 
 class _CustomLineChartCardState extends State<CustomLineChartCard> {
-  ChartFilter selectedFilter = ChartFilter.week;
+  ChartFilter selectedFilter = ChartFilter.year;
 
-  String get filterText {
-    switch (selectedFilter) {
-      case ChartFilter.week:
-        return "This Week";
-      case ChartFilter.month:
-        return "This Month";
-      case ChartFilter.year:
-        return "This Year";
-    }
-  }
+  List<String> get labels => ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-  List<String> get labels {
-    switch (selectedFilter) {
-      case ChartFilter.week:
-        return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-      case ChartFilter.month:
-        final weeksCount = widget.data[ChartFilter.month]?.length ?? 4;
-        return List.generate(weeksCount, (i) => 'W${i + 1}');
-      case ChartFilter.year:
-        return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    }
-  }
-
-  List<double> get values => widget.data[selectedFilter] ?? [];
+  List<double> get values => widget.data[selectedFilter] ?? List.filled(12, 0.0);
 
   @override
   Widget build(BuildContext context) {
     final chartValues = values;
     final chartLabels = labels;
 
+    // সর্বোচ্চ ভ্যালু বের করা
+    double maxVal = chartValues.isEmpty ? 0 : chartValues.reduce((a, b) => a > b ? a : b);
+
+    // যেহেতু আপনি ১০ ঘর পর পর চাচ্ছেন, তাই maxY কে ১০ এর গুণিতক হিসেবে রাখা ভালো
+    // যদি সর্বোচ্চ ডাটা ১২ হয়, তবেmaxY হবে ৫০, যাতে ১০, ২০, ৩০, ৪০ ঘরগুলো সুন্দর দেখায়
+    double dynamicMaxY = maxVal > 40 ? (maxVal + 20) : 50;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A3B8E), // আপনার ইমেজ অনুযায়ী গাঢ় নীল রং
+        color: const Color(0xFF0D47A1), // গাঢ় নীল ব্যাকগ্রাউন্ড
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Header
+          /// Header Section
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(widget.title,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
-
-              /// Dropdown
-              PopupMenuButton<ChartFilter>(
-                onSelected: (value) => setState(() => selectedFilter = value),
-                itemBuilder: (_) => [
-                  _menuItem("This Week", ChartFilter.week),
-                  _menuItem("This Month", ChartFilter.month),
-                  _menuItem("This Year", ChartFilter.year),
-                ],
-                child: _dropdownButton(),
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // "This Year" বাটন স্টাইল
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: const Text(
+                  "This Year",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
-
           const SizedBox(height: 30),
 
-          /// Line Chart
+          /// Line Chart Section
           AspectRatio(
-            aspectRatio: 1.5,
+            aspectRatio: 1.4,
             child: LineChart(
               LineChartData(
-                maxY: 100,
+                maxY: dynamicMaxY,
                 minY: 0,
+                minX: 0,
+                maxX: 11,
                 gridData: FlGridData(
                   show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: 10,
+                  drawHorizontalLine: true,
+                  drawVerticalLine: true,
+                  horizontalInterval: 10, // ১০ ঘর পর পর হরিজন্টাল লাইন
+                  verticalInterval: 1,    // প্রতি মাসে একটি ভার্টিকাল লাইন
                   getDrawingHorizontalLine: (value) => FlLine(
                     color: Colors.white.withOpacity(0.1),
                     strokeWidth: 1,
+                  ),
+                  getDrawingVerticalLine: (value) => FlLine(
+                    color: Colors.white.withOpacity(0.15),
+                    strokeWidth: 1,
+                    dashArray: [5, 5], // ভার্টিকাল ডট ইফেক্ট
                   ),
                 ),
                 titlesData: _titlesData(chartLabels),
@@ -103,14 +103,41 @@ class _CustomLineChartCardState extends State<CustomLineChartCard> {
                 lineBarsData: [
                   LineChartBarData(
                     spots: _getSpots(chartValues),
-                    isCurved: false, // ইমেজ অনুযায়ী সোজা রেখা, চাইলে true করতে পারেন
+                    isCurved: true, // লাইনটি হালকা বাঁকানো থাকবে
+                    curveSmoothness: 0.3,
                     color: AppColors.yellow1,
                     barWidth: 3,
                     isStrokeCapRound: true,
-                    dotData: const FlDotData(show: true), // পয়েন্টগুলো দেখানোর জন্য
-                    belowBarData: BarAreaData(show: false),
+                    dotData: FlDotData(
+                      show: true,
+                      getDotPainter: (spot, percent, barData, index) =>
+                          FlDotCirclePainter(
+                            radius: 4,
+                            color: AppColors.yellow1,
+                            strokeWidth: 2,
+                            strokeColor: Colors.white,
+                          ),
+                    ),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: AppColors.yellow1.withOpacity(0.1), // লাইনের নিচে হালকা শ্যাডো
+                    ),
                   ),
                 ],
+                // টাচ করলে ডাটা দেখাবে
+                lineTouchData: LineTouchData(
+                  touchTooltipData: LineTouchTooltipData(
+                    getTooltipColor: (touchedSpot) => Colors.white,
+                    getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                      return touchedSpots.map((spot) {
+                        return LineTooltipItem(
+                          '${spot.y.toInt()} Bookings',
+                          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
               ),
             ),
           ),
@@ -119,59 +146,29 @@ class _CustomLineChartCardState extends State<CustomLineChartCard> {
     );
   }
 
-  // ডেটাকে ম্যাপ করে পয়েন্ট (Spots) তৈরি করা
+  // ডাটাকে Spots এ কনভার্ট করা
   List<FlSpot> _getSpots(List<double> data) {
-    return List.generate(data.length, (i) {
-      return FlSpot(i.toDouble(), data[i].clamp(0, 100));
-    });
+    return List.generate(data.length, (i) => FlSpot(i.toDouble(), data[i]));
   }
 
-  Widget _dropdownButton() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(filterText, style: const TextStyle(fontSize: 12, color: Colors.black)),
-          const SizedBox(width: 4),
-          const Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.black),
-        ],
-      ),
-    );
-  }
-
-  PopupMenuItem<ChartFilter> _menuItem(String text, ChartFilter value) {
-    return PopupMenuItem(
-      value: value,
-      child: Text(text, style: const TextStyle(fontSize: 13)),
-    );
-  }
-
+  // Titles (Axis Labels) সেটিংস
   FlTitlesData _titlesData(List<String> labels) {
     return FlTitlesData(
-      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      show: true,
       rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
       leftTitles: AxisTitles(
         sideTitles: SideTitles(
           showTitles: true,
-          interval: 10,
-          reservedSize: 45,
+          reservedSize: 35,
+          interval: 10, // বাম পাশে ১০ করে গ্যাপ (০, ১০, ২০, ৩০...)
           getTitlesWidget: (value, meta) {
-            if (value > 100) return const SizedBox.shrink();
-
-            String text = '${value.toInt()}k';
-            if (value.toInt() == 100) {
-              text = '100k+'; // আপনার রিকোয়ারমেন্ট অনুযায়ী
-            }
-
             return SideTitleWidget(
               meta: meta,
-              child: Text(text,
-                  style: const TextStyle(color: Colors.white60, fontSize: 10)),
+              child: Text(
+                '${value.toInt()}',
+                style: const TextStyle(color: Colors.white, fontSize: 10),
+              ),
             );
           },
         ),
@@ -184,8 +181,10 @@ class _CustomLineChartCardState extends State<CustomLineChartCard> {
             if (index < 0 || index >= labels.length) return const SizedBox.shrink();
             return SideTitleWidget(
               meta: meta,
-              child: Text(labels[index],
-                  style: const TextStyle(color: Colors.white60, fontSize: 10)),
+              child: Text(
+                labels[index],
+                style: const TextStyle(color: Colors.white70, fontSize: 10),
+              ),
             );
           },
         ),

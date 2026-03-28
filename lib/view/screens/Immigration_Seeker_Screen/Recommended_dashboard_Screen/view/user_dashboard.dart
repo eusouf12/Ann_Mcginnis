@@ -613,7 +613,7 @@ class UserDashboard extends StatelessWidget {
                                         consultationType: booking.consultationType ?? "",
                                         name: consultant?.userId?.fullname ?? "",
                                         subTitle: consultant?.jobTitle ?? "",
-                                        date: booking.paymentStatus == "paid"? DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.updatedAt!)) : "",
+                                        date: booking.paymentStatus == "paid"? DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.paymentDate!)) : "",
                                         price: "${booking.currency} ${booking.amount?.toInt()}",
                                         isPaid:booking.paymentStatus == "paid" ? true : false,
                                         onTap: () {

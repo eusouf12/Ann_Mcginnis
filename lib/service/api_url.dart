@@ -68,6 +68,8 @@ class ApiUrl {
 
   ///========================= Consultant =========================
   static const String consultantAnalytics = "/bookings/consultant/analytics";
+  static const String earningTrend = "/bookings/consultant/analytics/earning-trend";
+  static const String bookingTrend = "/bookings/consultant/analytics/booking-trend";
   static String allAppointments ({required String page}) => "/bookings/consultant/my-bookings?page=$page&limit=10";
   static String myBookingCalender ({required String year, required String month}) => "/bookings/consultant/calendar/booked-dates?year=$year&month=$month";
 

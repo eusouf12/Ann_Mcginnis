@@ -8,6 +8,8 @@ import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../view/model/analytics_model.dart';
 import '../view/model/appointment_model.dart';
+import '../view/model/booking_trend_model.dart';
+import '../view/model/eraning_model.dart';
 
 class ConsultDashboardController extends GetxController {
   //tab Bar
@@ -118,4 +120,80 @@ class ConsultDashboardController extends GetxController {
       isAppointmentLoadMore.value = false;
     }
   }
+
+  // ============= Earning Trend ============
+
+  RxList<EarningItem> earningsTrendList = <EarningItem>[].obs;
+  final isEarningsTrendLoading = false.obs;
+  final rxEarningsTrendStatus = Status.loading.obs;
+  void setEarningsTrendStatus(Status status) => rxEarningsTrendStatus.value = status;
+
+  Future<void> getEarningsTrend() async {
+
+    isEarningsTrendLoading.value = true;
+    setEarningsTrendStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.earningTrend);
+
+      final Map<String, dynamic> jsonResponse =
+      response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final EarningsTrendResponse model = EarningsTrendResponse.fromJson(jsonResponse);
+
+        earningsTrendList.value = model.data?.earningsTrend ?? [];
+        setEarningsTrendStatus(Status.completed);
+
+      } else {
+        setEarningsTrendStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to load earnings trend", isError: true,);
+      }
+    } catch (e) {
+      setEarningsTrendStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isEarningsTrendLoading.value = false;
+    }
+  }
+
+  // ========== BOOKING TREND ==========
+  RxList<BookingTrendItem> bookingTrendList = <BookingTrendItem>[].obs;
+  final isBookingTrendLoading = false.obs;
+  final rxBookingTrendStatus = Status.loading.obs;
+  void setBookingTrendStatus(Status status) => rxBookingTrendStatus.value = status;
+
+  Future<void> getBookingTrend() async {
+    isBookingTrendLoading.value = true;
+    setBookingTrendStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.bookingTrend);
+
+      final Map<String, dynamic> jsonResponse =
+      response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final BookingTrendResponse model = BookingTrendResponse.fromJson(jsonResponse);
+
+        bookingTrendList.value = model.data?.bookingTrend ?? [];
+        setBookingTrendStatus(Status.completed);
+
+      } else {
+        setBookingTrendStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to load booking trend", isError: true,);
+      }
+
+    } catch (e) {
+      setBookingTrendStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isBookingTrendLoading.value = false;
+    }
+  }
+
 }

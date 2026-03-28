@@ -14,8 +14,6 @@ import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../Immigration_Seeker_Screen/Immigration_Profile_screen/controller/user_profile_controller.dart';
-import '../../../Immigration_Seeker_Screen/Recommended_Countries_Screen/controller/recomended_countries_controller.dart';
-import '../../profile_screen/consult_profile_screen.dart';
 import '../../profile_screen/widget/custom_appoinment_card.dart';
 import '../../profile_screen/widget/upcoming_appointments_card.dart';
 import '../controller/booki_controller_consult.dart';
@@ -23,6 +21,7 @@ import '../controller/consult_dashboard_controller.dart';
 import '../widget/custom_bar_card.dart';
 import '../widget/custom_earning_card.dart';
 import '../widget/custom_line_chart.dart';
+
 
 
 class ConsultantDashboard extends StatelessWidget {
@@ -38,6 +37,8 @@ class ConsultantDashboard extends StatelessWidget {
       userProfileController.getUserProfile();
       controller.getBookingSummary();
       controller.getAllAppointments();
+      controller.getEarningsTrend();
+      controller.getBookingTrend();
       bookingController.getBookedDates(year: now.year, month: now.month);
     });
     return CustomGradient(
@@ -503,58 +504,85 @@ class ConsultantDashboard extends StatelessWidget {
                           ),
                           SizedBox(height: 20.h),
                          //Earnings card
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CustomSummaryCard(
-                                  title: "Total Earnings",
-                                  value: "1200",
-                                  subtitle: "This month",
-                                  backgroundColor: AppColors.primary1,
+                          Obx(() {
+                            final summary = controller.bookingSummary.value;
+
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: CustomSummaryCard(
+                                    title: "Total Earnings",
+                                    value: summary != null ? "${summary.currency} ${summary.totalEarnings?.toInt() ?? 0}" : "0",
+                                    subtitle: "This month",
+                                    backgroundColor: AppColors.primary1,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: CustomSummaryCard(
-                                  title: "Total Bookings",
-                                  value: "3/5",
-                                  subtitle: "This month",
-                                  backgroundColor: AppColors.primary1,
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: CustomSummaryCard(
+                                    title: "Total Bookings",
+                                    value: summary != null ? "${summary.totalPaidBookings ?? 0}/${summary.totalBookings ?? 0}" : "0/0",
+                                    subtitle: "This month",
+                                    backgroundColor: AppColors.primary1,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            );
+                          }),
                           SizedBox(height: 24.h),
 
                          // 2. Earnings Trend Section
                           _buildTrendHeader("EARNINGS TREND"),
 
-                          CustomBarChartCard(
-                            title: "Earnings",
-                            data: {
-                              ChartFilter.week: [20, 40, 55, 70, 90, 60, 100],
-                              ChartFilter.month: [20, 500, 90, 200], // Week 1,2,3,4
-                              ChartFilter.year: [500, 600, 700, 800, 650, 700, 750, 800, 900, 850, 950, 1000], // 12 months
-                            },
-                          ),
+                          Obx(() {
+                            if (controller.isEarningsTrendLoading.value) {
+                              return const Center(child: CustomLoader());
+                            }
+                            List<double> yearData = List.filled(12, 0.0);
+
+                            List<String> monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                            for (var item in controller.earningsTrendList) {
+                              int index = monthNames.indexOf(item.month ?? "");
+                              if (index >= 0 && index < 12) {
+                                yearData[index] = (item.amount ?? 0).toDouble();
+                              }
+                            }
+                            return CustomBarChartCard(
+                              title: "Earnings",
+                              data: {
+                                ChartFilter.year: yearData,
+                              },
+                            );
+                          }),
                           SizedBox(height: 24.h),
 
                           // 3. Bookings Trend Section
                           _buildTrendHeader("BOOKINGS TREND"),
-                          CustomLineChartCard(
-                            title: "Earnings",
-                            data: {
-                              ChartFilter.week: [20, 30, 90, 70, 90, 60, 100],
-                              ChartFilter.month: [20, 500, 90, 200],
-                              ChartFilter.year: [
-                                500, 600, 700, 800, 650, 700,
-                                750, 800, 900, 850, 950, 1000
-                              ], // 12 months
-                            },
-                          ),
+                          Obx(() {
+                            if (controller.isBookingTrendLoading.value) {
+                              return const Center(child: CustomLoader());
+                            }
+
+                            List<double> trendData = List.filled(12, 0.0);
+                            List<String> months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                            for (var item in controller.bookingTrendList) {
+                              int index = months.indexOf(item.month ?? "");
+                              if (index >= 0 && index < 12) {
+                                trendData[index] = (item.count ?? 0).toDouble();
+                              }
+                            }
+
+                            return CustomLineChartCard(
+                              title: "Bookings Trend",
+                              data: {ChartFilter.year: trendData},
+                            );
+                          })
                         ],
                       );
                     }
+                    //Tab 03
                     else {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -579,7 +607,6 @@ class ConsultantDashboard extends StatelessWidget {
                             ),
                             child:
                             Obx(() {
-                              // ডাটা আপডেট ট্র্যাকার
                               final _ = bookingController.bookedDatesList.length;
 
                               return TableCalendar(
@@ -587,11 +614,8 @@ class ConsultantDashboard extends StatelessWidget {
                                 firstDay: DateTime.utc(2020, 1, 1),
                                 lastDay: DateTime.utc(2030, 12, 31),
                                 headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
-
-                                // সিলেকশন ডিজেবল করার জন্য এগুলো ফাকা রাখা হয়েছে
                                 selectedDayPredicate: (day) => false,
                                 onDaySelected: (selectedDay, focusedDay) {
-                                  // এখানে ক্লিক করলে কিছুই হবে না
                                 },
 
                                 onPageChanged: (focusedDay) {
@@ -600,19 +624,12 @@ class ConsultantDashboard extends StatelessWidget {
                                 },
 
                                 calendarBuilders: CalendarBuilders(
-                                  // আজকের দিনকেও সাধারণ দিনের মতো দেখানোর জন্য
                                   todayBuilder: (context, day, focusedDay) => null,
-
                                   defaultBuilder: (context, day, focusedDay) {
                                     DateTime d = DateTime(day.year, day.month, day.day);
-
-                                    // API ডাটা চেক
-                                    final bookedDate = bookingController.bookedDatesList.firstWhereOrNull(
-                                            (e) => isSameDay(DateTime.tryParse(e.date ?? ""), d)
-                                    );
+                                    final bookedDate = bookingController.bookedDatesList.firstWhereOrNull((e) => isSameDay(DateTime.tryParse(e.date ?? ""), d));
 
                                     if (bookedDate != null) {
-                                      // কাস্টম বড় স্কয়ার বক্স (Yellow)
                                       return _buildLargeYellowSquare(day, bookedDate.totalBookings ?? 0);
                                     }
                                     return null;
