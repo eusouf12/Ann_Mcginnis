@@ -221,64 +221,77 @@ class MyBookinConsultant extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          // Button Section
-          show==true?
-          status =="cancelled"|| status =="completed" || status =="ongoing"?
+          status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing"?
+          SizedBox.shrink():
           CustomButton(
-            onTap: status == "ongoing" ? onTapPayment : null,
-            title:status =="cancelled" ? "Cancelled" : status =="completed" ? "Completed" : "Ongoing" ,
+            onTap: onTapJoin ,
+            title: "Join" ,
             fontSize: 14,
+            height: 40.h,
             fontWeight: FontWeight.bold,
-            height: 40,
-            fillColor:status =="cancelled" ? AppColors.red : status =="completed" ? AppColors.primary1 : Colors.deepOrange,
-            textColor: AppColors.white,
-          ) : SizedBox.shrink() :
+            fillColor: AppColors.yellow1,
+            textColor: AppColors.primary1,
+            icon: Icon(Icons.videocam, color: AppColors.primary1, size: 18.sp,),
+          ),
+
+          // Button Section
+          // show==true?
+          // status =="cancelled"|| status =="completed" || status =="ongoing"?
+          // CustomButton(
+          //   onTap: status == "ongoing" ? onTapPayment : null,
+          //   title:status =="cancelled" ? "Cancelled" : status =="completed" ? "Completed" : "Ongoing" ,
+          //   fontSize: 14,
+          //   fontWeight: FontWeight.bold,
+          //   height: 40,
+          //   fillColor:status =="cancelled" ? AppColors.red : status =="completed" ? AppColors.primary1 : Colors.deepOrange,
+          //   textColor: AppColors.white,
+          // ) : SizedBox.shrink() :
           // show==false?SizedBox.shrink():
-          Row(
-            children: [
-              // ================= BUTTON 1 =================
-              status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing"?
-              SizedBox.shrink():
-              Expanded(
-                child: SizedBox(
-                  height: 40.h,
-                  child: CustomButton(
-                    onTap: onTapJoin ,
-                    title: "Join" ,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor: AppColors.yellow1,
-                    textColor: AppColors.primary1,
-                    icon: Icon(Icons.videocam, color: AppColors.primary1, size: 18.sp,),
-                  ),
-                ),
-              ),
-
-
-
-              SizedBox(width: 12.w),
-
-              // ================= BUTTON 2 =================
-              Expanded(
-                child: SizedBox(
-                  height: 40.h,
-                  child: status =="cancelled"|| status =="completed" || status =="ongoing"?
-                  SizedBox.shrink():
-                  CustomButton(
-                    onTap: onTapReschedule,
-                    title: "Reschedule",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor: AppColors.white,
-                    textColor: Colors.black,
-                    isBorder: true,
-                    borderColor: Colors.grey,
-                    icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
-                  )
-                ),
-              ),
-            ],
-          )
+          // Row(
+          //   children: [
+          //     // ================= BUTTON 1 =================
+          //     // status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing"?
+          //     // SizedBox.shrink():
+          //     // Expanded(
+          //     //   child: SizedBox(
+          //     //     height: 40.h,
+          //     //     child: CustomButton(
+          //     //       onTap: onTapJoin ,
+          //     //       title: "Join" ,
+          //     //       fontSize: 14,
+          //     //       fontWeight: FontWeight.bold,
+          //     //       fillColor: AppColors.yellow1,
+          //     //       textColor: AppColors.primary1,
+          //     //       icon: Icon(Icons.videocam, color: AppColors.primary1, size: 18.sp,),
+          //     //     ),
+          //     //   ),
+          //     // ),
+          //
+          //
+          //
+          //     SizedBox(width: 12.w),
+          //
+          //     // ================= BUTTON 2 =================
+          //     // Expanded(
+          //     //   child: SizedBox(
+          //     //     height: 40.h,
+          //     //     child: status =="cancelled"|| status =="completed" || status =="ongoing" || status =="accepted"?
+          //     //     SizedBox.shrink():
+          //     //     CustomButton(
+          //     //       onTap: null,
+          //     //       title: "Pending",
+          //     //       fontSize: 14,
+          //     //       fontWeight: FontWeight.bold,
+          //     //       fillColor: Colors.green,
+          //     //       textColor: Colors.black,
+          //     //       isBorder: true,
+          //     //       borderColor: Colors.grey,
+          //     //       icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
+          //     //     )
+          //     //   ),
+          //     // ),
+          //   ],
+          // )
         ],
       ),
     );
