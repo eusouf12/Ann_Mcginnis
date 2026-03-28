@@ -12,7 +12,7 @@ class CustomDetailsProfileCard extends StatelessWidget {
   final String? title;
   final double? rating;
   final String? experience;
-  final String? totalReviews;
+  final int? totalReviews;
   final String? patients;
 
   const CustomDetailsProfileCard({

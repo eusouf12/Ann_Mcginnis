@@ -31,7 +31,9 @@ class ConsultantDetails {
   String? businessName;
   String? jobTitle;
   String? profileDescription;
-
+  double? averageRating;
+  int? totalReviews;
+  List<Review>? reviews;
   String? professionalLicenseDoc;
   String? certificationsFile;
   ConsultationFees? consultationFees;
@@ -66,6 +68,9 @@ class ConsultantDetails {
     this.additionalDocuments,
     this.createdAt,
     this.updatedAt,
+    this.averageRating,
+    this.totalReviews,
+    this.reviews,
   });
 
   factory ConsultantDetails.fromJson(Map<String, dynamic> json) {
@@ -89,6 +94,9 @@ class ConsultantDetails {
       additionalDocuments: json['additionalDocuments'] != null ? List<String>.from(json['additionalDocuments']) : [],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+      averageRating: (json['averageRating'] ?? 0).toDouble(),
+      totalReviews: (json['totalReviews'] ?? 0).toInt(),
+      reviews: json['reviews'] != null ? (json['reviews'] as List).map((v) => Review.fromJson(v)).toList(): [],
     );
   }
 }
@@ -159,6 +167,28 @@ class ConsultationFees {
       videoCall: json['videoCall'],
       phoneCall: json['phoneCall'],
       inPerson: json['inPerson'],
+    );
+  }
+}
+
+class Review {
+  String? id;
+  String? userId;
+  double? rating;
+  String? review;
+  String? createdAt;
+  String? updatedAt;
+
+  Review({this.id, this.userId, this.rating, this.review, this.createdAt, this.updatedAt});
+
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      id: json['_id'],
+      userId: json['userId'],
+      rating: (json['rating'] ?? 0).toDouble(),
+      review: json['review'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
   }
 }

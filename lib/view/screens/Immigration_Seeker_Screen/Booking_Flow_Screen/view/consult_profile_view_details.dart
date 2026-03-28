@@ -3,7 +3,6 @@ import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_button/custom_button.dart';
 import 'package:ann_mcginnis/view/components/custom_gradient/custom_gradient.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/booking_sucess_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,6 @@ import '../controller/booking_flow_controller.dart';
 import '../widget/custom_detais_profile_card.dart';
 import '../widget/custom_fees_card.dart';
 import '../widget/custom_time_card.dart';
-import 'consult_book_screen.dart';
 
 class ConsultProfileViewDetails extends StatelessWidget {
   ConsultProfileViewDetails({super.key});
@@ -55,8 +53,8 @@ class ConsultProfileViewDetails extends StatelessWidget {
                     imageUrl: consultant.userId?.avatar?.isNotEmpty == true ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
                     name: consultant.userId?.fullname ?? "",
                     title: consultant.jobTitle ?? "",
-                    rating: 4.9,
-                    totalReviews: "127",
+                    rating: consultant.averageRating ?? 0.0,
+                    totalReviews: consultant.totalReviews ?? 0,
                     experience: consultant.experienceYears.toString(),
                   ),
                   SizedBox(height: 20.h),
