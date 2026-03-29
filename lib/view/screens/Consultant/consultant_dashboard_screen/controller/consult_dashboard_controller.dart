@@ -195,5 +195,75 @@ class ConsultDashboardController extends GetxController {
       isBookingTrendLoading.value = false;
     }
   }
+ 
+ // ================== CANCEL APPOINTMENT ==================
+  final isCancelAppointmentLoading = false.obs;
+  final rxCancelAppointmentStatus = Status.loading.obs;
+  void setCancelAppointmentStatus(Status status) => rxCancelAppointmentStatus.value = status;
 
+  Future<void> cancelAppointment({required String appointmentId}) async {
+    isCancelAppointmentLoading.value = true;
+    setCancelAppointmentStatus(Status.loading);
+
+    try {
+      Map<String, String> body = {
+        "action": "reject",
+      };
+      final response = await ApiClient.patchData(ApiUrl.cancelAppointment(id: appointmentId),jsonEncode(body));
+
+      final Map<String, dynamic> jsonResponse =
+      response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setCancelAppointmentStatus(Status.completed);
+        await getAllAppointments();
+        showCustomSnackBar(jsonResponse["message"] ?? "Appointment cancelled successfully");
+      } else {
+        setCancelAppointmentStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to cancel appointment", isError: true,);
+      }
+
+    } catch (e) {
+      setCancelAppointmentStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isCancelAppointmentLoading.value = false;
+    }
+  }
+ 
+ // ================== CONFIRM APPOINTMENT ==================
+  final isConfirmAppointmentLoading = false.obs;
+  final rxConfirmAppointmentStatus = Status.loading.obs;
+  void setConfirmAppointmentStatus(Status status) => rxConfirmAppointmentStatus.value = status;
+
+  Future<void> confirmAppointment({required String appointmentId}) async {
+    isConfirmAppointmentLoading.value = true;
+    setConfirmAppointmentStatus(Status.loading);
+
+    try {
+      Map<String, String> body = {
+        "action": "accept",
+      };
+      final response = await ApiClient.patchData(ApiUrl.confirmAppointment(id: appointmentId), jsonEncode(body));
+
+      final Map<String, dynamic> jsonResponse =response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setConfirmAppointmentStatus(Status.completed);
+        await getAllAppointments();
+        showCustomSnackBar(jsonResponse["message"] ?? "Appointment confirmed successfully");
+      } else {
+        setConfirmAppointmentStatus(Status.error);
+        showCustomSnackBar(jsonResponse["message"] ?? "Failed to confirm appointment", isError: true,);
+      }
+
+    } catch (e) {
+      setConfirmAppointmentStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isConfirmAppointmentLoading.value = false;
+    }
+  }
 }

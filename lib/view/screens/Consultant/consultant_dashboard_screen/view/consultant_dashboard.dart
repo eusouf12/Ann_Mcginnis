@@ -305,8 +305,12 @@ class ConsultantDashboard extends StatelessWidget {
                                onTapViewDetails: () {
                                       Get.toNamed( AppRoutes.bookingDetailsScreen, arguments: firstAppointment.id,);
                                     },
-                              onTapConfirm: () {
-                              },
+                               onTapConfirm: () {
+                                      controller.confirmAppointment(appointmentId: firstAppointment.id!);
+                                    },
+                                    onTapCancel: (){
+                                      controller.cancelAppointment(appointmentId: firstAppointment.id!);
+                                    },
                             );
                           })
 
@@ -359,27 +363,27 @@ class ConsultantDashboard extends StatelessWidget {
                                     date: booking.consultationDate,
                                     time: booking.consultationTime,
                                     status: booking.bookingStatus,
-                                    show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" ? true : false,
+                                    show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" || booking.bookingStatus == "rejected"? true : false,
                                     isConfirm: booking.bookingStatus == "accepted",
                                     img: (booking.userId?.avatar != null && booking.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${booking.userId?.avatar}" : AppConstants.profileImage2,
 
 
                                     onTapViewDetails: () {
-                                      Get.toNamed(
-                                        AppRoutes.bookingDetailsScreen,
-                                         arguments: booking.id,
-                                      );
+                                      Get.toNamed( AppRoutes.bookingDetailsScreen,arguments: booking.id );
                                     },
 
                                     onTapConfirm: () {
-                                      /// future: confirm API call
+                                      controller.confirmAppointment(appointmentId: booking.id!);
+                                    },
+                                    onTapCancel: (){
+                                      controller.cancelAppointment(appointmentId: booking.id!);
                                     },
                                   ),
                                 );
                               },
                             ),
 
-                            /// 🔥 LOAD MORE LOADER
+                            ///  LOAD MORE LOADER
                             if (controller.isAppointmentLoadMore.value)
                               const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 20),

@@ -73,6 +73,8 @@ class ApiUrl {
   static String allAppointments ({required String page}) => "/bookings/consultant/my-bookings?page=$page&limit=10";
   static String myBookingCalender ({required String year, required String month}) => "/bookings/consultant/calendar/booked-dates?year=$year&month=$month";
   static String getSingleBooking({required String id}) => "/bookings/consultant/my-bookings/$id";
+  static String cancelAppointment({required String id}) => "/bookings/consultant/booking/respond/$id";
+  static String confirmAppointment({required String id}) => "/bookings/consultant/booking/respond/$id";
 
 
 

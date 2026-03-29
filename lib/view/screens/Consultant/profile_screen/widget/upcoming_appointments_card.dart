@@ -18,6 +18,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
   final VoidCallback? onTapReschedule;
   final VoidCallback? onTapViewDetails;
   final VoidCallback? onTapConfirm;
+  final VoidCallback? onTapCancel;
 
   const UpcomingAppointmentsCard({
     super.key,
@@ -33,6 +34,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
     this.onTapReschedule,
     this.onTapViewDetails,
     this.onTapConfirm,
+    this.onTapCancel,
   });
 
   @override
@@ -43,7 +45,10 @@ class UpcomingAppointmentsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isConfirm ? const Color(0xFFF0F8FF) : Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        border: isConfirm ? Border(left: BorderSide(color: AppColors.primary1, width: 4.w))
+        border: isConfirm
+            ? Border(
+                left: BorderSide(color: AppColors.primary1, width: 4.w),
+              )
             : Border.all(color: Colors.grey.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
@@ -96,24 +101,38 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                       color: Colors.grey[600]!,
                       textAlign: TextAlign.start,
                     ),
-
                   ],
                 ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) :status== "ongoing" ?Colors.deepOrange.withOpacity(0.1) : Colors.deepPurple.withOpacity(0.1),
+                  color: status == "accepted"
+                      ? Colors.deepPurple.withOpacity(0.1)
+                      : status == "completed"
+                      ? AppColors.primary1.withOpacity(0.2)
+                      : status == "pending"
+                      ? Colors.green.withOpacity(0.1)
+                      : status == "ongoing"
+                      ? Colors.deepOrange.withOpacity(0.1)
+                      : AppColors.red.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: CustomText(
                   text: "$status",
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : status== "ongoing" ?Colors.deepOrange : Colors.deepPurple,
+                  color: status == "accepted"
+                      ? Colors.deepPurple
+                      : status == "completed"
+                      ? AppColors.primary1
+                      : status == "pending"
+                      ? Colors.green
+                      : status == "ongoing"
+                      ? Colors.deepOrange
+                      : AppColors.red,
                 ),
               ),
-
             ],
           ),
           SizedBox(height: 6.h),
@@ -131,65 +150,86 @@ class UpcomingAppointmentsCard extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           // Button Section
-          show==true?
-          status =="cancelled"|| status =="completed"?
-          CustomButton(
-            onTap: (){} ,
-            title:status =="cancelled" ? "Cancelled" : "Completed" ,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            height: 40,
-            fillColor:status =="cancelled" ? AppColors.red : AppColors.green,
-            textColor: AppColors.white,
-          ) : SizedBox.shrink() :
-          Row(
-            children: [
-              // ================= BUTTON 1 =================
-              Expanded(
-                child: SizedBox(
-                  height: 40.h,
-                  child:status == "accepted"? CustomButton(
-                    onTap:  onTapJoin ,
-                    title: "Join Call" ,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor: AppColors.yellow1 ,
-                    textColor: AppColors.primary1,
-                    icon: Icon( Icons.videocam , color: AppColors.primary1, size: 18.sp,),
-                  )
-                      :CustomButton(
-                    onTap:onTapConfirm ,
-                    title:  "Confirm",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor:AppColors.primary1 ,
-                    textColor:AppColors.white,
+          show == true
+              ?
+                // status =="cancelled"|| status =="completed"?
+                // CustomButton(
+                //   onTap: (){} ,
+                //   title:status =="cancelled" ? "Cancelled" : "Completed" ,
+                //   fontSize: 14,
+                //   fontWeight: FontWeight.bold,
+                //   height: 40,
+                //   fillColor:status =="cancelled" ? AppColors.red : AppColors.green,
+                //   textColor: AppColors.white,
+                // ) :
+                SizedBox.shrink()
+              : Row(
+                  children: [
+                    // ================= BUTTON 1 =================
+                    Expanded(
+                      child: SizedBox(
+                        height: 40.h,
+                        child: status == "accepted"
+                            ? CustomButton(
+                                onTap: onTapJoin,
+                                title: "Join Call",
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fillColor: AppColors.yellow1,
+                                textColor: AppColors.primary1,
+                                icon: Icon(
+                                  Icons.videocam,
+                                  color: AppColors.primary1,
+                                  size: 18.sp,
+                                ),
+                              )
+                            : CustomButton(
+                                onTap: onTapConfirm,
+                                title: "Confirm",
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fillColor: AppColors.primary1,
+                                textColor: AppColors.white,
+                              ),
+                      ),
+                    ),
 
-                  )
+                    SizedBox(width: 12.w),
+
+                    // ================= BUTTON 2 =================
+                    status == "accepted"? SizedBox.shrink():
+                    Expanded(
+                      child: SizedBox(
+                        height: 40.h,
+                        child: CustomButton(
+                          onTap: onTapCancel,
+                          title: "Cancelled",
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fillColor: AppColors.red,
+                          textColor: Colors.white,
+                        
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-
-              SizedBox(width: 12.w),
-
-              // ================= BUTTON 2 =================
-              Expanded(
-                child: SizedBox(
-                  height: 40.h,
-                  child:  CustomButton(
-                    onTap: onTapViewDetails,
-                    title: "View Details",
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fillColor: AppColors.grey.withOpacity(0.3),
-                    textColor: Colors.black,
-                    isBorder: false,
-                    borderColor: Colors.grey,
-                    icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
-                  )
-                ),
-              ),
-            ],
-          )
+          SizedBox(height: 10.h),
+          //View Details
+          SizedBox(
+            height: 40.h,
+            child: CustomButton(
+              onTap: onTapViewDetails,
+              title: "View Details",
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              fillColor: AppColors.grey.withOpacity(0.3),
+              textColor: Colors.black,
+              isBorder: false,
+              borderColor: Colors.grey,
+              icon: Icon(Icons.schedule, color: Colors.black87, size: 18.sp),
+            ),
+          ),
         ],
       ),
     );
