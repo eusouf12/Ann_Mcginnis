@@ -1,6 +1,5 @@
 import 'package:ann_mcginnis/view/components/custom_gradient/custom_gradient.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/set_up_profile_screen_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

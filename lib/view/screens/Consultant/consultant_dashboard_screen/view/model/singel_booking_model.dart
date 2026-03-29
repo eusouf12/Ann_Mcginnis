@@ -96,6 +96,7 @@ class SingleBookingUser {
   String? fullname;
   String? mobile;
   String? avatar;
+  String? country;
 
   SingleBookingUser({
     this.id,
@@ -103,6 +104,7 @@ class SingleBookingUser {
     this.fullname,
     this.mobile,
     this.avatar,
+    this.country,
   });
 
   factory SingleBookingUser.fromJson(Map<String, dynamic> json) {
@@ -112,6 +114,7 @@ class SingleBookingUser {
       fullname: json['fullname'],
       mobile: json['mobile'],
       avatar: json['avatar'],
+      country: json['country'],
     );
   }
 }

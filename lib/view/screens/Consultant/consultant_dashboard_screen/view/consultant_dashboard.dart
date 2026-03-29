@@ -266,111 +266,12 @@ class ConsultantDashboard extends StatelessWidget {
                                   textColor: Colors.white,
                                   isBorder: true,
                                   borderColor: Colors.grey,
-                                  icon: Icon(Icons.calendar_month, color: AppColors.white, size: 18.sp), // আইকন ক্যালেন্ডার দেওয়া হয়েছে
+                                  icon: Icon(Icons.calendar_month, color: AppColors.white, size: 18.sp), 
                                 ),
                               ),
                             ],
                           ),
-                          // SingleChildScrollView(
-                          //   scrollDirection: Axis.horizontal,
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.symmetric(vertical: 10),
-                          //     child: Row(
-                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //       children: [
-                          //         // ================= BUTTON 1 =================
-                          //         // Container(
-                          //         //   decoration: BoxDecoration(
-                          //         //     borderRadius: BorderRadius.circular(10.r),
-                          //         //     boxShadow: [
-                          //         //       BoxShadow(
-                          //         //         color: Colors.black.withOpacity(0.12),
-                          //         //         blurRadius: 8,
-                          //         //         offset: const Offset(0, 4),
-                          //         //       ),
-                          //         //     ],
-                          //         //   ),
-                          //         //   child: SizedBox(
-                          //         //     width: 165.w,
-                          //         //     height: 40.h,
-                          //         //     child: CustomButton(
-                          //         //       onTap: () {},
-                          //         //       title: "New Appointment",
-                          //         //       fontSize: 14,
-                          //         //       fontWeight: FontWeight.bold,
-                          //         //       isBorder: true,
-                          //         //       borderColor: Colors.grey,
-                          //         //       fillColor: AppColors.yellow1,
-                          //         //       textColor: AppColors.primary1,
-                          //         //       icon: Icon(Icons.add, color: AppColors.primary1, size: 18.sp),
-                          //         //     ),
-                          //         //   ),
-                          //         // ),
-                          //         //
-                          //         // SizedBox(width: 12.w),
-                          //
-                          //         // ================= BUTTON 2 =================
-                          //         Container(
-                          //           decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.circular(10.r),
-                          //             boxShadow: [
-                          //               BoxShadow(
-                          //                 color: Colors.black.withOpacity(0.10),
-                          //                 blurRadius: 8,
-                          //                 offset: const Offset(0, 4),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //           child: SizedBox(
-                          //             height: 40.h,
-                          //             child:
-                          //             CustomButton(
-                          //               onTap: () {},
-                          //               title: "Messages",
-                          //               fontSize: 14,
-                          //               fontWeight: FontWeight.bold,
-                          //               fillColor: AppColors.white,
-                          //               textColor: Colors.black,
-                          //               isBorder: true,
-                          //               borderColor: Colors.grey,
-                          //               icon: Icon(Icons.message, color: AppColors.black, size: 18.sp),
-                          //             ),
-                          //           ),
-                          //         ),
-                          //
-                          //         SizedBox(width: 12.w),
-                          //
-                          //         // ================= BUTTON 3 =================
-                          //         Container(
-                          //           decoration: BoxDecoration(
-                          //             borderRadius: BorderRadius.circular(10.r),
-                          //             boxShadow: [
-                          //               BoxShadow(
-                          //                 color: AppColors.primary1.withOpacity(0.25),
-                          //                 blurRadius: 10,
-                          //                 offset: const Offset(0, 5),
-                          //               ),
-                          //             ],
-                          //           ),
-                          //           child: SizedBox(
-                          //             width: 160.w,
-                          //             height: 40.h,
-                          //             child: CustomButton(
-                          //               onTap: () {},
-                          //               title: "Calendar",
-                          //               fontSize: 14,
-                          //               fontWeight: FontWeight.bold,
-                          //               fillColor: AppColors.primary1,
-                          //               textColor: Colors.white,
-                          //               icon: Icon(Icons.calculate_outlined,
-                          //                   color: AppColors.white, size: 18.sp),
-                          //             ),
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
+                         
                           SizedBox(height: 16.h),
                           // appoinment
                           Row(
@@ -389,8 +290,6 @@ class ConsultantDashboard extends StatelessWidget {
                             }
                             final firstAppointment = controller.appointmentList[0];
 
-
-                            final consultant = firstAppointment.consultantId;
                             final user = firstAppointment.userId;
 
                             return UpcomingAppointmentsCard(
@@ -403,9 +302,9 @@ class ConsultantDashboard extends StatelessWidget {
                               img: (firstAppointment.userId?.avatar != null && firstAppointment.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${firstAppointment.userId?.avatar}" : AppConstants.profileImage2,
                               isConfirm: firstAppointment.bookingStatus == "accepted",
 
-                              onTapViewDetails: () {
-                                Get.toNamed(AppRoutes.consultProfileViewDetails, arguments: firstAppointment.consultantId?.id);
-                              },
+                               onTapViewDetails: () {
+                                      Get.toNamed( AppRoutes.bookingDetailsScreen, arguments: firstAppointment.id,);
+                                    },
                               onTapConfirm: () {
                               },
                             );
