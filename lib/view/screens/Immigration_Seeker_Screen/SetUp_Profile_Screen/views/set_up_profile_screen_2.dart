@@ -1,11 +1,9 @@
-import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
-import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../../components/custom_text_field/custom_text_field.dart';
 import '../controller/setup_profile_controller.dart';

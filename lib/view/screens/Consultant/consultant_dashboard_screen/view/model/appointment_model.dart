@@ -177,6 +177,7 @@ class AppointmentConsultationFees {
 class AppointmentUser {
   String? id;
   String? email;
+  String? country;
   String? fullname;
   String? mobile;
   String? avatar;
@@ -187,12 +188,14 @@ class AppointmentUser {
     this.fullname,
     this.mobile,
     this.avatar,
+    this.country,
   });
 
   factory AppointmentUser.fromJson(Map<String, dynamic> json) {
     return AppointmentUser(
       id: json['_id'],
       email: json['email'],
+      country: json['country'],
       fullname: json['fullname'],
       mobile: json['mobile'],
       avatar: json['avatar'],

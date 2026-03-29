@@ -1,5 +1,4 @@
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/legal_advice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -244,6 +243,7 @@ class SetUpProfileScreen6 extends StatelessWidget {
 
   // ================= Helper Widgets =================
 
+  // ignore: unused_element
   Widget _buildProgressBar(double factor) {
     return Container(
       height: 6.h,

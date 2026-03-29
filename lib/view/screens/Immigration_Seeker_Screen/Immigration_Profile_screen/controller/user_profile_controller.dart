@@ -110,7 +110,7 @@ class UserProfileController extends GetxController {
   //========== Update Profile ==========
   RxBool updateProfileLoading = false.obs;
   Future<void> updateProfile() async {
-    final role = await SharePrefsHelper.getString(AppConstants.role);
+    // final role = await SharePrefsHelper.getString(AppConstants.role);
     updateProfileLoading.value = true;
     refresh();
 

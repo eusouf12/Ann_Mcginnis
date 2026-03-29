@@ -21,7 +21,7 @@ class LoginOnlyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+  
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.transparent,

@@ -2,7 +2,6 @@ import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import '../../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../service/api_url.dart';

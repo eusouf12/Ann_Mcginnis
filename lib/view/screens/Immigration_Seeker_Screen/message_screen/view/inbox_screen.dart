@@ -479,7 +479,7 @@ class CustomInboxMessage2 extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               Get.to(() => FullScreenImageView(
-                  imageUrl: fullImgPath!,
+                  imageUrl: fullImgPath,
                   isLocal: isLocal
               ));
             },

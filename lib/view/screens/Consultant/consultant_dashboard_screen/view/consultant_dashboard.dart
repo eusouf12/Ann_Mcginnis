@@ -371,12 +371,12 @@ class ConsultantDashboard extends StatelessWidget {
                           //     ),
                           //   ),
                           // ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 16.h),
                           // appoinment
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CustomText(text: " Appointments", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
+                              CustomText(text: "Recent Appointments", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
                             ],
                           ),
                           SizedBox(height: 20.h),
@@ -391,11 +391,11 @@ class ConsultantDashboard extends StatelessWidget {
 
 
                             final consultant = firstAppointment.consultantId;
-                            final consultantUser = consultant?.userId;
+                            final user = firstAppointment.userId;
 
                             return UpcomingAppointmentsCard(
-                              title: firstAppointment.userId?.fullname ?? "Unknown Name",
-                              subTitle: consultant?.jobTitle ?? "",
+                              title: user?.fullname ?? "Unknown Name",
+                              subTitle: user?.country ?? "Unknown Country",
                               date: firstAppointment.consultationDate,
                               time: firstAppointment.consultationTime,
                               status: firstAppointment.bookingStatus,
@@ -456,7 +456,7 @@ class ConsultantDashboard extends StatelessWidget {
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: UpcomingAppointmentsCard(
                                     title: booking.userId?.fullname ?? "",
-                                    subTitle: booking.consultantId?.jobTitle ?? "",
+                                    subTitle: booking.userId?.country ?? "",
                                     date: booking.consultationDate,
                                     time: booking.consultationTime,
                                     status: booking.bookingStatus,
@@ -467,8 +467,8 @@ class ConsultantDashboard extends StatelessWidget {
 
                                     onTapViewDetails: () {
                                       Get.toNamed(
-                                        AppRoutes.consultProfileViewDetails,
-                                        arguments: booking.consultantId?.id,
+                                        AppRoutes.bookingDetailsScreen,
+                                         arguments: booking.id,
                                       );
                                     },
 

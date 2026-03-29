@@ -7,28 +7,24 @@ import 'package:intl/intl.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../Immigration_Seeker_Screen/Recommended_dashboard_Screen/model/booking_consultaion.dart';
+import '../controller/booking_details_controller.dart';
 
 
-class BookingDetailsController extends GetxController {
 
-
-  // Methods
-  void contactClient() => print("Contacting Client...");
-  void rescheduleBooking() => print("Reschedule Clicked");
-  void addNotes() => print("Add Notes Clicked");
-  void joinMeeting() => print("Joining Meeting...");
-}
 
 
 
 class BookingDetailsScreen extends StatelessWidget {
   BookingDetailsScreen({super.key});
 
-  final BookingDetailsController controller = Get.put(BookingDetailsController());
-  final Booking booking = Get.arguments;
+  final BookingDetailsController bookingDetailsController = Get.put(BookingDetailsController());
+  final  booking = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bookingDetailsController.getSingleBooking(id: booking.id);
+    });
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar:CustomRoyelAppbar(leftIcon: true,titleName: "Booking Details",),

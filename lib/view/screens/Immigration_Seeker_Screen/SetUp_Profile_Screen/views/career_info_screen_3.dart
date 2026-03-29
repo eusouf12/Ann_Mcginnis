@@ -226,6 +226,7 @@ class CareerInfoScreen3 extends StatelessWidget {
   // ================= Helper Widgets =================
 
   // Progress Bar Widget
+  // ignore: unused_element
   Widget _buildProgressBar(double factor) {
     return Container(
       height: 6.h,

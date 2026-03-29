@@ -58,9 +58,7 @@ class BookConsultationCard extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: isBooked
-                      ? Border.all(color: Colors.blue, width: 2)
-                      : null,
+                  border: isBooked ? Border.all(color: Colors.blue, width: 2) : null,
                 ),
                 padding: EdgeInsets.all(2.w),
                 child: ClipOval(

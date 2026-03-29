@@ -7,7 +7,6 @@ import '../../../../../utils/app_const/app_const.dart';
 import '../model/all_consultation.dart';
 import '../model/booking_consultaion.dart' hide Consultant;
 import '../model/save_country_model.dart';
-import '../model/single_consultation.dart';
 
 class UserDashboardController extends GetxController {
   //tab Bar

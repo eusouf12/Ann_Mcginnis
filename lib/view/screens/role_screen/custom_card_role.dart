@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/app_colors/app_colors.dart';
-import '../../components/custom_image/custom_image.dart';
 import '../../components/custom_text/custom_text.dart';
 
 class RoleCard extends StatelessWidget {

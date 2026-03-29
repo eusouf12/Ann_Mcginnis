@@ -9,7 +9,6 @@ import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_from_card/custom_from_card.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/setup_profile_controller.dart';
-import 'package:country_picker/country_picker.dart';
 
 class SetUpProfileScreen1 extends StatelessWidget {
   SetUpProfileScreen1({super.key});

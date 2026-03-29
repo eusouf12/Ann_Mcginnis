@@ -85,7 +85,7 @@ class PaymentCard extends StatelessWidget {
                         Icon(consultationType.toLowerCase().contains("video") == true ? Icons.videocam : Icons.phone, size: 20.sp, color: AppColors.primary1),
                         SizedBox(width: 6.w),
                         CustomText(
-                            text: consultationType.replaceAll("-", " ") ?? "",
+                            text: consultationType.replaceAll("-", " "),
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color:  AppColors.primary1

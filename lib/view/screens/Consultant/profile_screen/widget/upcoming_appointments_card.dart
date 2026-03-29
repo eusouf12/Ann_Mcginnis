@@ -43,8 +43,7 @@ class UpcomingAppointmentsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isConfirm ? const Color(0xFFF0F8FF) : Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        border: isConfirm
-            ? Border(left: BorderSide(color: AppColors.primary1, width: 4.w))
+        border: isConfirm ? Border(left: BorderSide(color: AppColors.primary1, width: 4.w))
             : Border.all(color: Colors.grey.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
@@ -101,24 +100,18 @@ class UpcomingAppointmentsCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: isConfirm
-                          ? AppColors.primary1.withOpacity(0.15)
-                          : Colors.orange.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: CustomText(
-                      text: status ?? "",
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: isConfirm ? AppColors.primary1 : Colors.orange,
-                    ),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) :status== "ongoing" ?Colors.deepOrange.withOpacity(0.1) : Colors.deepPurple.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: CustomText(
+                  text: "$status",
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : status== "ongoing" ?Colors.deepOrange : Colors.deepPurple,
+                ),
               ),
 
             ],
