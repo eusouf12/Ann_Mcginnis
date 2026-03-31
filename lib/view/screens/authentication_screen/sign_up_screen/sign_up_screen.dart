@@ -170,7 +170,7 @@ class SignUpScreen extends StatelessWidget {
                       SizedBox(height: 10),
                       CustomTextField(
                         textEditingController: authController.dateOfBirthController.value,
-                        hintText:"YYYY/MM/DD",
+                        hintText:"MM/DD/YYYY",
                         hintStyle: TextStyle(color: AppColors.grey_1, fontSize: 14),
                         prefixIcon: const Icon(Icons.calendar_today_outlined, color: Color(0xFF9CA3AF), size: 20,),
                         fillColor: AppColors.white,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../service/api_client.dart';
@@ -8,6 +9,7 @@ import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../model/recommended_countries_model.dart';
 import '../model/singel_country.dart';
+import '../model/visa_type_model.dart' show EligibleVisasModel;
 
 class RecommendedCountriesController extends GetxController {
   // visa type
@@ -41,8 +43,8 @@ class RecommendedCountriesController extends GetxController {
   void clearFilters() {
     visaTypes.updateAll((key, value) => false);
     additionalOptions.updateAll((key, value) => false);
-    successRate.value = null; // রিসেট করলে আবার null হয়ে যাবে
-    getRecommendedCountries(); // ফ্রেশ ডাটা লোড হবে
+    successRate.value = null; 
+    getRecommendedCountries();
   }
 
   var selectedTab = 0.obs;
@@ -50,8 +52,8 @@ class RecommendedCountriesController extends GetxController {
   final List<String> tabs = [
     "Overview",
     "Visa Types",
-    "Requirements",
-    "Process",
+    // "Requirements",
+    // "Process",
   ];
 
   void changeTab(int index) {
@@ -179,5 +181,34 @@ class RecommendedCountriesController extends GetxController {
 
     }
   }
+
+  //========== visa type ============
+  RxBool isLoadingEligibleVisas = false.obs;
+Rx<EligibleVisasModel?> eligibleVisasModel = Rx<EligibleVisasModel?>(null);
+
+Future<void> getEligibleVisas({required String countrySlug}) async {
+  isLoadingEligibleVisas.value = true;
+
+  try {
+    final response = await ApiClient.getData(ApiUrl.eligibleVisas(country: countrySlug));
+
+    final jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+    if (jsonResponse["success"] == true) {
+      eligibleVisasModel.value = EligibleVisasModel.fromJson(jsonResponse);
+
+      debugPrint("Eligible Visas Loaded ");
+    } else {
+      showCustomSnackBar(jsonResponse["message"] ?? "Failed to load visas", isError: true, );
+    }
+  } catch (e) {
+    debugPrint("Eligible Visas Error: $e");
+
+    showCustomSnackBar("Something went wrong",isError: true,
+    );
+  } finally {
+    isLoadingEligibleVisas.value = false;
+  }
+}
 
 }

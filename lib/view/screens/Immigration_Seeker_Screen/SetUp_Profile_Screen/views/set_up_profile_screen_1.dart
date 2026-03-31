@@ -64,9 +64,9 @@ class SetUpProfileScreen1 extends StatelessWidget {
                         fillBorderRadius: 12,
                         validator: (value) => setupProfileController.validateName(setupProfileController.nationalityController.value.text),                      ),
                       //
-                      CustomText(text: "EnglishProficiency", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
+                      CustomText(text: "Language Proficiency", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
                       Obx(() => _buildDropdown(
-                        hint: "Select your englishProficiency",
+                        hint: "Select your language Proficiency",
                         value: setupProfileController.selectedEnglishProficiency.value.isEmpty ? null : setupProfileController.selectedEnglishProficiency.value,
                         items: setupProfileController.englishProficiencyRanges,
                         onChanged: (val) => setupProfileController.selectedEnglishProficiency.value = val!,
@@ -83,6 +83,7 @@ class SetUpProfileScreen1 extends StatelessWidget {
                         curserColor: AppColors.primary,
                         fillBorderRadius: 12,
                         validator: (value) =>setupProfileController.validateIeltsScore(value ?? ""),                      ),
+                    //  CustomText(text: "Toefl Score", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
                       //toeflScore
                       CustomFormCard(
                         title: "Toefl Score",

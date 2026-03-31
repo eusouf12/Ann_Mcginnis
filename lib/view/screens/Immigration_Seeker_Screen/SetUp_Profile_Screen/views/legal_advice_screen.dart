@@ -10,7 +10,7 @@ import '../../../../components/custom_gradient/custom_gradient.dart';
 
 class LegalAdviceScreen extends StatelessWidget {
   LegalAdviceScreen({super.key});
-  final AuthController authController = Get.find<AuthController>();
+  final AuthController authController = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

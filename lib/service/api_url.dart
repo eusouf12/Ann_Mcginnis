@@ -56,7 +56,8 @@ class ApiUrl {
     return url;
   }
 
-  static String getSingleCountry({required String country}) => "/countries/$country";
+  static String getSingleCountry({required String country}) => "/countries/$country"; //eligibleVisas
+  static String eligibleVisas({required String country}) => "/countries/$country/eligible-visas"; 
   static String saveCountry({required String id}) => "/recommendations/save/$id";
   static String deleteCountry({required String id}) => "/recommendations/saved/$id";
   static String getConsultants({required String page}) => "/users/all-consultants?page=$page&limit=10";

@@ -24,105 +24,96 @@ class CustomVisaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // 1. Icon & Popular Tag Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon Box
-              Container(
-                height: 45.h,
-                width: 45.w,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE8EAF6),
-                  borderRadius: BorderRadius.circular(12.r),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // 1. Icon & Popular Tag Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Icon Box
+                Container(
+                  height: 45.h,
+                  width: 45.w,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8EAF6),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: const Color(0xFF1A237E),
+                    size: 24.sp,
+                  ),
                 ),
-                child: Icon(
-                  icon,
-                  color: const Color(0xFF1A237E),
-                  size: 24.sp,
+
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: typeColor,
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  child: CustomText(
+                    text: type,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: typeTextColor ?? Colors.black,
+                  ),
                 ),
-              ),
+              ],
+            ),
+            SizedBox(height: 16.h),
 
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                decoration: BoxDecoration(
-                  color: typeColor,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: CustomText(
-                  text: type,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: typeTextColor ?? Colors.black,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
+            // 2. Title
+            CustomText(
+              text: title,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              textAlign: TextAlign.start,
+            ),
+            SizedBox(height: 8.h),
 
-          // 2. Title
-          CustomText(
-            text: title,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            textAlign: TextAlign.start,
-          ),
-          SizedBox(height: 8.h),
+            // 3. Description
+            CustomText(
+              text: description,
+              fontSize: 14,
+              color: Colors.grey[600]!,
+              textAlign: TextAlign.start,
+              maxLines: 10,
+              fontWeight: FontWeight.w400,
+            ),
+            SizedBox(height: 20.h),
 
-          // 3. Description
-          CustomText(
-            text: description,
-            fontSize: 14,
-            color: Colors.grey[600]!,
-            textAlign: TextAlign.start,
-            maxLines: 10,
-            fontWeight: FontWeight.w400,
-          ),
-          SizedBox(height: 20.h),
-
-          // 4. duration
-          CustomText(
-            text: duration,
-            fontSize: 14,
-            color: Colors.grey[600]!,
-            textAlign: TextAlign.start,
-            maxLines: 10,
-            fontWeight: FontWeight.w400,
-          ),
-          // SizedBox(height: 20.h),
-          //
-          // // 4. Button
-          // CustomButton(
-          //   onTap: onTap,
-          //   title: "Learn More",
-          //   fontSize: 14,
-          //    height: 48,
-          //   fontWeight: FontWeight.bold,
-          //   textColor: Colors.white,
-          //   fillColor: AppColors.yellow1,
-          // ),
-        ],
+            // 4. duration
+            CustomText(
+              text: duration,
+              fontSize: 14,
+              color: Colors.grey[600]!,
+              textAlign: TextAlign.start,
+              maxLines: 10,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        ),
       ),
     );
   }
