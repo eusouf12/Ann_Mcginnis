@@ -50,12 +50,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut);
     } else {
-      Get.offNamed(AppRoutes.chooseRole);
+      Get.offNamed(AppRoutes.loginOnlyScreen);
     }
   }
   //skip Btn
   void _skip() {
-    Get.offNamed(AppRoutes.chooseRole);
+    Get.offNamed(AppRoutes.loginOnlyScreen);
   }
 
   @override
