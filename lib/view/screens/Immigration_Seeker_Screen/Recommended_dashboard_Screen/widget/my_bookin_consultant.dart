@@ -115,14 +115,14 @@ class MyBookinConsultant extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) :status== "ongoing" ?Colors.deepOrange.withOpacity(0.1) : Colors.deepPurple.withOpacity(0.1),
+                  color: status == "cancelled" ? AppColors.red.withOpacity(0.2) : status == "completed" ?AppColors.primary1.withOpacity(0.2) :status == "pending" ? Colors.green.withOpacity(0.1) :status== "ongoing" ?Colors.deepOrange.withOpacity(0.1):status=="rejected" ? AppColors.red.withOpacity(0.2) : Colors.deepPurple.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: CustomText(
                   text: "$status",
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : status== "ongoing" ?Colors.deepOrange : Colors.deepPurple,
+                  color:status == "cancelled" ? AppColors.red : status == "completed" ?AppColors.primary1 :status == "pending" ? Colors.green : status== "ongoing" ?Colors.deepOrange : status=="rejected" ? AppColors.red  : Colors.deepPurple,
                 ),
               ),
             ],
@@ -221,7 +221,7 @@ class MyBookinConsultant extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing"?
+          status == "pending" || status =="cancelled"|| status =="completed" || status =="accepted" || status =="rejected"?
           SizedBox.shrink():
           CustomButton(
             onTap: onTapJoin ,
@@ -229,9 +229,22 @@ class MyBookinConsultant extends StatelessWidget {
             fontSize: 14,
             height: 40.h,
             fontWeight: FontWeight.bold,
+            fillColor: AppColors.primary1,
+            textColor: AppColors.white,
+            icon: Icon(Icons.videocam, color: AppColors.white, size: 18.sp,),
+          ),
+
+           status == "pending" || status =="cancelled"|| status =="completed" || status =="ongoing" || status =="rejected"?
+          SizedBox.shrink():
+          CustomButton(
+            onTap: onTapJoin ,
+            title: "Pay" ,
+            fontSize: 14,
+            height: 40.h,
+            fontWeight: FontWeight.bold,
             fillColor: AppColors.yellow1,
             textColor: AppColors.primary1,
-            icon: Icon(Icons.videocam, color: AppColors.primary1, size: 18.sp,),
+             icon: Icon(Icons.credit_card, color: AppColors.primary1, size: 20.sp),
           ),
 
           // Button Section
