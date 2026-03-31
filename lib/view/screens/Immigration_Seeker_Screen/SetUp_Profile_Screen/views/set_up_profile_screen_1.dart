@@ -1,5 +1,6 @@
 import 'package:ann_mcginnis/view/components/custom_gradient/custom_gradient.dart';
 import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:ann_mcginnis/view/components/custom_text_field/custom_text_field.dart';
 import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/SetUp_Profile_Screen/views/set_up_profile_screen_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +14,9 @@ import '../controller/setup_profile_controller.dart';
 class SetUpProfileScreen1 extends StatelessWidget {
   SetUpProfileScreen1({super.key});
 
-  final SetupProfileController setupProfileController= Get.put(SetupProfileController());
+  final SetupProfileController setupProfileController = Get.put(
+    SetupProfileController(),
+  );
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -21,7 +24,10 @@ class SetUpProfileScreen1 extends StatelessWidget {
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:CustomRoyelAppbar(leftIcon: true,titleName: "Personal Information",),
+        appBar: CustomRoyelAppbar(
+          leftIcon: true,
+          titleName: "Personal Information",
+        ),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Form(
@@ -30,7 +36,12 @@ class SetUpProfileScreen1 extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20.h),
-                const CustomText(text: "Step 1 of 6", fontSize: 14, color: Color(0xFF1E3A8A), fontWeight: FontWeight.w600),
+                const CustomText(
+                  text: "Step 1 of 6",
+                  fontSize: 14,
+                  color: Color(0xFF1E3A8A),
+                  fontWeight: FontWeight.w600,
+                ),
                 SizedBox(height: 8.h),
                 LinearProgressIndicator(
                   value: 0.16,
@@ -46,7 +57,13 @@ class SetUpProfileScreen1 extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16.r),
-                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10, offset: const Offset(0, 4))],
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,46 +74,106 @@ class SetUpProfileScreen1 extends StatelessWidget {
                         title: "Nationality",
                         titleColor: Colors.black,
                         hintText: "Enter your nationality",
-                        controller: setupProfileController.nationalityController.value,
+                        controller:
+                            setupProfileController.nationalityController.value,
                         fieldBorderColor: Colors.grey.shade300,
                         inputTextColor: Colors.black,
                         curserColor: AppColors.primary,
                         fillBorderRadius: 12,
-                        validator: (value) => setupProfileController.validateName(setupProfileController.nationalityController.value.text),                      ),
+                        validator: (value) =>
+                            setupProfileController.validateName(
+                              setupProfileController
+                                  .nationalityController
+                                  .value
+                                  .text,
+                            ),
+                      ),
                       //
-                      CustomText(text: "Language Proficiency", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
-                      Obx(() => _buildDropdown(
-                        hint: "Select your language Proficiency",
-                        value: setupProfileController.selectedEnglishProficiency.value.isEmpty ? null : setupProfileController.selectedEnglishProficiency.value,
-                        items: setupProfileController.englishProficiencyRanges,
-                        onChanged: (val) => setupProfileController.selectedEnglishProficiency.value = val!,
-                      )),
+                      CustomText(
+                        text: "Language Proficiency",
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        bottom: 10,
+                        top: 20,
+                      ),
+                      Obx(
+                        () => _buildDropdown(
+                          hint: "Select your language Proficiency",
+                          value:
+                              setupProfileController
+                                  .selectedEnglishProficiency
+                                  .value
+                                  .isEmpty
+                              ? null
+                              : setupProfileController
+                                    .selectedEnglishProficiency
+                                    .value,
+                          items:
+                              setupProfileController.englishProficiencyRanges,
+                          onChanged: (val) =>
+                              setupProfileController
+                                      .selectedEnglishProficiency
+                                      .value =
+                                  val!,
+                        ),
+                      ),
                       SizedBox(height: 15.h),
-                      //IeltsScore
-                      CustomFormCard(
-                        title: "Ielts Score",
-                        titleColor: Colors.black,
-                        hintText: "Enter your ieltsScore(0-9)",
-                        controller: setupProfileController.selectedIeltsScore.value,
-                        fieldBorderColor: Colors.grey.shade300,
-                        inputTextColor: Colors.black,
-                        curserColor: AppColors.primary,
-                        fillBorderRadius: 12,
-                        validator: (value) =>setupProfileController.validateIeltsScore(value ?? ""),                      ),
-                    //  CustomText(text: "Toefl Score", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
-                      //toeflScore
-                      CustomFormCard(
-                        title: "Toefl Score",
-                        titleColor: Colors.black,
-                        hintText: "Enter your toeflScore(0-120)",
-                        controller: setupProfileController.selectedToeflScore.value,
-                        fieldBorderColor: Colors.grey.shade300,
-                        inputTextColor: Colors.black,
-                        curserColor: AppColors.primary,
-                        fillBorderRadius: 12,
-                        validator: (value) => setupProfileController.validateToeflScore(value ?? ""
-                        ),                        ),
 
+                      //IeltsScore
+                      Row(
+                        children: [
+                          CustomText(
+                            text: "Ielts Score (Optional)",
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                            bottom: 10,
+                          ),
+                          _buildHelpIcon(
+                            "IELTS (International English Language Testing System) measures your English proficiency for study, work, or migration."
+                          ),
+                        ],
+                      ),
+                      CustomTextField(
+                        textEditingController: setupProfileController.selectedIeltsScore.value,
+                        hintText: "Enter your ieltsScore(0-9)",
+                        hintStyle: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade600,
+                        ),
+                        fillColor: Colors.white,
+                        fieldBorderColor: Colors.grey.shade300,
+                        
+                      ),
+                      SizedBox(height: 15.h),
+                      //toeflScore
+                      Row(
+                        children: [
+                          CustomText(
+                            text: "Toefl Score (Optional)",
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16.sp,
+                            bottom: 10,
+                          ),
+                          _buildHelpIcon(
+                            "TOEFL (Test of English as a Foreign Language) measures your English proficiency at a university level."
+                          ),
+                        ],
+                      ),
+                      CustomTextField(
+                        textEditingController: setupProfileController.selectedToeflScore.value,
+                        hintText:"Enter your toeflScore(0-120)",
+                        hintStyle: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey.shade600,
+                        ),
+                        fillColor: Colors.white,
+                        fieldBorderColor: Colors.grey.shade300,
+                        
+                      ),
                     ],
                   ),
                 ),
@@ -106,7 +183,9 @@ class SetUpProfileScreen1 extends StatelessWidget {
                 CustomButton(
                   onTap: () {
                     if (formKey.currentState!.validate()) {
-                      debugPrint("Name: ${setupProfileController.nationalityController.value.text}, englishProficiency: ${setupProfileController.selectedEnglishProficiency.value}");
+                      debugPrint(
+                        "Name: ${setupProfileController.nationalityController.value.text}, englishProficiency: ${setupProfileController.selectedEnglishProficiency.value}",
+                      );
                       Get.to(SetUpProfileScreen2());
                     }
                   },
@@ -124,7 +203,43 @@ class SetUpProfileScreen1 extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({required String hint, String? value, required List<String> items, required Function(String?) onChanged}) {
+  Widget _buildHelpIcon(String description) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10.h),
+      child: PopupMenuButton<String>(
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          Icons.help_outline,
+          color: Colors.red,
+          size: 18.sp,
+        ),
+        offset: const Offset(0, 30),
+        itemBuilder: (BuildContext context) => [
+          PopupMenuItem(
+            enabled: false,
+            child: SizedBox(
+              width: 250.w,
+              child: Text(
+                description,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdown({
+    required String hint,
+    String? value,
+    required List<String> items,
+    required Function(String?) onChanged,
+  }) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
@@ -137,7 +252,9 @@ class SetUpProfileScreen1 extends StatelessWidget {
           isExpanded: true,
           hint: CustomText(text: hint, color: Colors.grey, fontSize: 14),
           icon: const Icon(Icons.keyboard_arrow_down),
-          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          items: items
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
           onChanged: onChanged,
         ),
       ),

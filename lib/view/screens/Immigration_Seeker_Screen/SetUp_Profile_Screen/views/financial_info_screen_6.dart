@@ -131,83 +131,99 @@ class SetUpProfileScreen6 extends StatelessWidget {
                   SizedBox(height: 25.h),
 
                   // 3. Pet Details Section (Title)
-                  const CustomText(
-                    text: "Pet Details",
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    bottom: 15,
-                  ),
+                  Obx(() {
+                    bool isEnabled = controller.isTravelingWithPets.value;
+                    return IgnorePointer(
+                      ignoring: !isEnabled,
+                      child: Opacity(
+                        opacity: isEnabled ? 1.0 : 0.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CustomText(
+                              text: "Pet Details",
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              bottom: 15,
+                            ),
 
-                  // 4. Type of Pets Dropdown
-                  const CustomText(
-                    text: "Type of Pets",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                    bottom: 8,
-                  ),
-                  Obx(() => _buildDropdown(
-                    hint: "Select pet type",
-                    value: controller.selectedPetType.value,
-                    items: controller.petTypes,
-                    onChanged: (val) {
-                      controller.selectedPetType.value = val;
-                    },
-                  )),
-                  SizedBox(height: 20.h),
+                            // 4. Type of Pets Dropdown
+                            const CustomText(
+                              text: "Type of Pets",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                              bottom: 8,
+                            ),
+                            _buildDropdown(
+                              hint: "Select pet type",
+                              value: controller.selectedPetType.value,
+                              items: controller.petTypes,
+                              onChanged: (val) {
+                                controller.selectedPetType.value = val;
+                              },
+                            ),
+                            SizedBox(height: 20.h),
 
-                  // 5. Number of Pets Counter
-                  const CustomText(
-                    text: "Number of Pets",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                    bottom: 10,
-                  ),
-                  Row(
-                    children: [
-                      _buildCounterButton(
-                        icon: Icons.remove,
-                        onTap: controller.decrementPets,
-                        color: Colors.grey.shade200,
-                        iconColor: Colors.black,
+                            // 5. Number of Pets Counter
+                            const CustomText(
+                              text: "Number of Pets",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                              bottom: 10,
+                            ),
+                            Row(
+                              children: [
+                                _buildCounterButton(
+                                  icon: Icons.remove,
+                                  onTap: controller.decrementPets,
+                                  color: Colors.grey.shade200,
+                                  iconColor: Colors.black,
+                                ),
+                                SizedBox(width: 20.w),
+                                CustomText(
+                                  text: "${controller.numberOfPets.value}",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                                SizedBox(width: 20.w),
+                                _buildCounterButton(
+                                  icon: Icons.add,
+                                  onTap: controller.incrementPets,
+                                  color: AppColors.yellow1,
+                                  iconColor: Colors.white,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+
+                            // 6. Additional Details
+                            const CustomText(
+                              text: "Additional Details",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                              bottom: 8,
+                            ),
+                            CustomTextField(
+                              hintText:
+                                  "Tell us about your pets (breed, age, size, etc.)...",
+                              textEditingController:
+                                  controller.petDetailsController,
+                              maxLines: 4,
+                              fieldBorderColor: Colors.grey.shade300,
+                              fillColor: Colors.white,
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              fieldBorderRadius: 12,
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(width: 20.w),
-                      Obx(() => CustomText(
-                        text: "${controller.numberOfPets.value}",
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      )),
-                      SizedBox(width: 20.w),
-                      _buildCounterButton(
-                        icon: Icons.add,
-                        onTap: controller.incrementPets,
-                        color: AppColors.yellow1,
-                        iconColor: Colors.white,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20.h),
-
-                  // 6. Additional Details
-                  const CustomText(
-                    text: "Additional Details",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
-                    bottom: 8,
-                  ),
-                  CustomTextField(
-                    hintText: "Tell us about your pets (breed, age, size, etc.)...",
-                    textEditingController: controller.petDetailsController,
-                    maxLines: 4,
-                    fieldBorderColor: Colors.grey.shade300,
-                    fillColor: Colors.white,
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    fieldBorderRadius: 12,
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),

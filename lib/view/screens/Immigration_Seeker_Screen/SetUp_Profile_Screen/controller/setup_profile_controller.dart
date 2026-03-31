@@ -145,7 +145,7 @@ class SetupProfileController extends GetxController {
   }
 
   // ================= Step 4: Criminal History Variables =================
-  var hasCriminalHistory = "".obs;
+  var hasCriminalHistory = "No".obs;
   var hasCriminalHistoryResolved = "".obs;
   var selectedSeverity = "".obs;
   final List<String> severityRanges = ["minor","moderate", "serious",];
@@ -237,8 +237,8 @@ class SetupProfileController extends GetxController {
         "toeflScore": int.tryParse(selectedToeflScore.value.text) ?? 0,
         "criminalHistory": {
           "hasRecord": hasCriminalHistory.value == "Yes",
-          "severity": selectedSeverity.value,
-          "resolved": hasCriminalHistoryResolved.value == "Yes",
+          "severity": hasCriminalHistory.value == "Yes" ? selectedSeverity.value : null,
+          "resolved": hasCriminalHistory.value == "Yes" ? (hasCriminalHistoryResolved.value == "Yes") : null,
         },
         "currentOccupation": currentOccupation.value ?? "",
         "remoteWorkStatus": remoteWorkStatus.value == "Yes",
@@ -252,9 +252,9 @@ class SetupProfileController extends GetxController {
         "hasBusinessExperience": hasBusinessExperience.value,
         "internationalAchievements": selectedAchievements,
         "travelingWithPets": isTravelingWithPets.value,
-        "petType": selectedPetType.value ?? "",
-        "numberOfPets": numberOfPets.value,
-        "petDetails": petDetailsController.text,
+        "petType": isTravelingWithPets.value ? selectedPetType.value : null,
+        "numberOfPets": isTravelingWithPets.value ? numberOfPets.value : null,
+        "petDetails": isTravelingWithPets.value ? petDetailsController.text : null,
       };
 
       final response = await ApiClient.postData(ApiUrl.setupUserProfile, jsonEncode(body),);

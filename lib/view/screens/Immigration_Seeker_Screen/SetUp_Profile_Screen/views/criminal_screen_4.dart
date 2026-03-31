@@ -129,53 +129,83 @@ class SetUpProfileScreen4 extends StatelessWidget {
                     ],
                   )),
                   SizedBox(height: 20.h),
-                  CustomText(text: "Severity", color: Colors.black, fontWeight: FontWeight.w500, bottom: 10,top: 20,),
-                  Obx(() => _buildDropdown(
-                    hint: "Select your Severity",
-                    value: controller.selectedSeverity.value.isEmpty ? null : controller.selectedSeverity.value,
-                    items: controller.severityRanges,
-                    onChanged: (val) => controller.selectedSeverity.value = val!,
-                  )),
-                  SizedBox(height: 15.h),
-                  //hasCriminalHistoryResolved
-                  Row(
-                    children: [
-                      const CustomText(
-                        text: "Has your criminal history been resolved? ",
-                        fontSize: 14,color: Colors.black, fontWeight: FontWeight.w500,
-                      ),
-                      const CustomText(
-                        text: "*",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15.h),
+                  Obx(() {
+                    bool isEnabled = controller.hasCriminalHistory.value == "Yes";
+                    return IgnorePointer(
+                      ignoring: !isEnabled,
+                      child: Opacity(
+                        opacity: isEnabled ? 1.0 : 0.5,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Severity",
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              bottom: 10,
+                              top: 20,
+                            ),
+                            _buildDropdown(
+                              hint: "Select your Severity",
+                              value:
+                                  controller.selectedSeverity.value.isEmpty
+                                      ? null
+                                      : controller.selectedSeverity.value,
+                              items: controller.severityRanges,
+                              onChanged: (val) =>
+                                  controller.selectedSeverity.value = val!,
+                            ),
+                            SizedBox(height: 15.h),
+                            //hasCriminalHistoryResolved
+                            Row(
+                              children: [
+                                const CustomText(
+                                  text: "Has your criminal history been resolved? ",
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                const CustomText(
+                                  text: "*",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.red,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
 
-                  // 4. Yes/No Selection Cards
-                  Obx(() => Row(
-                    children: [
-                      Expanded(
-                        child: _buildSelectionCard(
-                          title: "Yes",
-                          value: "Yes",
-                          groupValue: controller.hasCriminalHistoryResolved.value,
-                          onChanged: (val) => controller.hasCriminalHistoryResolved.value = val,
+                            // 4. Yes/No Selection Cards
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildSelectionCard(
+                                    title: "Yes",
+                                    value: "Yes",
+                                    groupValue:
+                                        controller.hasCriminalHistoryResolved.value,
+                                    onChanged: (val) =>
+                                        controller.hasCriminalHistoryResolved.value = val,
+                                  ),
+                                ),
+                                SizedBox(width: 15.w),
+                                Expanded(
+                                  child: _buildSelectionCard(
+                                    title: "No",
+                                    value: "No",
+                                    groupValue:
+                                        controller.hasCriminalHistoryResolved.value,
+                                    onChanged: (val) =>
+                                        controller.hasCriminalHistoryResolved.value = val,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 15.w),
-                      Expanded(
-                        child: _buildSelectionCard(
-                          title: "No",
-                          value: "No",
-                          groupValue: controller.hasCriminalHistoryResolved.value,
-                          onChanged: (val) => controller.hasCriminalHistoryResolved.value = val,
-                        ),
-                      ),
-                    ],
-                  )),
+                    );
+                  }),
                   SizedBox(height: 15.h),
 
                   // 5. Grey Lock/Security Box
