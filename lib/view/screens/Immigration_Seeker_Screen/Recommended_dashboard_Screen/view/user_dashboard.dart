@@ -180,8 +180,7 @@ class UserDashboard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10,),
                   child: Obx(() {
                     // TAB - 00
-                    if (userDashboardController.selectedDashboardTab.value == 0)      {
-                      //Eligibility Results
+                    if (userDashboardController.selectedDashboardTab.value == 0){
                       return Obx(() {
                         if (controller.rxRecommendedStatus.value == Status.loading && controller.recommendedCountries.isEmpty) {
                           return const Center(child: CustomLoader());
@@ -344,7 +343,7 @@ class UserDashboard extends StatelessWidget {
                               children: [
 
                                 CustomText(
-                                  text: "Booked Consultations",
+                                  text: "Market Place",
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.primary1,

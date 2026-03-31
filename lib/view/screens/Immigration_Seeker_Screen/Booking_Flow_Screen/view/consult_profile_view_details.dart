@@ -11,6 +11,7 @@ import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../message_screen/view/inbox_screen.dart';
 import '../controller/booking_flow_controller.dart';
 import '../widget/custom_detais_profile_card.dart';
 import '../widget/custom_fees_card.dart';
@@ -18,7 +19,9 @@ import '../widget/custom_time_card.dart';
 
 class ConsultProfileViewDetails extends StatelessWidget {
   ConsultProfileViewDetails({super.key});
-  final BookingFlowController bookingFlowController = Get.put(BookingFlowController());
+  final BookingFlowController bookingFlowController = Get.put(
+    BookingFlowController(),
+  );
   final String consultantId = Get.arguments;
 
   @override
@@ -29,9 +32,11 @@ class ConsultProfileViewDetails extends StatelessWidget {
     return CustomGradient(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar:CustomRoyelAppbar(leftIcon: true,titleName: "Consultant Profile"),
+        appBar: CustomRoyelAppbar(
+          leftIcon: true,
+          titleName: "Consultant Profile",
+        ),
         body: Obx(() {
-
           if (bookingFlowController.isSingleConsultantLoading.value) {
             return const Center(child: CustomLoader());
           }
@@ -50,7 +55,9 @@ class ConsultProfileViewDetails extends StatelessWidget {
                 children: [
                   //Now Static
                   CustomDetailsProfileCard(
-                    imageUrl: consultant.userId?.avatar?.isNotEmpty == true ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
+                    imageUrl: consultant.userId?.avatar?.isNotEmpty == true
+                        ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}"
+                        : AppConstants.profileImage,
                     name: consultant.userId?.fullname ?? "",
                     title: consultant.jobTitle ?? "",
                     rating: consultant.averageRating ?? 0.0,
@@ -82,7 +89,8 @@ class ConsultProfileViewDetails extends StatelessWidget {
                   ),
                   Column(
                     children: List.generate(
-                      consultant.consultationFormats?.length ?? 0, (index) {
+                      consultant.consultationFormats?.length ?? 0,
+                      (index) {
                         final format = consultant.consultationFormats![index];
                         int price = 0;
 
@@ -110,7 +118,7 @@ class ConsultProfileViewDetails extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    // selected date and change date
+                      // selected date and change date
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -123,12 +131,12 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                           TextButton.icon(
                             onPressed: () async {
-
                               DateTime now = DateTime.now();
 
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                initialDate: bookingFlowController.selectedDate.value,
+                                initialDate:
+                                    bookingFlowController.selectedDate.value,
                                 firstDate: now,
                                 lastDate: DateTime(now.year + 5),
                               );
@@ -154,8 +162,12 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                       // Today DATE or Selected Date
                       Obx(() {
-                        final date = bookingFlowController.selectedDate.value ?? DateTime.now();
-                        final formattedDate = DateFormat('EEEE, MMMM dd, yyyy').format(date);
+                        final date =
+                            bookingFlowController.selectedDate.value ??
+                            DateTime.now();
+                        final formattedDate = DateFormat(
+                          'EEEE, MMMM dd, yyyy',
+                        ).format(date);
 
                         return Center(
                           child: CustomText(
@@ -171,9 +183,10 @@ class ConsultProfileViewDetails extends StatelessWidget {
 
                       ///============ TIME SLOTS
                       Obx(() {
-                        final bool isAvailable = bookingFlowController.isAvailableOnSelectedDay(
-                            consultant.availability?.recurringDays
-                        );
+                        final bool isAvailable = bookingFlowController
+                            .isAvailableOnSelectedDay(
+                              consultant.availability?.recurringDays,
+                            );
 
                         if (!isAvailable) {
                           return Container(
@@ -185,10 +198,15 @@ class ConsultProfileViewDetails extends StatelessWidget {
                             ),
                             child: Column(
                               children: [
-                                Icon(Icons.event_busy, color: Colors.red.shade400, size: 30),
+                                Icon(
+                                  Icons.event_busy,
+                                  color: Colors.red.shade400,
+                                  size: 30,
+                                ),
                                 SizedBox(height: 8.h),
                                 CustomText(
-                                  text: "Not available on ${DateFormat('EEEE').format(bookingFlowController.selectedDate.value!)}",
+                                  text:
+                                      "Not available on ${DateFormat('EEEE').format(bookingFlowController.selectedDate.value!)}",
                                   color: Colors.red.shade700,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -200,20 +218,31 @@ class ConsultProfileViewDetails extends StatelessWidget {
                         return GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 3,
-                          ),
-                          itemCount: consultant.availability?.preferredTimeSlots?.length ?? 0,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 3,
+                              ),
+                          itemCount:
+                              consultant
+                                  .availability
+                                  ?.preferredTimeSlots
+                                  ?.length ??
+                              0,
                           itemBuilder: (context, index) {
-                            final slot = consultant.availability!.preferredTimeSlots![index];
+                            final slot = consultant
+                                .availability!
+                                .preferredTimeSlots![index];
 
                             return Obx(() {
-                              final isSelected = bookingFlowController.selectedTimes.contains(slot);
+                              final isSelected = bookingFlowController
+                                  .selectedTimes
+                                  .contains(slot);
                               return CustomTimeCard(
-                                onTap: () => bookingFlowController.toggleTime(slot),
+                                onTap: () =>
+                                    bookingFlowController.toggleTime(slot),
                                 time: slot,
                                 isSelected: isSelected,
                                 isAvailable: true,
@@ -221,7 +250,7 @@ class ConsultProfileViewDetails extends StatelessWidget {
                             });
                           },
                         );
-                      })
+                      }),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -230,7 +259,6 @@ class ConsultProfileViewDetails extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       const CustomText(
                         text: "About",
                         fontSize: 16,
@@ -255,25 +283,55 @@ class ConsultProfileViewDetails extends StatelessWidget {
           );
         }),
 
-        bottomNavigationBar: Obx(() {
-          final consultant = bookingFlowController.singleConsultant.value;
-          if (bookingFlowController.isSingleConsultantLoading.value || consultant == null) {
-            return const SizedBox.shrink();
-          }
+        bottomNavigationBar: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              //chat
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ),
+                child: CustomButton(
+                  onTap: () {
+                    Get.to(InboxScreen());
+                  },
+                  title: "Chat",
+                  textColor: AppColors.white,
+                  fillColor: AppColors.primary1,
+                ),
+              ),
+              //Book Now
+              Obx(() {
+                final consultant = bookingFlowController.singleConsultant.value;
+                if (bookingFlowController.isSingleConsultantLoading.value ||
+                    consultant == null) {
+                  return const SizedBox.shrink();
+                }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: CustomButton(
-              onTap: () {
-                Get.toNamed(AppRoutes.consultBookScreen, arguments: consultant.id,);
-              },
-              title: "Book Now",
-              textColor: AppColors.white,
-            ),
-          );
-        }),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 5,
+                  ),
+                  child: CustomButton(
+                    onTap: () {
+                      Get.toNamed(
+                        AppRoutes.consultBookScreen,
+                        arguments: consultant.id,
+                      );
+                    },
+                    title: "Book Now",
+                    textColor: AppColors.white,
+                  ),
+                );
+              }),
+              SizedBox(height: 10.h),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
-
