@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
 
 class CustomVisaCard extends StatelessWidget {
   final String title;
@@ -17,9 +18,11 @@ class CustomVisaCard extends StatelessWidget {
     required this.title,
     required this.duration,
     required this.description,
-    this.icon = Icons.work,
-     this.onTap, required this.type,  this.typeColor,
-     this.typeTextColor,
+    this.icon = Icons.work_rounded,
+    this.onTap,
+    required this.type,
+    this.typeColor,
+    this.typeTextColor,
   });
 
   @override
@@ -35,83 +38,120 @@ class CustomVisaCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
+              blurRadius: 12,
               offset: const Offset(0, 4),
             ),
           ],
-          border: Border.all(color: Colors.grey.withOpacity(0.1)),
+          border: Border.all(color: Colors.grey.withOpacity(0.08)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // 1. Icon & Popular Tag Row
+            // Row 1: Icon + tag + arrow
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Icon Box
+                // Icon box
                 Container(
-                  height: 45.h,
-                  width: 45.w,
+                  height: 46.w,
+                  width: 46.w,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE8EAF6),
-                    borderRadius: BorderRadius.circular(12.r),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.primary1.withOpacity(0.12),
+                        AppColors.primary1.withOpacity(0.06),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(13.r),
                   ),
                   child: Icon(
                     icon,
-                    color: const Color(0xFF1A237E),
-                    size: 24.sp,
+                    color: AppColors.primary1,
+                    size: 22.sp,
+                  ),
+                ),
+                SizedBox(width: 12.w),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: title,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black,
+                        textAlign: TextAlign.start,
+                      ),
+                      if (duration.isNotEmpty) ...[
+                        SizedBox(height: 3.h),
+                        Row(
+                          children: [
+                            Icon(Icons.schedule_rounded,
+                                color: Colors.grey[400], size: 13.sp),
+                            SizedBox(width: 4.w),
+                            CustomText(
+                              text: duration,
+                              fontSize: 12,
+                              color: Colors.grey[500]!,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
                   ),
                 ),
 
+                // Arrow
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  width: 32.w,
+                  height: 32.w,
                   decoration: BoxDecoration(
-                    color: typeColor,
-                    borderRadius: BorderRadius.circular(20.r),
+                    color: const Color(0xFFF0F4FF),
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: CustomText(
-                    text: type,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: typeTextColor ?? Colors.black,
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: AppColors.primary1,
+                    size: 14.sp,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
 
-            // 2. Title
-            CustomText(
-              text: title,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 12.h),
 
-            // 3. Description
+            // Description
             CustomText(
               text: description,
-              fontSize: 14,
-              color: Colors.grey[600]!,
+              fontSize: 13,
+              color: const Color(0xFF6B7280),
               textAlign: TextAlign.start,
-              maxLines: 10,
+              maxLines: 3,
               fontWeight: FontWeight.w400,
             ),
-            SizedBox(height: 20.h),
 
-            // 4. duration
-            CustomText(
-              text: duration,
-              fontSize: 14,
-              color: Colors.grey[600]!,
-              textAlign: TextAlign.start,
-              maxLines: 10,
-              fontWeight: FontWeight.w400,
-            ),
+            SizedBox(height: 12.h),
+
+            // Bottom: tag chip
+            if (type.isNotEmpty)
+              Container(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  color: typeColor ?? const Color(0xFFE8EAF6),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: CustomText(
+                  text: type,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: typeTextColor ?? AppColors.primary,
+                ),
+              ),
           ],
         ),
       ),

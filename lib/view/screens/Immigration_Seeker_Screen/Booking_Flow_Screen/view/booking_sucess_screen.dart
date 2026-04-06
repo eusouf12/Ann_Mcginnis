@@ -7,7 +7,6 @@ import 'package:ann_mcginnis/view/components/custom_royel_appbar/custom_royel_ap
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -30,6 +29,7 @@ class BookingConfirmedScreen extends StatelessWidget {
     final double originalPrice = double.tryParse(args['consultationPrice'].toString()) ?? 0.0;
     final String currencySymbol = args['currency'] ?? "";
     final double discountRate = double.tryParse(args['discount'].toString()) ?? 0.0;
+    // ignore: unused_local_variable
     final experience = args['experience'];
     double discountAmount = (originalPrice * discountRate) / 100;
     double totalToPay = originalPrice - discountAmount;

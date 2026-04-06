@@ -11,6 +11,7 @@ import '../../../components/custom_text/custom_text.dart';
 import 'package:ann_mcginnis/service/api_url.dart';
 import 'controller/user_profile_controller.dart';
 
+// ignore: must_be_immutable
 class UserProfileScreen extends StatelessWidget {
   UserProfileScreen({super.key});
 

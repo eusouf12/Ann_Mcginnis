@@ -1,5 +1,5 @@
 class ApiUrl {
-  // static const String baseUrl = "https://global-jump-backend.onrender.com/api/v1";
+  //static const String baseUrl = "https://global-jump-backend.onrender.com/api/v1";
   static const String baseUrl = "http://10.0.2.2:8080/api/v1";
   //static const String baseUrl = "https://womens-jennifer-procedure-cars.trycloudflare.com";
   static const String imageUrl = "http://10.0.2.2:8080";
