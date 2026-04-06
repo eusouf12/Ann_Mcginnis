@@ -24,9 +24,15 @@ import '../widget/my_bookin_consultant.dart';
 
 class UserDashboard extends StatelessWidget {
   UserDashboard({super.key});
-  final UserDashboardController userDashboardController = Get.put(UserDashboardController());
-  final UserProfileController userProfileController = Get.put(UserProfileController(),);
-  final RecommendedCountriesController controller = Get.put(RecommendedCountriesController());
+  final UserDashboardController userDashboardController = Get.put(
+    UserDashboardController(),
+  );
+  final UserProfileController userProfileController = Get.put(
+    UserProfileController(),
+  );
+  final RecommendedCountriesController controller = Get.put(
+    RecommendedCountriesController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +52,19 @@ class UserDashboard extends StatelessWidget {
           automaticallyImplyLeading: false,
           title: Row(
             children: [
-              CustomImage(imageSrc: AppImages.logoApp, height: 28.h, width: 28.w,),
+              CustomImage(
+                imageSrc: AppImages.logoApp,
+                height: 28.h,
+                width: 28.w,
+              ),
               SizedBox(width: 8.w),
-              CustomText(text: "Global Jump", fontSize: 18.sp, fontWeight: FontWeight.bold, color: AppColors.primary, textAlign: TextAlign.start,),
+              CustomText(
+                text: "Global Jump",
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+                textAlign: TextAlign.start,
+              ),
             ],
           ),
           actions: [
@@ -102,7 +118,10 @@ class UserDashboard extends StatelessWidget {
             Obx(() {
               final user = userProfileController.userData.value;
 
-              String imageUrl = (user?.avatar != null && user!.avatar!.isNotEmpty)? ApiUrl.imageUrl + user.avatar! : AppConstants.profileImage2;
+              String imageUrl =
+                  (user?.avatar != null && user!.avatar!.isNotEmpty)
+                  ? ApiUrl.imageUrl + user.avatar!
+                  : AppConstants.profileImage2;
 
               return GestureDetector(
                 onTap: () {
@@ -141,35 +160,54 @@ class UserDashboard extends StatelessWidget {
               // toggle tab
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Obx(() => Container(
-                    padding: EdgeInsets.only(top: 20.h, left: 10.h, right: 10.h),
+                child: Obx(
+                  () => Container(
+                    padding: EdgeInsets.only(
+                      top: 20.h,
+                      left: 10.h,
+                      right: 10.h,
+                    ),
                     decoration: BoxDecoration(color: AppColors.primary1),
                     child: Row(
-                      children: List.generate(userDashboardController.tabs.length, (index) {
-                        bool isSelected = userDashboardController.selectedDashboardTab.value == index;
-                        return GestureDetector(
-                          onTap: () => userDashboardController.changeTab(index),
-                          child: Container(
-                            padding: EdgeInsets.only(bottom: 20.h, right: 10.w, left: 10.w,),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: isSelected
-                                      ? AppColors.yellow1
-                                      : Colors.transparent,
-                                  width: 4.h,
+                      children: List.generate(
+                        userDashboardController.tabs.length,
+                        (index) {
+                          bool isSelected =
+                              userDashboardController
+                                  .selectedDashboardTab
+                                  .value ==
+                              index;
+                          return GestureDetector(
+                            onTap: () =>
+                                userDashboardController.changeTab(index),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                bottom: 20.h,
+                                right: 10.w,
+                                left: 10.w,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: isSelected
+                                        ? AppColors.yellow1
+                                        : Colors.transparent,
+                                    width: 4.h,
+                                  ),
                                 ),
                               ),
+                              child: CustomText(
+                                text: userDashboardController.tabs[index],
+                                fontSize: 14,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
+                                color: Colors.white,
+                              ),
                             ),
-                            child: CustomText(
-                              text: userDashboardController.tabs[index],
-                              fontSize: 14,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -177,26 +215,48 @@ class UserDashboard extends StatelessWidget {
               SizedBox(height: 20.h),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10,),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
                   child: Obx(() {
                     // TAB - 00
-                    if (userDashboardController.selectedDashboardTab.value == 0){
+                    if (userDashboardController.selectedDashboardTab.value ==
+                        0) {
                       return Obx(() {
-                        if (controller.rxRecommendedStatus.value == Status.loading && controller.recommendedCountries.isEmpty) {
+                        if (controller.rxRecommendedStatus.value ==
+                                Status.loading &&
+                            controller.recommendedCountries.isEmpty) {
                           return const Center(child: CustomLoader());
                         }
 
                         if (controller.recommendedCountries.isEmpty) {
-                          return const Center(child: CustomText(text: "No countries found", fontSize: 16));
+                          return const Center(
+                            child: CustomText(
+                              text: "No countries found",
+                              fontSize: 16,
+                            ),
+                          );
                         }
-                        final topCountry = controller.recommendedCountries.first;
-                        final otherCountries = controller.recommendedCountries.skip(1).toList();
-                        debugPrint("Full Image Path 2222: ${ApiUrl.imageUrl}${topCountry.flagUrl}");
+                        final topCountry =
+                            controller.recommendedCountries.first;
+                        final otherCountries = controller.recommendedCountries
+                            .skip(1)
+                            .toList();
+                        debugPrint(
+                          "Full Image Path 2222: ${ApiUrl.imageUrl}${topCountry.flagUrl}",
+                        );
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-                            if (!controller.isRecommendedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && controller.recommendedCurrentPage < controller.recommendedTotalPages) {
-                              controller.getRecommendedCountries(loadMore: true);
+                            if (!controller.isRecommendedLoadMore.value &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                controller.recommendedCurrentPage <
+                                    controller.recommendedTotalPages) {
+                              controller.getRecommendedCountries(
+                                loadMore: true,
+                              );
                             }
                             return true;
                           },
@@ -205,14 +265,22 @@ class UserDashboard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(text: "Eligibility Results", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1),
+                                CustomText(
+                                  text: "Eligibility Results",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
+                                ),
                                 SizedBox(height: 20.h),
 
                                 // --- TOP MATCH CARD ---
                                 Container(
                                   padding: EdgeInsets.symmetric(vertical: 10.h),
                                   decoration: BoxDecoration(
-                                    border: Border.all(color: AppColors.primary1, width: 2),
+                                    border: Border.all(
+                                      color: AppColors.primary1,
+                                      width: 2,
+                                    ),
                                     borderRadius: BorderRadius.circular(10),
                                     color: const Color(0xFFDBEAFE),
                                   ),
@@ -223,57 +291,111 @@ class UserDashboard extends StatelessWidget {
                                         Row(
                                           children: [
                                             //flag
-                                            CustomNetworkImage(imageUrl: "${ApiUrl.imageUrl}${topCountry.flagUrl}", height: 20, width: 40),
+                                            CustomNetworkImage(
+                                              imageUrl:
+                                                  "${ApiUrl.imageUrl}${topCountry.flagUrl}",
+                                              height: 20,
+                                              width: 40,
+                                            ),
                                             const SizedBox(width: 15),
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
-                                                  CustomText(text: topCountry.country ?? "Unknown", fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.primary1),
-                                                  CustomText(text:  "Top Match", fontSize: 14, color: AppColors.black),
+                                                  CustomText(
+                                                    text:
+                                                        topCountry.country ??
+                                                        "Unknown",
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.primary1,
+                                                  ),
+                                                  CustomText(
+                                                    text: "Top Match",
+                                                    fontSize: 14,
+                                                    color: AppColors.black,
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 12,
+                                                    vertical: 6,
+                                                  ),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(50),
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
                                                 color: AppColors.yellow1,
                                               ),
-                                              child: CustomText(text: "${topCountry.score}%", fontSize: 14, fontWeight: FontWeight.bold),
+                                              child: CustomText(
+                                                text: "${topCountry.score}%",
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(height: 20),
                                         // Progress Bar for Top Country text
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const CustomText(text: "Eligibility Score", fontSize: 14,color: AppColors.black,fontWeight: FontWeight.w600),
-                                            CustomText(text: "${topCountry.score}/100", fontSize: 14,color: AppColors.black,fontWeight: FontWeight.w600),
+                                            const CustomText(
+                                              text: "Eligibility Score",
+                                              fontSize: 14,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            CustomText(
+                                              text: "${topCountry.score}/100",
+                                              fontSize: 14,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(height: 10),
                                         // Progress Bar
                                         ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: LinearProgressIndicator(value: (topCountry.score ?? 0) / 100,
-                                            minHeight: 12, backgroundColor: AppColors.grey_1, color: AppColors.primary1,
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                          child: LinearProgressIndicator(
+                                            value:
+                                                (topCountry.score ?? 0) / 100,
+                                            minHeight: 12,
+                                            backgroundColor: AppColors.grey_1,
+                                            color: AppColors.primary1,
                                           ),
                                         ),
                                         const SizedBox(height: 20),
                                         CustomButton(
-                                            onTap: () {
-                                              Get.toNamed(AppRoutes.countryDetailsScreen, arguments: {"country": topCountry.country, "id": topCountry.id});
-                                            },
-                                            title: "View Details"
+                                          onTap: () {
+                                            Get.toNamed(
+                                              AppRoutes.countryDetailsScreen,
+                                              arguments: {
+                                                "country": topCountry.country,
+                                                "id": topCountry.id,
+                                              },
+                                            );
+                                          },
+                                          title: "View Details",
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 30),
-                                CustomText(text: "Other Recommendations", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1),
+                                CustomText(
+                                  text: "Other Recommendations",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
+                                ),
                                 const SizedBox(height: 20),
 
                                 // --- OTHER RECOMMENDATIONS LIST ---
@@ -284,20 +406,23 @@ class UserDashboard extends StatelessWidget {
                                   itemBuilder: (context, index) {
                                     final country = otherCountries[index];
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 12),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 12,
+                                      ),
                                       child: CustomCountryProgressCar(
                                         valueScore: "${country.score}",
                                         title: country.country ?? "",
-                                        subTitle: country.label ?? "Recommendation",
+                                        subTitle:
+                                            country.label ?? "Recommendation",
                                         img: country.flagUrl ?? "",
                                       ),
                                     );
                                   },
                                 ),
 
-
                                 if (controller.isRecommendedLoadMore.value)
-                                  const Padding(padding: EdgeInsets.symmetric(vertical: 20),
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Center(child: CustomLoader()),
                                   ),
                               ],
@@ -307,9 +432,11 @@ class UserDashboard extends StatelessWidget {
                       });
                     }
                     // TAB - 01
-                    else if (userDashboardController.selectedDashboardTab.value == 1) {
+                    else if (userDashboardController
+                            .selectedDashboardTab
+                            .value ==
+                        1) {
                       return Obx(() {
-
                         if (userDashboardController.isConsultantLoading.value &&
                             userDashboardController.consultantList.isEmpty) {
                           return const Center(child: CustomLoader());
@@ -329,9 +456,17 @@ class UserDashboard extends StatelessWidget {
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-
-                            if (!userDashboardController.isConsultantLoadMore.value && scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 200 && userDashboardController.consultantCurrentPage < userDashboardController.consultantTotalPages) {
-                              userDashboardController.getConsultants(loadMore: true);
+                            if (!userDashboardController
+                                    .isConsultantLoadMore
+                                    .value &&
+                                scrollInfo.metrics.pixels >=
+                                    scrollInfo.metrics.maxScrollExtent - 200 &&
+                                userDashboardController.consultantCurrentPage <
+                                    userDashboardController
+                                        .consultantTotalPages) {
+                              userDashboardController.getConsultants(
+                                loadMore: true,
+                              );
                             }
 
                             return false;
@@ -341,7 +476,6 @@ class UserDashboard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
                                 CustomText(
                                   text: "Market Place",
                                   fontSize: 20,
@@ -354,17 +488,30 @@ class UserDashboard extends StatelessWidget {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: userDashboardController.consultantList.length,
+                                  itemCount: userDashboardController
+                                      .consultantList
+                                      .length,
                                   itemBuilder: (context, index) {
-
-                                    final consultant = userDashboardController.consultantList[index];
+                                    final consultant = userDashboardController
+                                        .consultantList[index];
 
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 12),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 12,
+                                      ),
                                       child: BookConsultationCard(
-                                        title: consultant.userId?.fullname ?? "",
+                                        title:
+                                            consultant.userId?.fullname ?? "",
                                         subTitle: consultant.businessName ?? "",
-                                        img: (consultant.userId?.avatar != null && consultant.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
+                                        img:
+                                            (consultant.userId?.avatar !=
+                                                    null &&
+                                                consultant
+                                                    .userId!
+                                                    .avatar!
+                                                    .isNotEmpty)
+                                            ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}"
+                                            : AppConstants.profileImage,
                                         isBooked: false,
 
                                         onTapViewDetails: () {
@@ -385,14 +532,15 @@ class UserDashboard extends StatelessWidget {
                                   },
                                 ),
 
-                                if (userDashboardController.isConsultantLoadMore.value)
+                                if (userDashboardController
+                                    .isConsultantLoadMore
+                                    .value)
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Center(child: CustomLoader()),
                                   ),
 
                                 SizedBox(height: 20.h),
-
                               ],
                             ),
                           ),
@@ -402,8 +550,9 @@ class UserDashboard extends StatelessWidget {
                     // TAB - 02
                     else if (userDashboardController.selectedDashboardTab.value == 2) {
                       return Obx(() {
-
-                        if (userDashboardController.rxBookedStatus.value == Status.loading && userDashboardController.bookedConsultants.isEmpty) {
+                        if (userDashboardController.rxBookedStatus.value ==
+                                Status.loading &&
+                            userDashboardController.bookedConsultants.isEmpty) {
                           return const Center(child: CustomLoader());
                         }
 
@@ -421,9 +570,16 @@ class UserDashboard extends StatelessWidget {
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-
-                            if (!userDashboardController.isBookedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.bookedCurrentPage < userDashboardController.bookedTotalPages) {
-                              userDashboardController.getBookedConsultants(loadMore: true);
+                            if (!userDashboardController
+                                    .isBookedLoadMore
+                                    .value &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                userDashboardController.bookedCurrentPage <
+                                    userDashboardController.bookedTotalPages) {
+                              userDashboardController.getBookedConsultants(
+                                loadMore: true,
+                              );
                             }
 
                             return true;
@@ -433,20 +589,32 @@ class UserDashboard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(text: "Booked Consultations", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
+                                CustomText(
+                                  text: "Booked Consultations",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
+                                ),
                                 SizedBox(height: 20.h),
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: userDashboardController.bookedConsultants.length,
+                                  itemCount: userDashboardController
+                                      .bookedConsultants
+                                      .length,
                                   itemBuilder: (context, index) {
-                                    final booking = userDashboardController.bookedConsultants[index];
+                                    final booking = userDashboardController
+                                        .bookedConsultants[index];
                                     final consultant = booking.consultantId;
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 12),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 12,
+                                      ),
                                       child: MyBookinConsultant(
-                                        title: consultant?.userId?.fullname ?? "",
-                                        subTitle: consultant?.businessName ?? "",
+                                        title:
+                                            consultant?.userId?.fullname ?? "",
+                                        subTitle:
+                                            consultant?.businessName ?? "",
                                         date: booking.consultationDate,
                                         time: booking.consultationTime,
                                         discountRate: booking.discountRate,
@@ -454,9 +622,26 @@ class UserDashboard extends StatelessWidget {
                                         originalAmount: booking.originalAmount,
                                         amount: booking.amount,
                                         discountAmount: booking.discountAmount,
-                                        consultationType: booking.consultationType,
-                                        show: booking.bookingStatus == "completed" || booking.bookingStatus == "cancelled" || booking.bookingStatus == "ongoing" ? true : false,
-                                        img: (consultant?.userId?.avatar != null && consultant!.userId!.avatar!.isNotEmpty) ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}" : AppConstants.profileImage,
+                                        consultationType:
+                                            booking.consultationType,
+                                        show:
+                                            booking.bookingStatus ==
+                                                    "completed" ||
+                                                booking.bookingStatus ==
+                                                    "cancelled" ||
+                                                booking.bookingStatus ==
+                                                    "ongoing"
+                                            ? true
+                                            : false,
+                                        img:
+                                            (consultant?.userId?.avatar !=
+                                                    null &&
+                                                consultant!
+                                                    .userId!
+                                                    .avatar!
+                                                    .isNotEmpty)
+                                            ? "${ApiUrl.imageUrl}${consultant.userId?.avatar}"
+                                            : AppConstants.profileImage,
                                         status: booking.bookingStatus,
                                         onTapViewDetails: () {
                                           Get.toNamed(
@@ -475,7 +660,9 @@ class UserDashboard extends StatelessWidget {
                                   },
                                 ),
 
-                                if (userDashboardController.isBookedLoadMore.value)
+                                if (userDashboardController
+                                    .isBookedLoadMore
+                                    .value)
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Center(child: CustomLoader()),
@@ -491,24 +678,39 @@ class UserDashboard extends StatelessWidget {
                     // TAB - 03
                     else if (userDashboardController.selectedDashboardTab.value == 3) {
                       return Obx(() {
-
-                        if (userDashboardController.rxSavedCountryStatus.value == Status.loading && userDashboardController.savedCountryList.isEmpty) {
+                        if (userDashboardController.rxSavedCountryStatus
+                                    .value ==
+                                Status.loading &&
+                            userDashboardController.savedCountryList.isEmpty) {
                           return const Center(child: CustomLoader());
                         }
 
                         if (userDashboardController.savedCountryList.isEmpty) {
                           return const Center(
-                            child: Padding(padding: EdgeInsets.only(top: 50),
-                              child: CustomText(text: "No saved countries found", fontSize: 16,),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: CustomText(
+                                text: "No saved countries found",
+                                fontSize: 16,
+                              ),
                             ),
                           );
                         }
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-
-                            if (!userDashboardController.isSavedCountryLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.savedCountryCurrentPage < userDashboardController.savedCountryTotalPages) {
-                              userDashboardController.getSaveCountry(loadMore: true);
+                            if (!userDashboardController
+                                    .isSavedCountryLoadMore
+                                    .value &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                userDashboardController
+                                        .savedCountryCurrentPage <
+                                    userDashboardController
+                                        .savedCountryTotalPages) {
+                              userDashboardController.getSaveCountry(
+                                loadMore: true,
+                              );
                             }
 
                             return true;
@@ -518,31 +720,58 @@ class UserDashboard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CustomText(text: "Saved Countries", fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary1,),
+                                CustomText(
+                                  text: "Saved Countries",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary1,
+                                ),
                                 SizedBox(height: 10.h),
 
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: userDashboardController.savedCountryList.length,
+                                  itemCount: userDashboardController
+                                      .savedCountryList
+                                      .length,
                                   itemBuilder: (context, index) {
-                                    final country = userDashboardController.savedCountryList[index];
+                                    final country = userDashboardController
+                                        .savedCountryList[index];
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 10,
+                                      ),
                                       child: GestureDetector(
                                         onTap: () {
-                                          Get.toNamed(AppRoutes.countryDetailsScreen, arguments: {"country": country.country, "id": country.recommendationId?.id});
+                                          Get.toNamed(
+                                            AppRoutes.countryDetailsScreen,
+                                            arguments: {
+                                              "country": country.country,
+                                              "id":
+                                                  country.recommendationId?.id,
+                                            },
+                                          );
                                         },
                                         child: CountryVisaCard(
                                           title: country.country ?? "",
-                                          img: country.imageUrl != null ? "${ApiUrl.imageUrl}${country.flagUrl}" : "",
+                                          img: country.imageUrl != null
+                                              ? "${ApiUrl.imageUrl}${country.flagUrl}"
+                                              : "",
                                           subTitle: country.label ?? "",
-                                          description: "${country.visaTypes?.length ?? 0} visa options available",
+                                          description:
+                                              "${country.visaTypes?.length ?? 0} visa options available",
                                           matchPercent: "${country.score ?? 0}",
-                                          tagText: country.fastTrack == true ? "Fast Track" : (country.englishSpeaking == true ? "English Friendly" : "Standard"),
+                                          tagText: country.fastTrack == true
+                                              ? "Fast Track"
+                                              : (country.englishSpeaking == true
+                                                    ? "English Friendly"
+                                                    : "Standard"),
 
                                           onFavoriteTap: () {
-                                            userDashboardController.deleteSaveCountry(id: country.id ?? "",);
+                                            userDashboardController
+                                                .deleteSaveCountry(
+                                                  id: country.id ?? "",
+                                                );
                                           },
                                         ),
                                       ),
@@ -550,7 +779,9 @@ class UserDashboard extends StatelessWidget {
                                   },
                                 ),
 
-                                if (userDashboardController.isSavedCountryLoadMore.value)
+                                if (userDashboardController
+                                    .isSavedCountryLoadMore
+                                    .value)
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 20),
                                     child: Center(child: CustomLoader()),
@@ -564,10 +795,11 @@ class UserDashboard extends StatelessWidget {
                       });
                     }
                     //TAB-04
-                    else  {
+                    else {
                       return Obx(() {
-
-                        if (userDashboardController.rxBookedStatus.value == Status.loading && userDashboardController.bookedConsultants.isEmpty) {
+                        if (userDashboardController.rxBookedStatus.value ==
+                                Status.loading &&
+                            userDashboardController.bookedConsultants.isEmpty) {
                           return const Center(child: CustomLoader());
                         }
 
@@ -585,9 +817,16 @@ class UserDashboard extends StatelessWidget {
 
                         return NotificationListener<ScrollNotification>(
                           onNotification: (scrollInfo) {
-
-                            if (!userDashboardController.isBookedLoadMore.value && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && userDashboardController.bookedCurrentPage < userDashboardController.bookedTotalPages) {
-                              userDashboardController.getBookedConsultants(loadMore: true);
+                            if (!userDashboardController
+                                    .isBookedLoadMore
+                                    .value &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                userDashboardController.bookedCurrentPage <
+                                    userDashboardController.bookedTotalPages) {
+                              userDashboardController.getBookedConsultants(
+                                loadMore: true,
+                              );
                             }
 
                             return true;
@@ -599,24 +838,45 @@ class UserDashboard extends StatelessWidget {
                                 ListView.builder(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: userDashboardController.bookedConsultants.length,
+                                  itemCount: userDashboardController
+                                      .bookedConsultants
+                                      .length,
                                   itemBuilder: (context, index) {
-                                    final booking = userDashboardController.bookedConsultants[index];
+                                    final booking = userDashboardController
+                                        .bookedConsultants[index];
                                     final consultant = booking.consultantId;
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 10),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 10,
+                                      ),
                                       child: PaymentCard(
                                         title: 'Document Review',
-                                        consultationType: booking.consultationType ?? "",
-                                        name: consultant?.userId?.fullname ?? "",
+                                        consultationType:
+                                            booking.consultationType ?? "",
+                                        name:
+                                            consultant?.userId?.fullname ?? "",
                                         subTitle: consultant?.jobTitle ?? "",
-                                        date: booking.paymentStatus == "paid"? DateFormat('MMM dd, yyyy').format(DateTime.parse(booking.paymentDate!)) : "",
-                                        price: "${booking.currency} ${booking.amount?.toInt()}",
-                                        isPaid:booking.paymentStatus == "paid" ? true : false,
+                                        date:
+                                            (booking.paymentStatus == "paid" &&
+                                                booking.paymentDate != null)
+                                            ? DateFormat('MMM dd, yyyy').format(
+                                                DateTime.parse(
+                                                  booking.paymentDate!,
+                                                ),
+                                              )
+                                            : "",
+                                        price:
+                                            "${booking.currency} ${booking.amount?.toInt()}",
+                                        isPaid: booking.paymentStatus == "paid"
+                                            ? true
+                                            : false,
                                         onTap: () {
-                                          booking.paymentStatus == "pending" ?(){}
-                                          //Get.toNamed(RouteName.consultantProfile, arguments: consultant)
-                                          :  Get.toNamed(AppRoutes.bookingDetailsScreen,arguments: booking);
+                                          booking.paymentStatus == "pending"
+                                              ? () {}
+                                              : Get.toNamed(
+                                                  AppRoutes.paymentDetailsScreen,
+                                                  arguments: booking,
+                                                );
                                         },
                                       ),
                                     );
@@ -671,7 +931,8 @@ class UserDashboard extends StatelessWidget {
               ),
             ],
           );
-          }),
-    ));
+        }),
+      ),
+    );
   }
 }

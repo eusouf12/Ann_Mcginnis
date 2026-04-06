@@ -13,7 +13,7 @@ class UserDashboardController extends GetxController {
   var selectedDashboardTab = 0.obs;
   final List<String> tabs = [
     "Dashboard",
-    "Consultations",
+    "Market Place",
     "My Booked\n Consultants",
     "Saved \nCountries",
     "Payments",

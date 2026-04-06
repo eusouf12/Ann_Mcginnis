@@ -2,6 +2,7 @@ import 'package:ann_mcginnis/view/screens/Immigration_Seeker_Screen/Immigration_
 import 'package:get/get.dart';
 import '../../view/screens/Consultant/consult_SetUp_profile/view/consult_setup_screen_1.dart';
 import '../../view/screens/Consultant/consultant_dashboard_screen/view/booking_details.dart';
+import '../../view/screens/Consultant/consultant_dashboard_screen/view/payment_details_screen.dart';
 import '../../view/screens/Consultant/consultant_dashboard_screen/view/consultant_dashboard.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/booking_sucess_screen.dart';
 import '../../view/screens/Immigration_Seeker_Screen/Booking_Flow_Screen/view/consult_book_screen.dart';
@@ -72,6 +73,7 @@ class AppRoutes {
   static const String bookingDetailsScreen = "/BookingDetailsScreen";
   static const String consultBookScreen = "/ConsultBookScreen";
   static const String bookingConfirmedScreen = "/BookingConfirmedScreen";
+  static const String paymentDetailsScreen = "/PaymentDetailsScreen";
 
 
   static List<GetPage> routes = [
@@ -111,6 +113,7 @@ class AppRoutes {
     GetPage(name: bookingDetailsScreen, page: () => BookingDetailsScreen()),
     GetPage(name: consultBookScreen, page: () => ConsultBookScreen()),
     GetPage(name: bookingConfirmedScreen, page: () => BookingConfirmedScreen()),
+    GetPage(name: paymentDetailsScreen, page: () => PaymentDetailsScreen()),
 
 
   ];
