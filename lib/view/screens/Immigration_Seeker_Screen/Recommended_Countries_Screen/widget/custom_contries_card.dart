@@ -1,4 +1,3 @@
-import 'package:ann_mcginnis/utils/app_colors/app_colors.dart';
 import 'package:ann_mcginnis/utils/app_const/app_const.dart';
 import 'package:ann_mcginnis/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +12,29 @@ class CustomCountryCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const CustomCountryCard({
-     super.key,
-     this.imagePath,
-     this.countryName,
-     this.cityName,
-     this.matchPercentage,
-     this.rating,
-     this.onTap,
+    super.key,
+    this.imagePath,
+    this.countryName,
+    this.cityName,
+    this.matchPercentage,
+    this.rating,
+    this.onTap,
   });
+
+  // ── Score color logic ──
+  Color _scoreColor(int score) {
+    if (score >= 70) return const Color(0xFF2E7D32); // green
+    if (score >= 50) return const Color(0xFFE65100); // orange
+    return const Color(0xFFC62828); // red
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+    final int score = matchPercentage ?? 0;
+    final Color scoreColor = _scoreColor(score);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -45,56 +56,62 @@ class CustomCountryCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-
+            // Country image
             ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
-              child: CustomNetworkImage(imageUrl: imagePath ?? AppConstants.countryPoliticalMove, height: 100, width: double.infinity)
-            ),
-
-            SizedBox(height: 12.h),
-
-            Text(
-              countryName ?? "Japan",
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+              child: CustomNetworkImage(
+                imageUrl: imagePath ?? AppConstants.countryPoliticalMove,
+                height: 100,
+                width: double.infinity,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
 
-            SizedBox(height: 12.h),
+            SizedBox(height: 10.h),
+
+            // Country name + checkmark beside it
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  "$matchPercentage% Match",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary1,
+                Expanded(
+                  child: Text(
+                    countryName ?? "Japan",
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                // Rating
-                // Row(
-                //   children: [
-                //     Icon(
-                //       Icons.star_rounded,
-                //       color: Colors.amber,
-                //       size: 16.sp,
-                //     ),
-                //     SizedBox(width: 4.w),
-                //     Text(
-                //       rating.toString(),
-                //       style: TextStyle(
-                //         fontSize: 12.sp,
-                //         fontWeight: FontWeight.w500,
-                //         color: Colors.black87,
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                SizedBox(width: 6.w),
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        scoreColor,
+                        scoreColor.withOpacity(0.75),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(6.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: scoreColor.withOpacity(0.4),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: Colors.white,
+                    size: 15.sp,
+                  ),
+                ),
               ],
             ),
           ],

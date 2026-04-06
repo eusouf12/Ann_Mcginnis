@@ -319,23 +319,38 @@ class UserDashboard extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 12,
-                                                    vertical: 6,
+                                            Builder(builder: (context) {
+                                              final int s = topCountry.score ?? 0;
+                                              final Color sc = s >= 70
+                                                  ? const Color(0xFF2E7D32)
+                                                  : s >= 50
+                                                      ? const Color(0xFFE65100)
+                                                      : const Color(0xFFC62828);
+                                              return Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [sc, sc.withOpacity(0.75)],
                                                   ),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                color: AppColors.yellow1,
-                                              ),
-                                              child: CustomText(
-                                                text: "${topCountry.score}%",
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                                  borderRadius: BorderRadius.circular(7.r),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: sc.withOpacity(0.4),
+                                                      blurRadius: 6,
+                                                      offset: const Offset(0, 2),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Icon(
+                                                  Icons.check_rounded,
+                                                  color: Colors.white,
+                                                  size: 18.sp,
+                                                ),
+                                              );
+                                            }),
                                           ],
                                         ),
                                         const SizedBox(height: 20),
@@ -346,12 +361,6 @@ class UserDashboard extends StatelessWidget {
                                           children: [
                                             const CustomText(
                                               text: "Eligibility Score",
-                                              fontSize: 14,
-                                              color: AppColors.black,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            CustomText(
-                                              text: "${topCountry.score}/100",
                                               fontSize: 14,
                                               color: AppColors.black,
                                               fontWeight: FontWeight.w600,
@@ -883,43 +892,6 @@ class UserDashboard extends StatelessWidget {
                                   },
                                 ),
                                 SizedBox(height: 20.h),
-                                // Container(
-                                //   width: double.infinity,
-                                //   padding: EdgeInsets.all(16.w),
-                                //   decoration: BoxDecoration(
-                                //     color: Color(0xFFF0FDF4),
-                                //     borderRadius: BorderRadius.circular(12.r),
-                                //     border: Border.all(
-                                //       color: const Color(0xFFC8E6C9),
-                                //       width: 1.w,
-                                //     ),
-                                //     boxShadow: [
-                                //       BoxShadow(
-                                //         color: Colors.black.withOpacity(0.03),
-                                //         blurRadius: 5,
-                                //         offset: const Offset(0, 2),
-                                //       ),
-                                //     ],
-                                //   ),
-                                //   child: Row(
-                                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //     crossAxisAlignment: CrossAxisAlignment.start,
-                                //     children: [
-                                //       CustomText(
-                                //         text: "Total Paid",
-                                //         fontSize: 18,
-                                //         fontWeight: FontWeight.bold,
-                                //         color: AppColors.black,
-                                //       ),
-                                //       CustomText(
-                                //         text: "\$150",
-                                //         fontSize: 18,
-                                //         fontWeight: FontWeight.bold,
-                                //         color: AppColors.black,
-                                //       ),
-                                //     ],
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
